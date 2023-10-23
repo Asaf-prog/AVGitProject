@@ -110,7 +110,6 @@ public class gitCommit {
             this.files = newFiles;
             //create the folder (tree) and the blob (need to be a recursion function )
             createTreeAndBlob(path);
-
         }
     }
     public void createTreeAndBlob(String path){
