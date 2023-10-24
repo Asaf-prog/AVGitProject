@@ -5,13 +5,24 @@ public class FolderFormat {
     private String Sh1;
     private String nameOfCreator;
     private String creationTime;
+    private String nameOFFile;
 
     public FolderFormat(EntityType nameOfEntity, String sh1, String nameOfCreator, String creationTime) {
         this.nameOfEntity = nameOfEntity;
-        Sh1 = sh1;
+        this.Sh1 = sh1;
         this.nameOfCreator = nameOfCreator;
         this.creationTime = creationTime;
+        this.nameOFFile = null;
     }
+
+    public FolderFormat(EntityType nameOfEntity, String sh1, String nameOfCreator, String creationTime, String nameOFFile) {
+        this.nameOfEntity = nameOfEntity;
+        this.Sh1 = sh1;
+        this.nameOfCreator = nameOfCreator;
+        this.creationTime = creationTime;
+        this.nameOFFile = nameOFFile;
+    }
+
 
     public EntityType getNameOfEntity() {
         return nameOfEntity;
@@ -43,5 +54,13 @@ public class FolderFormat {
 
     public void setCreationTime(String creationTime) {
         this.creationTime = creationTime;
+    }
+
+    public String getNameOFFile() {
+        return nameOFFile;
+    }
+
+    public void setNameOFFile(String nameOFFile) {
+        this.nameOFFile = nameOFFile;
     }
 }

@@ -11,10 +11,10 @@ public class gitRepository {
     private String HEAD;
     private String name;
     private String author;
-    public gitRepository(String author,String name,String path) {
+    public gitRepository(String author,String name,String path,String comment) {
         this.HEAD = null;
         this.name = name;
-        gitCommit initCommit = new gitCommit(null,null,author,"repository created",path);
+        gitCommit initCommit = new gitCommit(null,null,author,comment,path);
         //this.HEAD = initCommit.getCurrentHash();
     }
     public Map<String, gitCommit> getCommitMap() {

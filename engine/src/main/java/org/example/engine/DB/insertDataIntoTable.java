@@ -42,7 +42,6 @@ public class insertDataIntoTable {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-
             try {
                 if (conn != null)
                     conn.close();

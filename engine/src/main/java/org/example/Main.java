@@ -35,8 +35,9 @@ public class Main {
         String currentDirectory = System.getProperty("user.dir");
         System.out.println("Current working directory: " + currentDirectory);
         git gitObject = new git();
-        gitObject.gitInit("./","testRepoNew");
-
+       //need to get from the user the first comment
+       String comment = "comment on the first commit";
+        gitObject.gitInit("./","testRepoNew",comment);
 
         //fileHandler.testToZipFile();
 

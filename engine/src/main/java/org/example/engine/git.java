@@ -1,5 +1,6 @@
 package org.example.engine;
 
+import java.io.File;
 import java.util.Map;
 
 import static org.example.engine.FileHandler.createFolder;
@@ -9,27 +10,20 @@ import static org.example.engine.FileHandler.writeToFile;
 //for branch we will create a new file that handle this branch
 
 public class git {
-    private String currentUser = "bla-bla";
+    private String currentUser = "asaf";
     private Map<String, gitRepository> repositoriesMap;//rep name to object
     private String rootSha1;
-    public void gitInit(String path,String repoName){
-        //todo check if the repo name is uniq
-        //todo need to check that the AGit file not exist in the folder
-        if (!AGitExistInFile()) {
+    public void gitInit(String path,String repoName,String comment){
+        //todo check if the repo name is uniq, check if the name exist in the db
+        if (!AGitExistInFile(path)) {
 
             sha256 sha = sha256.getInstance();
             this.rootSha1 = sha.getHash(path + repoName);//todo need to save in file as a fair the name of the rep and the sha1
             createFolder("./.AGit/");
             createFolder("./.AGit/.Object");
-            gitRepository newRep = new gitRepository(currentUser, repoName, path);
+            gitRepository newRep = new gitRepository(currentUser, repoName, path,comment);
             String hash = "hash";
-            //   addRepository(hash,newRep);
-            // writeToFile("C:\\Users\\asafr\\Desktop\\codeBooks\\315f5bdb76d078c43b8ac0064e4a0164612b1fce77c869345bfc94c75894edd3","blabla");
             writeToFile("./gitRepos", repoName);
-
-            // let's create a head file that point on the sha1 of the last commit
-            // when the program run, and we are going to exist repo, and we need to load the head file to know the sh1 of the last commit
-            createFolder("./.AGit/");
         }
     }
     public String getCurrentUser() {
@@ -38,9 +32,20 @@ public class git {
     public void setCurrentUser(String currentUser) {
         this.currentUser = currentUser;
     }
-    private boolean AGitExistInFile(){
+    private boolean AGitExistInFile(String path){
        //need to check if there is no more git-file in the folder when the user try to do the command git init
-        return false;
+        File file  = new File(path);
+        if (!file.exists()){
+            return false;
+        }
+        if (file.isDirectory()) {
+            // Check if the .AGit folder exists
+            File agItFolder = new File(path + "/.AGit");
+            return agItFolder.exists();
+        } else {
+            // Check if the file name ends with .AGit
+            return file.getName().endsWith(".AGit");
+        }
     }
     public Map<String, gitRepository> getRepositoriesMap() {
         return repositoriesMap;

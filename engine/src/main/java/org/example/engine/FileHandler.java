@@ -149,7 +149,17 @@ public class FileHandler {
         }
         return true;
     }
-    public static void createNewTreeFile(String nameOfParent, String sh1){//the sh1 is the name of the file
+    public static void createNewTreeFile(FolderFormat entityFormat,String sh1NameOfTree){//the sh1 is the name of the file
+        String path ="./.AGit/.Object/";
+
+        String myContent =  entityFormat.getNameOFFile()+","+entityFormat.getSh1()+","
+                +entityFormat.getNameOfEntity()+","+entityFormat.getNameOfCreator()+","+entityFormat.getCreationTime();
+
+        try (FileWriter writer = new FileWriter(path + sh1NameOfTree)) {//check //todo change it to the path that get from the user
+            writer.write(myContent);
+        } catch (IOException e) {
+            System.err.println("Failed to open the file for writing.");
+        }
 
     }
     public static void writeToFileBuyName(String nameOfParent,FolderFormat folderFormat){
