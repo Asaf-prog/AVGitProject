@@ -1,16 +1,13 @@
 package org.example.engine;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.BufferedWriter;
-import java.io.BufferedReader;
+import java.io.*;
 
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 public class FileHandler {
     private static FileHandler instance = null;
@@ -71,7 +68,7 @@ public class FileHandler {
 
     }
     public static void writeToDBFile(ArrayList<String> newSh1){//write new sh1 to db file
-       try{String filePath = "C:\\Users\\asafr\\OneDrive\\מסמכים\\GitHub\\AGit\\src\\main\\java\\com\\maven\\test\\engine\\test.txt";
+       try{String filePath = "C:\\Users\\asafr\\OneDrive\\מסמכים\\GitHub\\AVGitProject\\engine\\src\\main\\java\\org\\example\\engine\\test.txt";
         // Open the file in append mode
        for (String sh1: newSh1){
            BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true));
@@ -90,7 +87,7 @@ public class FileHandler {
        }
     }
     public static boolean doesStringExistInFile( String targetString) {
-        String filePath="C:\\Users\\asafr\\OneDrive\\מסמכים\\GitHub\\AGit\\src\\main\\java\\com\\maven\\test\\engine\\test.txt";
+        String filePath="C:\\Users\\asafr\\OneDrive\\מסמכים\\GitHub\\AVGitProject\\engine\\src\\main\\java\\org\\example\\engine\\test.txt";
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -112,10 +109,50 @@ public class FileHandler {
         else
             return null;
     }
-    public static void createNewTreeFile(String nameOfParent){
+    public static void testToZipFile(){
+        String textFilePath = "./.AGit/TestSample.txt"; // Replace with the desired file path
+        String textContent = "This is a sample text content that will be written to the file.";
+
+        try (PrintWriter writer = new PrintWriter(textFilePath)) {
+            writer.println(textContent);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Text file created: " + textFilePath);
+        File textFile = new File(textFilePath);
+        if (createAZipFile(textFile)){
+            System.out.println("created zip file!!!!!!!!");
+        }
+    }
+    public static boolean createAZipFile(File file){
+        String sourceFilePath = file.getPath();
+        String zipFilePath = sourceFilePath+".zip";
+
+        File fileToZip = new File(sourceFilePath);
+
+        try (FileOutputStream fos = new FileOutputStream(zipFilePath);
+             ZipOutputStream zipOut = new ZipOutputStream(fos);
+             FileInputStream fis = new FileInputStream(fileToZip)) {
+
+            ZipEntry zipEntry = new ZipEntry(fileToZip.getName());
+            zipOut.putNextEntry(zipEntry);
+
+            byte[] bytes = new byte[1024];
+            int length;
+            while ((length = fis.read(bytes)) >= 0) {
+                zipOut.write(bytes, 0, length);
+            }
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return true;
+    }
+    public static void createNewTreeFile(String nameOfParent, String sh1){//the sh1 is the name of the file
 
     }
-    public static void writeToFileBuyName(String nameOfParent){
+    public static void writeToFileBuyName(String nameOfParent,FolderFormat folderFormat){
 
     }
 }

@@ -1,5 +1,8 @@
 package org.example.engine;
 
+import org.example.Exception.UnknownEntityTypeException;
+import org.example.Exception.ZipFileCreationException;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -32,7 +35,7 @@ public class gitCommit {
         this.author = author;
         saveToFile(path);
         gitFileSh1 = new ArrayList<>();
-        this.nameOfRootDirectory = ".AGit";
+        this.nameOfRootDirectory = ".Object";
         this.isFirst = true;
     }
     //create new commit and the head now point on this
@@ -129,16 +132,43 @@ public class gitCommit {
             searchRootDirectory(file.getParentFile());
             //need to create a tree
             FileHandler fileHandler = FileHandler.getInstance();
+            sha256 sha = sha256.getInstance();
             if (this.isFirst){
                 this.isFirst = false;
-                fileHandler.createNewTreeFile(file.getParent());//the main root need to point on this file
+                this.mySh1 =  sha.getHash(file.getName());
+                fileHandler.createNewTreeFile(file.getName(),this.mySh1);//create a file that his name is the sh1 Of The First file (the head file need to change)
+                changeHeadFileContent();
             }
             else {
-                //need to write in this file that represent a folder the format data of the content of the current folder
-                //our parent are exist
-                //create a new object that transfer the data that we want to write to the file
-                fileHandler.writeToFileBuyName(file.getParent());//need to pass an object
+                try {
+                    //need to write in this file that represent a folder the format data of the content of the current folder
+                    //our parent are exist
+                    //create a new object that transfer the data that we want to write to the file
+                    FolderFormat entityFormat = new FolderFormat(getFileType(file),sha.getHash(file.getName()),this.author,this.creationTime);
+                    fileHandler.writeToFileBuyName(file.getParent(),entityFormat);//need to pass an object
+                    if (getFileType(file) == EntityType.FILE){
+                        //need to create a zip file of the changes file
+                       if (!fileHandler.createAZipFile(file)){
+                           // Handle the case where zip file creation was not successful
+                           throw new ZipFileCreationException("Failed to create the zip file for the changes file.");
+                       }
+                    }
+                }catch (UnknownEntityTypeException e) {// Handle the exception or log the error here
+                    System.out.println(e.getMessage());
+                }catch (ZipFileCreationException e) {
+                    System.out.println(e.getMessage());
+                    // Handle the ZipFileCreationException here
+                }
             }
+        }
+    }
+    private EntityType getFileType(File file) throws UnknownEntityTypeException {
+        if (file.isFile()) {
+            return EntityType.FILE;
+        } else if (file.isDirectory()) {
+            return EntityType.FOLDER;
+        } else {
+            throw new UnknownEntityTypeException("Unknown entity type for file: " + file.getAbsolutePath());
         }
     }
     public ArrayList<File> getFileBySh1(ArrayList<String> sh1OfFileThatNotExist, ArrayList<File> files){

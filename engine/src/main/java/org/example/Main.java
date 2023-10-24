@@ -29,11 +29,16 @@ public class Main {
         System.out.println("SHA-256 hash: " + hash);
 
 
-        fileHandler.collectFileInFolder("C:\\Users\\asafr\\OneDrive\\מסמכים\\GitHub\\AGit\\src\\main\\java\\com\\maven\\test\\engine");
+        // C:\Users\asafr\OneDrive\מסמכים\GitHub\AGit\src\main\java\com\maven\test\engine//last version
+        //C:\Users\asafr\OneDrive\מסמכים\GitHub\AVGitProject\engine\src\main\java\org\example\engine
+        fileHandler.collectFileInFolder("C:\\Users\\asafr\\OneDrive\\מסמכים\\GitHub\\AVGitProject\\engine\\src\\main\\java\\org\\example\\engine");
         String currentDirectory = System.getProperty("user.dir");
         System.out.println("Current working directory: " + currentDirectory);
         git gitObject = new git();
         gitObject.gitInit("./","testRepoNew");
+
+
+        //fileHandler.testToZipFile();
 
     }
 }

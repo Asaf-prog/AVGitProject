@@ -1,0 +1,17 @@
+org\example\engine\gitBlob.class
+org\example\engine\EntityType.class
+org\example\Exception\UnknownEntityTypeException.class
+org\example\Exception\ZipFileCreationException.class
+org\example\engine\DB\insertDataIntoTable.class
+org\example\engine\TimeHandler.class
+org\example\Foo.class
+org\example\engine\DB\createTableInDataBase.class
+org\example\engine\FolderFormat.class
+org\example\engine\sha256.class
+org\example\Main.class
+org\example\engine\gitCommit.class
+org\example\engine\gitRepository.class
+org\example\engine\gitFile.class
+org\example\engine\git.class
+org\example\engine\FileHandler.class
+org\example\engine\gitTree.class
