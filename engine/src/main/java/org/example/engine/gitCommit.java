@@ -6,7 +6,6 @@ import org.example.Exception.ZipFileCreationException;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +46,7 @@ public class gitCommit {
         TimeHandler timeHandler = TimeHandler.getInstance();
         this.treeRootHash = hashRootDirectory;
         this.parentCommitHash = hashParent;
-        this.secondParentCommitHash = null; //todo need to write a function that get the second commit
+        this.secondParentCommitHash = null; //todo need to write a function that return the second commit
         this.comment = comment;
         //this.creationTime = LocalDate.now().toString();
         this.creationTime = timeHandler.getTime();
@@ -111,7 +110,6 @@ public class gitCommit {
             fileHandler.writeToDBFile(sh1OfFileThatNotExist);//todo do not forget !!!write the new sh1 to db
             ArrayList<File> newFiles = getFileBySh1(sh1OfFileThatNotExist,files);
             this.files = newFiles;
-            //create the folder (tree) and the blob (need to be a recursion function )
             createTreeAndBlob();
         }
     }
@@ -137,34 +135,35 @@ public class gitCommit {
             sha256 sha = sha256.getInstance();
             if (this.isFirst){
                 this.isFirst = false;
-                System.out.println(file.getName());
                 this.treeRootHash = sha.getHash(file.getParentFile().getName());
                 this.mySh1 =  sha.getHash(file.getName());
                 FolderFormat entityFormat = new FolderFormat(getFileType(file),this.mySh1,this.author,this.creationTime,file.getName());
                 fileHandler.createNewTreeFile(entityFormat,this.treeRootHash);
                 changeHeadFileContent();
+                isAFileCreateAZip(file, fileHandler);
             }
             else {
+                    //our parent is existing
+                    FolderFormat entityFormat = new FolderFormat(getFileType(file),sha.getHash(file.getName()),this.author,this.creationTime,file.getName());
+                    fileHandler.writeToFileBuyName( sha.getHash(file.getParentFile().getName()),entityFormat);
+                    isAFileCreateAZip(file,fileHandler);
+            }
+        }
+    }
+
+    private void isAFileCreateAZip(File file, FileHandler fileHandler) throws UnknownEntityTypeException {
+        if (getFileType(file) == EntityType.FILE){
+            //need to create a zip file of the changes file
+            if (!fileHandler.zipFileCreatorInTargetPath(file)){
                 try {
-                    //need to write in this file that represent a folder the format data of the content of the current folder
-                    //our parent are exist
-                    //create a new object that transfer the data that we want to write to the file
-                    FolderFormat entityFormat = new FolderFormat(getFileType(file),sha.getHash(file.getName()),this.author,this.creationTime);
-                    fileHandler.writeToFileBuyName(file.getParent(),entityFormat);//need to pass an object
-                    if (getFileType(file) == EntityType.FILE){
-                        //need to create a zip file of the changes file
-                       if (!fileHandler.createAZipFile(file)){
-                           throw new ZipFileCreationException("Failed to create the zip file for the changes file.");
-                       }
-                    }
-                }catch (UnknownEntityTypeException e) {
-                    System.out.println(e.getMessage());
-                }catch (ZipFileCreationException e) {
-                    System.out.println(e.getMessage());
+                    throw new ZipFileCreationException("Failed to create the zip file for the changes file.");
+                } catch (ZipFileCreationException e) {
+                    throw new RuntimeException(e);
                 }
             }
         }
     }
+
     private EntityType getFileType(File file) throws UnknownEntityTypeException {
         if (file.isFile()) {
             return EntityType.FILE;

@@ -4,13 +4,12 @@ import java.io.*;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 public class FileHandler {
     private static FileHandler instance = null;
+    private static String path = "./.AGit/.Object/";
     private FileHandler() { }
     public static FileHandler getInstance() {
         if (instance == null)
@@ -24,7 +23,6 @@ public class FileHandler {
                 writer.write(line);
                 writer.write(","); // Add ',' between data members
             }
-            System.out.println("File write successful.");
         } catch (IOException e) {
             System.err.println("Error writing to file: " + e.getMessage());
         }
@@ -120,26 +118,28 @@ public class FileHandler {
         }
         System.out.println("Text file created: " + textFilePath);
         File textFile = new File(textFilePath);
-        if (createAZipFile(textFile)){
+        if (createAZipFileInCurrentPath(textFile)){
             System.out.println("created zip file!!!!!!!!");
         }
     }
-    public static boolean createAZipFile(File file){
-        String sourceFilePath = file.getPath();
+    public static boolean createAZipFileInCurrentPath(File file){
+        sha256 sha = sha256.getInstance();
+       // String sourceFilePath = path + sha.getHash(file.getName());
+         String sourceFilePath = file.getPath();
         String zipFilePath = sourceFilePath+".zip";
 
         File fileToZip = new File(sourceFilePath);
 
-        try (FileOutputStream fos = new FileOutputStream(zipFilePath);
-             ZipOutputStream zipOut = new ZipOutputStream(fos);
-             FileInputStream fis = new FileInputStream(fileToZip)) {
+        try (FileOutputStream fileOutputStream = new FileOutputStream(zipFilePath);
+             ZipOutputStream zipOut = new ZipOutputStream(fileOutputStream);
+             FileInputStream fileInputStream = new FileInputStream(fileToZip)) {
 
             ZipEntry zipEntry = new ZipEntry(fileToZip.getName());
             zipOut.putNextEntry(zipEntry);
 
             byte[] bytes = new byte[1024];
             int length;
-            while ((length = fis.read(bytes)) >= 0) {
+            while ((length = fileInputStream.read(bytes)) >= 0) {
                 zipOut.write(bytes, 0, length);
             }
         } catch (FileNotFoundException e) {
@@ -149,8 +149,41 @@ public class FileHandler {
         }
         return true;
     }
+    public static boolean zipFileCreatorInTargetPath(File file) {
+        sha256 sha = sha256.getInstance();
+        String sourceFilePath = file.getPath();
+        String targetDirectory = path;
+        File fileToZip = new File(sourceFilePath);
+
+        // Create the target directory if it doesn't exist
+        File targetDir = new File(targetDirectory);
+        if (!targetDir.exists()) {
+            targetDir.mkdirs();
+        }
+
+        String zipFilePath = targetDirectory + File.separator + sha.getHash(fileToZip.getName()) + ".zip";
+
+        try (FileOutputStream fileOutputStream = new FileOutputStream(zipFilePath);
+             ZipOutputStream zipOut = new ZipOutputStream(fileOutputStream);
+             FileInputStream fileInputStream = new FileInputStream(fileToZip)) {
+
+            ZipEntry zipEntry = new ZipEntry(fileToZip.getName());
+            zipOut.putNextEntry(zipEntry);
+
+            byte[] bytes = new byte[1024];
+            int length;
+            while ((length = fileInputStream.read(bytes)) >= 0) {
+                zipOut.write(bytes, 0, length);
+            }
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return true;
+    }
+
     public static void createNewTreeFile(FolderFormat entityFormat,String sh1NameOfTree){//the sh1 is the name of the file
-        String path ="./.AGit/.Object/";
 
         String myContent =  entityFormat.getNameOFFile()+","+entityFormat.getSh1()+","
                 +entityFormat.getNameOfEntity()+","+entityFormat.getNameOfCreator()+","+entityFormat.getCreationTime();
@@ -160,9 +193,33 @@ public class FileHandler {
         } catch (IOException e) {
             System.err.println("Failed to open the file for writing.");
         }
-
     }
-    public static void writeToFileBuyName(String nameOfParent,FolderFormat folderFormat){
+    public static void writeToFileBuyName(String nameOfParent,FolderFormat entityFormat){
+        String currentPath ="./.AGit/.Object/" + nameOfParent;
 
+        String myContent = entityFormat.getNameOFFile()+","+entityFormat.getSh1()+","
+                +entityFormat.getNameOfEntity()+","+entityFormat.getNameOfCreator()+","+entityFormat.getCreationTime();;
+
+        if (!fileAppendLine(currentPath,myContent)){
+            createNewTreeFile(entityFormat,nameOfParent);
+        }
+    }
+    public static boolean fileAppendLine(String path, String lineToAppend){
+        File file = new File(path);
+        if (file.exists()){
+            try {
+                //open the file to appending
+                BufferedWriter writer = new BufferedWriter(new FileWriter(path,true));
+                writer.newLine();
+                writer.write(lineToAppend);
+                writer.close();
+                return true;//the file exist and we add a new line
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        else {
+            return false;
+        }
     }
 }
