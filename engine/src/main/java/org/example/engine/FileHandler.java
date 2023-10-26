@@ -4,6 +4,7 @@ import java.io.*;
 
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -26,6 +27,9 @@ public class FileHandler {
         } catch (IOException e) {
             System.err.println("Error writing to file: " + e.getMessage());
         }
+    }
+    public static void setPath(String p){
+        path = p+ "/.AGit/.Object/";
     }
 
     // Method to read content from a file into an array of strings
@@ -51,9 +55,9 @@ public class FileHandler {
             File[] files = directory.listFiles();
             if (files != null) {
                 for (File file : files) {
-                    if (file.isFile()) { // Check if it's a file (not a directory)
+                   // if (file.isFile()) { // Check if it's a file (not a directory)
                         filesInDirectory.add(file);
-                    }
+                   // }
                 }
             } else {
                 System.out.println("No files found in the directory.");
@@ -65,8 +69,38 @@ public class FileHandler {
         return filesInDirectory;
 
     }
+
+    public static ArrayList<File> listFilesInFolder(String folderPath) {
+        ArrayList<File> fileList = new ArrayList<>();
+        File folder = new File(folderPath);
+
+        if (folder.exists() && folder.isDirectory()) {
+            listFilesRecursively(folder, fileList);
+        }
+
+        return fileList;
+    }
+
+    private static void listFilesRecursively(File folder, List<File> fileList) {
+        File[] files = folder.listFiles();
+
+        if (files != null) {
+            for (File file : files) {
+                if (file.isFile()) {
+                    fileList.add(file);
+                } else if (file.isDirectory()) {
+                    // If it's a directory, recursively list its files
+                    listFilesRecursively(file, fileList);
+                }
+            }
+        }
+    }
+
+
+
     public static void writeToDBFile(ArrayList<String> newSh1){//write new sh1 to db file
-       try{String filePath = "C:\\Users\\asafr\\OneDrive\\מסמכים\\GitHub\\AVGitProject\\engine\\src\\main\\java\\org\\example\\engine\\test.txt";
+       try{
+           String filePath = "C:\\Users\\asafr\\OneDrive\\מסמכים\\GitHub\\AVGitProject\\engine\\src\\main\\java\\org\\example\\engine\\test.txt";
         // Open the file in append mode
        for (String sh1: newSh1){
            BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true));
@@ -195,7 +229,7 @@ public class FileHandler {
         }
     }
     public static void writeToFileBuyName(String nameOfParent,FolderFormat entityFormat){
-        String currentPath ="./.AGit/.Object/" + nameOfParent;
+        String currentPath =path  + nameOfParent;
 
         String myContent = entityFormat.getNameOFFile()+","+entityFormat.getSh1()+","
                 +entityFormat.getNameOfEntity()+","+entityFormat.getNameOfCreator()+","+entityFormat.getCreationTime();;
@@ -206,7 +240,7 @@ public class FileHandler {
     }
     public static boolean fileAppendLine(String path, String lineToAppend){
         File file = new File(path);
-        if (file.exists()){
+        if (file.exists() && !(doesLineExistInFile(path ,lineToAppend))){
             try {
                 //open the file to appending
                 BufferedWriter writer = new BufferedWriter(new FileWriter(path,true));
@@ -221,5 +255,19 @@ public class FileHandler {
         else {
             return false;
         }
+    }
+    public static boolean doesLineExistInFile(String filePath, String lineToFind) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.equals(lineToFind)) {
+                    return true; // Line exists in the file
+                }
+            }
+        } catch (IOException e) {
+            // Handle any IO exceptions, such as file not found
+            e.printStackTrace();
+        }
+        return false; // Line does not exist in the file or an error occurred
     }
 }

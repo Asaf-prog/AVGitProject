@@ -15,7 +15,7 @@ public class gitRepository {
         this.HEAD = null;
         this.name = name;
         gitCommit initCommit = new gitCommit(null,null,author,comment,path);
-        //this.HEAD = initCommit.getCurrentHash();
+        this.author = author;
     }
     public Map<String, gitCommit> getCommitMap() {
         return commitMap;

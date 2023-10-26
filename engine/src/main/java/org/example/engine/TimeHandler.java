@@ -1,7 +1,6 @@
 package org.example.engine;
 
 public class TimeHandler {
-
     private static TimeHandler instance = null;
     private final java.text.SimpleDateFormat formatter;
     private TimeHandler() {

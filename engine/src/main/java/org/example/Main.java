@@ -2,7 +2,7 @@ package org.example;
 
 import org.example.engine.FileHandler;
 import org.example.engine.git;
-import org.example.engine.sha256;
+
 
 import java.util.ArrayList;
 
@@ -27,7 +27,12 @@ public class Main {
         git gitObject = new git();
        //need to get from the user the first comment
        String comment = "comment on the first commit";
-        gitObject.gitInit("./","testRepoNew",comment);
+
+       // gitObject.gitInit("./","testRepoNew",comment);
+        //gitObject.gitInit("C:\\Users\\asafr\\Desktop\\testforgit\\.Object\\test1","testRepoNew",comment);
+
+        fileHandler.setPath("C:\\Users\\asafr\\Desktop\\testforgit");
+        gitObject.gitInit("C:\\Users\\asafr\\Desktop\\testforgit","testRepoNew",comment);
 
         //fileHandler.testToZipFile();
     }

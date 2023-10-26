@@ -16,14 +16,15 @@ public class git {
     public void gitInit(String path,String repoName,String comment){
         //todo check if the repo name is uniq, check if the name exist in the db
         if (!AGitExistInFile(path)) {
-
             sha256 sha = sha256.getInstance();
             this.rootSha1 = sha.getHash(path + repoName);//todo need to save in file as a fair the name of the rep and the sha1
-            createFolder("./.AGit/");
-            createFolder("./.AGit/.Object");
+            createFolder(path + "/.AGit/");
+            createFolder(path + "/.AGit/.Object");
             gitRepository newRep = new gitRepository(currentUser, repoName, path,comment);
             String hash = "hash";
             writeToFile("./gitRepos", repoName);
+        }else {
+            System.out.println("The trace after this folder exist");
         }
     }
     public String getCurrentUser() {

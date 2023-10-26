@@ -5,16 +5,9 @@ gitCommit:
 
     {parentCommitHash},{secondParentCommitHash},{treeRootHash},{comment},{this.creationTime},{author}
 
-
 gitBlob:
 
-
-
-
 gitTree:
-
-
-
 
 
 datetime will be represented in the following format:
