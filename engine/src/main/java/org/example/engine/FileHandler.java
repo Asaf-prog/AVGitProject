@@ -77,13 +77,11 @@ public class FileHandler {
         if (folder.exists() && folder.isDirectory()) {
             listFilesRecursively(folder, fileList);
         }
-
         return fileList;
     }
 
     private static void listFilesRecursively(File folder, List<File> fileList) {
         File[] files = folder.listFiles();
-
         if (files != null) {
             for (File file : files) {
                 if (file.isFile()) {
@@ -95,9 +93,6 @@ public class FileHandler {
             }
         }
     }
-
-
-
     public static void writeToDBFile(ArrayList<String> newSh1){//write new sh1 to db file
        try{
            String filePath = "C:\\Users\\asafr\\OneDrive\\מסמכים\\GitHub\\AVGitProject\\engine\\src\\main\\java\\org\\example\\engine\\test.txt";

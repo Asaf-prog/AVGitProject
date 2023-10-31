@@ -242,5 +242,4 @@ public class gitCommit {
     public void setMySh1(String mySh1) {
         this.mySh1 = mySh1;
     }
-
 }
