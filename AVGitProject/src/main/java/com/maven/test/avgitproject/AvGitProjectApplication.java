@@ -1,11 +1,15 @@
 package com.maven.test.avgitproject;
 
 import com.google.gson.Gson;
+import com.maven.test.avgitproject.DTO.CommitDTO;
 import org.example.Foo;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +17,17 @@ import java.util.List;
 @SpringBootApplication
 @RestController
 public class AvGitProjectApplication {
+
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/data")
+                        .allowedOrigins("http://localhost:5173");
+            }
+        };
+    }
 
     public static void main(String[] args) {
         SpringApplication.run(AvGitProjectApplication.class, args);
@@ -32,10 +47,20 @@ public class AvGitProjectApplication {
         serverResponses.add(new ServerResponse("Sarah Brown", 6));
         serverResponses.add(new ServerResponse("Sarah Brown", 7));
         serverResponses.add(new ServerResponse("Sarah Brown", 8));
-        serverResponses.add(new ServerResponse("Sarah Brown", 9));
+        serverResponses.add(new ServerResponse("asaf var", 9));
         serverResponses.add(new ServerResponse("David Lee", 10));
 
         return serverResponses;
+    }
+    @GetMapping("/commit")
+    public  List<CommitDTO>  getCommit(@RequestParam(value = "myName", defaultValue = "World") String name) {
+        List<CommitDTO> commitList = new ArrayList<>();
+
+        // Populate the list with Commit objects
+        commitList.add(new CommitDTO("sha1_1", "Commit 1", "2023-01-01", "John Doe"));
+        commitList.add(new CommitDTO("sha1_2", "Commit 2", "2023-01-02", "Jane Smith"));
+        commitList.add(new CommitDTO("sha1_3", "Commit 3", "2023-01-03", "Michael Johnson"));
+        return commitList;
     }
     @GetMapping("/hello")
     public String sayHello(@RequestParam(value = "myName", defaultValue = "World") String name) {
