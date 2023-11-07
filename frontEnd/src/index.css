@@ -86,11 +86,19 @@ header p {
     border-radius: 4px;
   }
 .places-category {
-  max-width: 85rem;
+  max-width: 105rem;
   margin: 2rem auto;
   padding: 1rem;
-  border: 2px solid #0d373e;
+  border: 2px solid #4fa5b4;
   border-radius: 8px;
+}
+
+.scrollable-container {
+  max-height: 400px; /* Set the desired maximum height for the container */
+  overflow-y: auto;
+  border: 3px solid #a32283; /* Add a border for clarity */
+  
+  
 }
 
 #core-concepts {
@@ -101,7 +109,7 @@ header p {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
   
     position: absolute;
-    top: 25%;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
   }
