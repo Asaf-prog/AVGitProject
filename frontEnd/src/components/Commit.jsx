@@ -1,4 +1,5 @@
 import  { useState, useEffect } from 'react';
+import CommitData from './CommitData.jsx';
 export default function Commit({repoName}){
     const [data, setData] = useState([]);
     useEffect(() => {
@@ -6,10 +7,12 @@ export default function Commit({repoName}){
           try {
             
             const queryParams = new URLSearchParams();
-            queryParams.append('repoName', repoName);
+           console.log('check query param =>',repoName);
+           // queryParams.append('repoName', repoName);
             //queryParams.append('param2', 'value2');
       
-            const url = `http://localhost:8080/commit?${queryParams.toString()}`;
+            //const url = `http://localhost:8080/commit?${queryParams.toString()}`;
+            const url = "http://localhost:8080/commit";
       
             const response = await fetch(url);
       
@@ -27,19 +30,19 @@ export default function Commit({repoName}){
       
         fetchData();
       }, []);
-    return (
+ 
+      return (
         <>
-        <p>here</p>
+        <p>here in commit component</p>
         <p>{repoName}</p>
         <ul id="nameList">
-            {data.length === 0 ? <p>Data is empty</p> : data.map((conceptItem) => (
-            <Commit key={conceptItem.index} name={conceptItem.name} index={conceptItem.index} />
+            {data.length === 0 ? null : data.map((conceptItem) => (
+            <CommitData  key={conceptItem.sha1} commitContent={conceptItem.name} commitSh1 ={conceptItem.sha1} commitData ={conceptItem.date} commitAuthor = {conceptItem.author} />
             ))}
             
             </ul>
         </>
     );
 }
-//stop in line 36 
 //send http request to see the list of the commit
 // we have the name of the repo and the name of the user and we take from the server the list of the commits

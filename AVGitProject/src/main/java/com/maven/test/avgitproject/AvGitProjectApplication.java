@@ -23,8 +23,10 @@ public class AvGitProjectApplication {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/data")
-                        .allowedOrigins("http://localhost:5173");
+                registry.addMapping("/**")
+                        .allowedOrigins("http://localhost:5174")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE")
+                        .maxAge(3600); // Max age of the CORS pre-flight request;
             }
         };
     }
@@ -53,7 +55,7 @@ public class AvGitProjectApplication {
         return serverResponses;
     }
     @GetMapping("/commit")
-    public  List<CommitDTO>  getCommit(@RequestParam(value = "myName", defaultValue = "World") String name) {
+    public  List<CommitDTO>  getCommit(@RequestParam(value = "myName", defaultValue = "default") String name) {
         List<CommitDTO> commitList = new ArrayList<>();
 
         // Populate the list with Commit objects

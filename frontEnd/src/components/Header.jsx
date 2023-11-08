@@ -36,21 +36,3 @@ export default function Header(){
         
     );
 }
-
-//present to this user all the repository in this acount 
-
-
-// {data.length === 0 ? (
-//     <p>Data is empty</p>
-//   ) : (
-//     <ul>
-//       {data.map((conceptItem) => (
-//         <li key={conceptItem.index}>
-//           <a href="#" onClick={() => handleItemClick(conceptItem)}>
-//             {conceptItem.name}
-//           </a>
-//         </li>
-//       ))}
-//     </ul>
-//   )}
-  
