@@ -265,4 +265,29 @@ public class FileHandler {
         }
         return false; // Line does not exist in the file or an error occurred
     }
+
+    //this function give us the ability  to know how is the last Header
+    public static String getSh1HeadFile(String filePath) {
+
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line = br.readLine();
+            if (line != null) {
+                // Find the index of the first comma
+                int commaIndex = line.indexOf(',');
+
+                // Extract the content until the first comma
+                if (commaIndex != -1) {
+                    return line.substring(0, commaIndex);
+                } else {
+                    // If there is no comma, return the entire line
+                    return line;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace(); // Handle or log the exception as needed
+        }
+
+        // Return null if there's an issue reading the file
+        return null;
+    }
 }

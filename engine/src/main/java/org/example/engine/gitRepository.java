@@ -14,8 +14,9 @@ public class gitRepository {
     public gitRepository(String author,String name,String path,String comment) {
         this.HEAD = null;
         this.name = name;
-        gitCommit initCommit = new gitCommit(null,null,author,comment,path);
         this.author = author;
+        gitCommit initCommit = new gitCommit(null,null,author,comment,path);
+
     }
     public Map<String, gitCommit> getCommitMap() {
         return commitMap;
