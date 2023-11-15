@@ -17,13 +17,11 @@ public class gitTree implements gitFile{
         this.date = date;
         this.author = author;
     }
-
     public gitTree(String shaOne, String date, String author) {
         this.shaOne = shaOne;
         this.date = date;
         this.author = author;
     }
-
     @Override
     public String getShaOne(){
      return shaOne;

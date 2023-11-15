@@ -14,15 +14,15 @@ public class git {
     private Map<String, gitRepository> repositoriesMap;//rep name to object
     private String rootSha1;
     public void gitInit(String path,String repoName,String comment){
-        //todo check if the repo name is uniq, check if the name exist in the db
+
         if (!AGitExistInFile(path)) {
             sha256 sha = sha256.getInstance();
             this.rootSha1 = sha.getHash(path + repoName);//todo need to save in file as a fair the name of the rep and the sha1
             createFolder(path + "/.AGit/");
             createFolder(path + "/.AGit/.Object");
+            writeToFile("./gitRepos", repoName,"null");// Demo db => every session have a repo list
             gitRepository newRep = new gitRepository(currentUser, repoName, path,comment);
             String hash = "hash";
-            writeToFile("./gitRepos", repoName);
         }else {
             System.out.println("The trace after this folder exist");
         }

@@ -8,7 +8,6 @@ public class Foo {
         this.x = x;
         this.name = name;
     }
-
     public int getX() {
         return x;
     }

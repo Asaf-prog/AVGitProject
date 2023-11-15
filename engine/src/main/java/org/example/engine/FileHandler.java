@@ -28,6 +28,16 @@ public class FileHandler {
             System.err.println("Error writing to file: " + e.getMessage());
         }
     }
+    public static void writeToFileForCommit(String filePath, String... contentArray) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+            for (String line : contentArray) {
+                writer.write(line);
+            }
+        } catch (IOException e) {
+            System.err.println("Error writing to file: " + e.getMessage());
+        }
+    }
+
     public static void setPath(String p){
         path = p+ "/.AGit/.Object/";
     }
@@ -266,12 +276,13 @@ public class FileHandler {
         return false; // Line does not exist in the file or an error occurred
     }
 
-    //this function give us the ability  to know how is the last Header
+    // This function give us the ability  to know how is the last Header
     public static String getSh1HeadFile(String filePath) {
 
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line = br.readLine();
-            if (line != null) {
+           // System.out.println("the line is: " + line);
+            if (line != null) {// Remove the coma
                 // Find the index of the first comma
                 int commaIndex = line.indexOf(',');
 
@@ -289,5 +300,31 @@ public class FileHandler {
 
         // Return null if there's an issue reading the file
         return null;
+    }
+    public static void replaceContentBetweenCommas(String filePath, String newContent){
+        StringBuilder fileContent = new StringBuilder();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length >= 2) {
+                    parts[1] = newContent; // Replace content between the commas with new content
+                    line = String.join(",", parts);
+                }
+                line += ","; // Add a comma at the end of each line
+                fileContent.append(line).append(System.lineSeparator());
+            }
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+            writer.write(fileContent.toString());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -17,7 +17,9 @@ datetime will be represented in the following format:
 
 ////////////////////////////-Create a new commit-///////////////////////
 
+we get from the user the current path
 we have the ability to create a new commit because the file changes => we there are some sh1 that we didn't find
 in addition we have the last Header file, so we have the commit that we create from,
 and then we create a head file that point on the root directory
 we will get the exact file how changes and start is recursion create their blob and tree
+=> The head file point on the root directory, and point on the commit File  which will contain the sh1 of the last file

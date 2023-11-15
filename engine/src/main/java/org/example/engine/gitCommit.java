@@ -21,9 +21,11 @@ public class gitCommit {
     private ArrayList<String> gitFileSh1;
     private String mySh1;
     private String nameOfRootDirectory;
+    private String lastCommit;
     private boolean isFirst;
+    private String repoName;
     private List<File> files;//files how change in this commit
-    public gitCommit(String hashParent, String hashRootDirectory, String author, String comment,String path) {
+    public gitCommit(String hashParent, String hashRootDirectory, String author, String comment,String path, String repoName) {
         TimeHandler timeHandler = TimeHandler.getInstance();
         this.treeRootHash = hashRootDirectory;
         this.parentCommitHash = hashParent;
@@ -31,6 +33,7 @@ public class gitCommit {
         this.comment = comment;
         this.creationTime = timeHandler.getTime();
         this.author = author;
+        this.repoName = repoName;
         gitFileSh1 = new ArrayList<>();
        // this.nameOfRootDirectory = ".Object";
         this.nameOfRootDirectory = path;
@@ -40,12 +43,12 @@ public class gitCommit {
     public void commit(String hashParent, String hashRootDirectory, String author, String comment,String path){
         // ... zip blob and the file how represent a folder by the new sh1
         //create a table that hold all the sha1 that created in this program, this table will save in this project root
+        FileHandler fileHandler = FileHandler.getInstance();
         TimeHandler timeHandler = TimeHandler.getInstance();
         this.treeRootHash = hashRootDirectory;
         this.parentCommitHash = hashParent;
         this.secondParentCommitHash = null; //todo need to write a function that return the second commit
         this.comment = comment;
-        //this.creationTime = LocalDate.now().toString();
         this.creationTime = timeHandler.getTime();
         this.author = author;
         gitFileSh1 = new ArrayList<>();
@@ -53,6 +56,9 @@ public class gitCommit {
         changeFileHowChangeInThisCommit(path);
         this.isFirst  = true;
        // saveToFile(path);//todo
+        String pathRepo = "C:\\Users\\asafr\\OneDrive\\מסמכים\\GitHub\\AVGitProject\\gitRepos";
+        System.out.println(pathRepo);
+        fileHandler.replaceContentBetweenCommas(pathRepo,this.lastCommit);
     }
     public String getGitFileSh1(String sha1Name) {
         for (String sha1 : gitFileSh1) {
@@ -79,17 +85,40 @@ public class gitCommit {
         }
     }
     public void changeHeadFileContent(String repositoryPath){
+        FileHandler fileHandler = FileHandler.getInstance();
         String fileName = "HEAD";
-        String folderPath = repositoryPath + "/.AGit/"; //todo change it to the path that get from the user
+        String folderPath = repositoryPath + "/.AGit/";
         String filePath = folderPath + File.separator + fileName;
+        String lastSh1ContentHeadFile = null;
+
         File file = new File(filePath);
         if(file.exists()){
-         if (!file.delete()){
+            lastSh1ContentHeadFile = fileHandler.getSh1HeadFile(filePath);
+            if (!file.delete()){
              System.err.println("Failed to delete the file.");
          }
         }
-         FileHandler fileHandler = FileHandler.getInstance();
-         fileHandler.writeToFile(filePath,this.treeRootHash);
+        String pathCommit = folderPath + "/.Object/";
+        String sh1OfCommitFile = createCommitFile(pathCommit,this.treeRootHash,lastSh1ContentHeadFile,this.comment,this.author,this.creationTime,fileHandler);
+         fileHandler.writeToFile(filePath,this.treeRootHash,sh1OfCommitFile);
+         this.lastCommit = sh1OfCommitFile;
+    }
+    public String createCommitFile(String pathCommit,String root,String lastSh1ContentHeadFile,String comment,String author, String time,FileHandler fileHandler){
+        // Where to create the file curren root Where did I come from comment,author , time
+
+        String dataFormatContent =  "Root=" + root +
+                ", Last SHA-1 Content Head File=" + lastSh1ContentHeadFile +
+                ", Comment=" + comment +
+                ", Author=" + author +
+                ", Time=" + time;
+
+        sha256 sha = sha256.getInstance();
+        String sh1OfCommitFile = sha.getHash(dataFormatContent);
+        pathCommit = pathCommit + File.separator + sh1OfCommitFile;
+
+        fileHandler.writeToFileForCommit(pathCommit, dataFormatContent);
+
+        return sh1OfCommitFile;
     }
     public void changeFileHowChangeInThisCommit(String path){
         //path = "C:\\Users\\asafr\\Desktop\\testforgit\\.Object\\test1";//todo remove!
