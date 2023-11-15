@@ -2,7 +2,6 @@ package org.example.engine;
 
 import java.io.*;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipEntry;
@@ -84,7 +83,7 @@ public class FileHandler {
         ArrayList<File> fileList = new ArrayList<>();
         File folder = new File(folderPath);
 
-        if (folder.exists() && folder.isDirectory()) {
+        if (folder.exists() && folder.isDirectory() ) {
             listFilesRecursively(folder, fileList);
         }
         return fileList;
@@ -94,7 +93,7 @@ public class FileHandler {
         File[] files = folder.listFiles();
         if (files != null) {
             for (File file : files) {
-                if (file.isFile()) {
+                if (file.isFile() && !isInAGitFolder(file)) {
                     fileList.add(file);
                 } else if (file.isDirectory()) {
                     // If it's a directory, recursively list its files
@@ -102,6 +101,11 @@ public class FileHandler {
                 }
             }
         }
+    }
+    private static boolean isInAGitFolder(File file) {
+        // Check if the file's path contains the ".AGit" folder
+        String agitFolder = File.separator + ".AGit" + File.separator;
+        return file.getAbsolutePath().contains(agitFolder);
     }
     public static void writeToDBFile(ArrayList<String> newSh1){//write new sh1 to db file
        try{
@@ -326,5 +330,25 @@ public class FileHandler {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+    public static String extractStringOfLastCommitBetweenCommas(String filePath){
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line = reader.readLine();
+            if (line != null) {
+                // Assuming the format is "The name ,0f78bb...," (string, comma, string)
+                String[] parts = line.split(",");
+                if (parts.length >= 2) {
+                    // Trim to remove leading/trailing whitespaces
+                    return parts[1].trim();
+                }
+            }
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        // Return an empty string if the file format doesn't match expectations
+        return "";
     }
 }
