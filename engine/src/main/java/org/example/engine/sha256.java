@@ -23,51 +23,125 @@ public final class sha256 {
             instance = new sha256();
         return instance;
     }
-    public static String getHash(String input) {
+
+    public static String getHash(String filePath) {
+        File fileOrFolder = new File(filePath);
+        if (fileOrFolder.exists()) {
+            if (fileOrFolder.isDirectory()) {
+                // If it's a directory, recursively calculate hash for each file
+                return calculateHashForFolder(fileOrFolder);
+            } else {
+                // If it's a file, calculate hash for the file
+                return calculateHashForFile(fileOrFolder);
+            }
+        } else {
+            // If the path doesn't exist, return a default hash based on the name
+            return getHashForName(fileOrFolder.getName());
+        }
+    }
+    public static String getHash(File fileOrFolder) {
+        if (fileOrFolder.exists()) {
+            if (fileOrFolder.isDirectory()) {
+                // If it's a directory, recursively calculate hash for each file
+                return calculateHashForFolder(fileOrFolder);
+            } else {
+                // If it's a file, calculate hash for the file
+                return calculateHashForFile(fileOrFolder);
+            }
+        } else {
+            // If the path doesn't exist, return a default hash based on the name
+            return getHashForName(fileOrFolder.getName());
+        }
+    }
+
+    private static String getHashForName(String name) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hash = digest.digest(input.getBytes(StandardCharsets.UTF_8));
-            StringBuilder hexString = new StringBuilder();
-
-            for (byte b : hash) {
-                String hex = Integer.toHexString(0xff & b);
-                if (hex.length() == 1) {
-                    hexString.append('0');
-                }
-                hexString.append(hex);
-            }
-
-            return hexString.toString();
+            byte[] bytes = digest.digest(name.getBytes(StandardCharsets.UTF_8));
+            return convertBytesToHex(bytes);
         } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("SHA-256 algorithm not available", e);
+            throw new RuntimeException("SHA-256 algorithm not supported", e);
         }
     }
-    public static String getHash(File file) {
-        try {
+
+    private static String calculateHashForFile(File file) {
+        try (FileInputStream fileInputStream = new FileInputStream(file)) {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
-
-            // Read the file content
-            FileInputStream fis = new FileInputStream(file);
-            byte[] buffer = new byte[8192];
-            int bytesRead;
-            while ((bytesRead = fis.read(buffer)) != -1) {
-                digest.update(buffer, 0, bytesRead);
+            byte[] byteArray = new byte[1024];
+            int bytesCount;
+            while ((bytesCount = fileInputStream.read(byteArray)) != -1) {
+                digest.update(byteArray, 0, bytesCount);
             }
-            fis.close();
-
-            // Compute the hash
-            byte[] hash = digest.digest();
-
-            // Convert the hash to a hexadecimal string
-            StringBuilder hexString = new StringBuilder();
-            for (byte b : hash) {
-                String hex = String.format("%02x", b);
-                hexString.append(hex);
-            }
-
-            return hexString.toString();
+            byte[] bytes = digest.digest();
+            return convertBytesToHex(bytes);
         } catch (IOException | NoSuchAlgorithmException e) {
-            throw new RuntimeException("Error computing SHA-256 hash", e);
+            throw new RuntimeException(e);
         }
     }
+
+    private static String calculateHashForFolder(File folder) {
+        StringBuilder hashBuilder = new StringBuilder();
+
+        for (File file : folder.listFiles()) {
+            // Recursively calculate hash for each file in the folder
+            hashBuilder.append(getHash(file));
+        }
+
+        return hashBuilder.toString();
+    }
+
+    private static String convertBytesToHex(byte[] bytes) {
+        StringBuilder hexBuilder = new StringBuilder();
+        for (byte aByte : bytes) {
+            hexBuilder.append(Integer.toString((aByte & 0xff) + 0x100, 16).substring(1));
+        }
+        return hexBuilder.toString();
+    }
+//    public static String getHash(String input) {
+//        try {
+//            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+//            byte[] hash = digest.digest(input.getBytes(StandardCharsets.UTF_8));
+//            StringBuilder hexString = new StringBuilder();
+//
+//            for (byte b : hash) {
+//                String hex = Integer.toHexString(0xff & b);
+//                if (hex.length() == 1) {
+//                    hexString.append('0');
+//                }
+//                hexString.append(hex);
+//            }
+//
+//            return hexString.toString();
+//        } catch (NoSuchAlgorithmException e) {
+//            throw new RuntimeException("SHA-256 algorithm not available", e);
+//        }
+//    }
+//    public static String getHash(File file) {
+//        try {
+//            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+//
+//            // Read the file content
+//            FileInputStream fis = new FileInputStream(file);
+//            byte[] buffer = new byte[8192];
+//            int bytesRead;
+//            while ((bytesRead = fis.read(buffer)) != -1) {
+//                digest.update(buffer, 0, bytesRead);
+//            }
+//            fis.close();
+//
+//            // Compute the hash
+//            byte[] hash = digest.digest();
+//
+//            // Convert the hash to a hexadecimal string
+//            StringBuilder hexString = new StringBuilder();
+//            for (byte b : hash) {
+//                String hex = String.format("%02x", b);
+//                hexString.append(hex);
+//            }
+//
+//            return hexString.toString();
+//        } catch (IOException | NoSuchAlgorithmException e) {
+//            throw new RuntimeException("Error computing SHA-256 hash", e);
+//        }
+//    }
 }
