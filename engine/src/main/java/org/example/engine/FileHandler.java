@@ -204,7 +204,7 @@ public class FileHandler {
             targetDir.mkdirs();
         }
 
-        String zipFilePath = targetDirectory + File.separator + sha.getHash(fileToZip.getName()) + ".zip";
+        String zipFilePath = targetDirectory + File.separator + sha.getHash(fileToZip.getPath()) + ".zip";//fileToZip.getName()
 
         try (FileOutputStream fileOutputStream = new FileOutputStream(zipFilePath);
              ZipOutputStream zipOut = new ZipOutputStream(fileOutputStream);
@@ -243,13 +243,15 @@ public class FileHandler {
         String myContent = entityFormat.getNameOFFile()+","+entityFormat.getSh1()+","
                 +entityFormat.getNameOfEntity()+","+entityFormat.getNameOfCreator()+","+entityFormat.getCreationTime();;
 
-        if (!fileAppendLine(currentPath,myContent)){
-            createNewTreeFile(entityFormat,nameOfParent);
-        }
+                if (!(nameOfParent.equals(entityFormat.getSh1()))){
+                    if (!fileAppendLine(currentPath,myContent,entityFormat.getSh1(),nameOfParent)){
+                        createNewTreeFile(entityFormat,nameOfParent);
+                    }
+                }
     }
-    public static boolean fileAppendLine(String path, String lineToAppend){
+    public static boolean fileAppendLine(String path, String lineToAppend,String sh1,String nameOfFile){
         File file = new File(path);
-        if (file.exists() && !(doesLineExistInFile(path ,lineToAppend))){
+        if (file.exists() && !(doesLineExistInFile(path ,lineToAppend)) && nameOfFile != sh1){
             try {
                 //open the file to appending
                 BufferedWriter writer = new BufferedWriter(new FileWriter(path,true));

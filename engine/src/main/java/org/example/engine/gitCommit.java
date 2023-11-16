@@ -159,16 +159,16 @@ public class gitCommit {
             System.out.println(file.getName());
             if (this.isFirst){
                 this.isFirst = false;
-                this.treeRootHash = sha.getHash(file.getParentFile().getName());
-                this.mySh1 =  sha.getHash(file.getName());
+                this.treeRootHash = sha.getHash(file.getParentFile().getName());//file.getParentFile().getName()
+                this.mySh1 =  sha.getHash(file.getPath());//file.getName()
                 FolderFormat entityFormat = new FolderFormat(getFileType(file),this.mySh1,this.author,this.creationTime,file.getName());
                 fileHandler.createNewTreeFile(entityFormat,this.treeRootHash);
                 changeHeadFileContent(this.nameOfRootDirectory);
                 isAFileCreateAZip(file, fileHandler);
             }
             else { //our parent is existing
-                FolderFormat entityFormat = new FolderFormat(getFileType(file),sha.getHash(file.getName()),this.author,this.creationTime,file.getName());
-                fileHandler.writeToFileBuyName( sha.getHash(file.getParentFile().getName()),entityFormat);
+                FolderFormat entityFormat = new FolderFormat(getFileType(file),sha.getHash(file.getPath()),this.author,this.creationTime,file.getName());//file.getName()
+                fileHandler.writeToFileBuyName( sha.getHash(file.getParentFile().getPath()),entityFormat);//getName()
                 isAFileCreateAZip(file,fileHandler);
             }
         }

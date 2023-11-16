@@ -3,14 +3,18 @@ package org.example;
 import org.example.engine.FileHandler;
 import org.example.engine.git;
 import org.example.engine.gitCommit;
+import org.example.engine.sha256;
 
 public class Main {
     public static void main(String[] args) {
 
         git gitObject = new git();
+        sha256 sha = sha256.getInstance();
        // Need to get from the user the first comment
        String comment = "comment on the first commit";
 
+       String bdika = sha.getHash("C:\\Users\\asafr\\Desktop\\tetsttt");
+        System.out.println(bdika);
         FileHandler fileHandler = FileHandler.getInstance();
 
         //get path from the user
@@ -29,7 +33,7 @@ public class Main {
         System.out.println(hashParent);
         String commitPath = "C:\\Users\\asafr\\Desktop\\testforgit";
         String repoName = "repoNameGetFromUser";
-       gitCommit commit = new gitCommit(hashParent,null,"asaf","commit without init",commitPath,repoName);
+        gitCommit commit = new gitCommit(hashParent,null,"asaf","commit without init",commitPath,repoName);
 
     }
 }
