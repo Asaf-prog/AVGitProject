@@ -1,5 +1,6 @@
 package org.example.engine;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class gitTree implements gitFile{
@@ -11,6 +12,7 @@ public class gitTree implements gitFile{
     public gitTree(){
         isBlob = false;
     }
+    private String path;
     public gitTree(ArrayList<gitFile> files, String shaOne, String date, String author) {
         this.files = files;
         this.shaOne = shaOne;
@@ -21,6 +23,9 @@ public class gitTree implements gitFile{
         this.shaOne = shaOne;
         this.date = date;
         this.author = author;
+    }
+    public gitTree(String path) {
+     this.path = path;
     }
     @Override
     public String getShaOne(){
@@ -38,5 +43,13 @@ public class gitTree implements gitFile{
     @Override
     public boolean isBlob() {
         return isBlob;
+    }
+    @Override
+    public String getPath() {
+        return this.path;
+    }
+    @Override
+    public File getFile() {
+        return null;
     }
 }

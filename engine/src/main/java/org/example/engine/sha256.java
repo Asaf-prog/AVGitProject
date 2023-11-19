@@ -104,26 +104,32 @@ public final class sha256 {
         return listFilesAndCalculateSHA1(path);
     }
     private static String listFilesAndCalculateSHA1(String folderPath){
-        List<String> fileList = listFilesInFolder(folderPath);
+        List<gitFile> fileList = listFilesInFolder(folderPath);
         StringBuilder concatenatedHashes = new StringBuilder();
 
-        for (String filePath : fileList) {
-            String sha1Hash = getHash(filePath);
-            // System.out.println(sha1Hash);
-            //System.out.println(filePath);
+        for (gitFile filePath : fileList) {
+            String sha1Hash = null;
+            if (filePath.isBlob()){
+                sha1Hash = getHash(filePath.getFile());
+                System.out.println(sha1Hash);
+            }
+            if (!filePath.isBlob()){
+                 sha1Hash = getHash(filePath.getPath());
+                System.out.println(sha1Hash);
+            }
             concatenatedHashes.append(sha1Hash);
         }
 
         String SH1ForRoot = getHash(concatenatedHashes.toString());
-        //System.out.println("///////////////////////////////////");
-       // System.out.println(concatenatedHashes.toString());
-       // System.out.println("///////////////////////////////////");
-       // System.out.println(SH1ForRoot);
+        System.out.println("///////////////////////////////////");
+        System.out.println(concatenatedHashes.toString());
+        System.out.println("///////////////////////////////////");
+        System.out.println(SH1ForRoot);
         return SH1ForRoot;
     }
 
-    private static List<String> listFilesInFolder(String folderPath) {
-        List<String> fileList = new ArrayList<>();
+    private static List<gitFile> listFilesInFolder(String folderPath) {
+        List<gitFile> fileList = new ArrayList<>();
         File folder = new File(folderPath);
 
         if (folder.exists() && folder.isDirectory()) {
@@ -133,16 +139,16 @@ public final class sha256 {
         return fileList;
     }
 
-    private static void listFilesRecursively(File folder, String currentPath, List<String> fileList) {
+    private static void listFilesRecursively(File folder, String currentPath, List<gitFile> fileList) {
         File[] files = folder.listFiles();
         if (files != null) {
             for (File file : files) {
                 if (file.isFile()) {
-                    fileList.add(currentPath + file.getName());
+                    fileList.add(new gitBlob(currentPath + file.getName(),file));
                 } else if (file.isDirectory()) {
                     listFilesRecursively(file, currentPath + file.getName() + "/", fileList);
                     // Include folder names in the concatenation
-                    fileList.add(currentPath + file.getName());
+                    fileList.add(new gitTree(currentPath + file.getName()));
                 }
             }
         }

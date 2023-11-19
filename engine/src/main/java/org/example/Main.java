@@ -13,29 +13,33 @@ public class Main {
        // Need to get from the user the first comment
        String comment = "comment on the first commit";
 
-//       String bdika = sha.getHash("C:\\Users\\asafr\\Desktop\\tetsttt");
-//        System.out.println(bdika);
-        FileHandler fileHandler = FileHandler.getInstance();
+       String bdika = sha.getHash("C:\\Users\\asafr\\Desktop\\tetsttt");
+       System.out.println(bdika);
+       FileHandler fileHandler = FileHandler.getInstance();
+
+        //System.out.println("*****************************");
+        //System.out.println(sha.getSh1ForRoot("C:\\Users\\asafr\\Desktop\\testforgit"));
+        //System.out.println("*****************************");
 
         //get path from the user
         fileHandler.setPath("C:\\Users\\asafr\\Desktop\\testforgit");
-        gitObject.gitInit("C:\\Users\\asafr\\Desktop\\testforgit","The name ",comment);
+       gitObject.gitInit("C:\\Users\\asafr\\Desktop\\testforgit","The name ",comment);
 
-//        System.out.println("************************************************");
-//        String r00t = sha256.listFilesAndCalculateSHA1("C:\\Users\\asafr\\Desktop\\testforgit");
-//        System.out.println("************************************************");
 
+        String pathOfNewCommit ="C:\\Users\\asafr\\Desktop\\testforgit";// This path we get from the user
         ////////////////////////////-Create a new commit-///////////////////////
         // Create a commit on current repo (we already do git init)
-        String pathOfNewCommit ="C:\\Users\\asafr\\Desktop\\testforgit";// This path we get from the user
-        //System.out.println(fileHandler.getSh1HeadFile(pathOfNewCommit + "\\.AGit\\Head"));// Check
+        System.out.println(fileHandler.getSh1HeadFile(pathOfNewCommit + "\\.AGit\\Head"));// Check
         // Now we get from the user the path of the current location
         //we get from the server the command of do a commit, and we get the path from the user
         //we get the repository name from the user => this is give us the ability to know where is the last commit
 
+        String hashParent = fileHandler.extractStringOfLastCommitBetweenCommas("./gitRepos");
         String commitPath = "C:\\Users\\asafr\\Desktop\\testforgit";
         String repoName = "repoNameGetFromUser";
-      //  gitCommit commit = new gitCommit(hashParent,null,"asaf","commit without init",commitPath,repoName);
+        gitCommit commit = new gitCommit(hashParent,null,"asaf","commit without init",commitPath,repoName);
+
+
 
     }
 }
