@@ -11,13 +11,13 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="AVGitProject" target="17" />
+      <module name="AVGitProject" target="1.5" />
       <module name="engine" target="17" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="AVGitProject" options="-parameters" />
+      <module name="AVGitProject" options="" />
     </option>
   </component>
 </project>

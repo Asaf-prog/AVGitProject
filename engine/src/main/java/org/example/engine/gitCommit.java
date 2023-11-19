@@ -159,7 +159,7 @@ public class gitCommit {
             System.out.println(file.getName());
             if (this.isFirst){
                 this.isFirst = false;
-                this.treeRootHash = sha.getHash(file.getParentFile().getName());//file.getParentFile().getName()
+                this.treeRootHash = sha.getSh1ForRoot(file.getParentFile().getPath());//file.getParentFile().getName()
                 this.mySh1 =  sha.getHash(file.getPath());//file.getName()
                 FolderFormat entityFormat = new FolderFormat(getFileType(file),this.mySh1,this.author,this.creationTime,file.getName());
                 fileHandler.createNewTreeFile(entityFormat,this.treeRootHash);

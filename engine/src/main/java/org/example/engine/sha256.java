@@ -4,6 +4,8 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class sha256 {
     private static sha256 instance = null;
@@ -97,51 +99,53 @@ public final class sha256 {
         }
         return hexBuilder.toString();
     }
-//    public static String getHash(String input) {
-//        try {
-//            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-//            byte[] hash = digest.digest(input.getBytes(StandardCharsets.UTF_8));
-//            StringBuilder hexString = new StringBuilder();
-//
-//            for (byte b : hash) {
-//                String hex = Integer.toHexString(0xff & b);
-//                if (hex.length() == 1) {
-//                    hexString.append('0');
-//                }
-//                hexString.append(hex);
-//            }
-//
-//            return hexString.toString();
-//        } catch (NoSuchAlgorithmException e) {
-//            throw new RuntimeException("SHA-256 algorithm not available", e);
-//        }
-//    }
-//    public static String getHash(File file) {
-//        try {
-//            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-//
-//            // Read the file content
-//            FileInputStream fis = new FileInputStream(file);
-//            byte[] buffer = new byte[8192];
-//            int bytesRead;
-//            while ((bytesRead = fis.read(buffer)) != -1) {
-//                digest.update(buffer, 0, bytesRead);
-//            }
-//            fis.close();
-//
-//            // Compute the hash
-//            byte[] hash = digest.digest();
-//
-//            // Convert the hash to a hexadecimal string
-//            StringBuilder hexString = new StringBuilder();
-//            for (byte b : hash) {
-//                String hex = String.format("%02x", b);
-//                hexString.append(hex);
-//            }
-//
-//            return hexString.toString();
-//        } catch (IOException | NoSuchAlgorithmException e) {
-//            throw new RuntimeException("Error computing SHA-256 hash", e);
-//        }
-//    }
+    //  New function that handle the Sh1
+    public static String getSh1ForRoot(String path){
+        return listFilesAndCalculateSHA1(path);
+    }
+    private static String listFilesAndCalculateSHA1(String folderPath){
+        List<String> fileList = listFilesInFolder(folderPath);
+        StringBuilder concatenatedHashes = new StringBuilder();
+
+        for (String filePath : fileList) {
+            String sha1Hash = getHash(filePath);
+            // System.out.println(sha1Hash);
+            //System.out.println(filePath);
+            concatenatedHashes.append(sha1Hash);
+        }
+
+        String SH1ForRoot = getHash(concatenatedHashes.toString());
+        //System.out.println("///////////////////////////////////");
+       // System.out.println(concatenatedHashes.toString());
+       // System.out.println("///////////////////////////////////");
+       // System.out.println(SH1ForRoot);
+        return SH1ForRoot;
+    }
+
+    private static List<String> listFilesInFolder(String folderPath) {
+        List<String> fileList = new ArrayList<>();
+        File folder = new File(folderPath);
+
+        if (folder.exists() && folder.isDirectory()) {
+            listFilesRecursively(folder, "", fileList);
+        }
+
+        return fileList;
+    }
+
+    private static void listFilesRecursively(File folder, String currentPath, List<String> fileList) {
+        File[] files = folder.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                if (file.isFile()) {
+                    fileList.add(currentPath + file.getName());
+                } else if (file.isDirectory()) {
+                    listFilesRecursively(file, currentPath + file.getName() + "/", fileList);
+                    // Include folder names in the concatenation
+                    fileList.add(currentPath + file.getName());
+                }
+            }
+        }
+    }
+
 }
