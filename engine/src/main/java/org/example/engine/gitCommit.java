@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 //commit is a file,we need to write in the file the sh1 of all the changes in this commit (tree or blob)
@@ -139,7 +140,10 @@ public class gitCommit {
         }
     }
     public void createTreeAndBlob(){
+        //Collections.reverse(files);
+
         for (File file:this.files){
+            System.out.println("**************************************************************");
             try {
                 searchRootDirectory(file);
             } catch (UnknownEntityTypeException e) {
@@ -149,6 +153,8 @@ public class gitCommit {
     }
     private void searchRootDirectory(File file) throws UnknownEntityTypeException {
         String parentDirectoryPath = file.getParentFile().getPath();
+        System.out.println(parentDirectoryPath);
+        System.out.println(file.getName());
         if (parentDirectoryPath.equals(this.nameOfRootDirectory)){
             return;
         }
@@ -157,19 +163,29 @@ public class gitCommit {
             FileHandler fileHandler = FileHandler.getInstance();
             sha256 sha = sha256.getInstance();
             System.out.println(file.getName());
-            if (this.isFirst){
+            if (this.isFirst && !(file.isFile())){
                 this.isFirst = false;
                 this.treeRootHash = sha.getSh1ForRoot(file.getParentFile().getPath());//file.getParentFile().getName()
+                System.out.println(this.treeRootHash);
                 this.mySh1 =  sha.getHash(file.getPath());//file.getName()
+                System.out.println(this.mySh1);
                 FolderFormat entityFormat = new FolderFormat(getFileType(file),this.mySh1,this.author,this.creationTime,file.getName());
                 fileHandler.createNewTreeFile(entityFormat,this.treeRootHash);
                 changeHeadFileContent(this.nameOfRootDirectory);
                 isAFileCreateAZip(file, fileHandler);
             }
             else { //our parent is existing
-                FolderFormat entityFormat = new FolderFormat(getFileType(file),sha.getHash(file.getPath()),this.author,this.creationTime,file.getName());//file.getName()
-                fileHandler.writeToFileBuyName( sha.getHash(file.getParentFile().getPath()),entityFormat);//getName()
-                isAFileCreateAZip(file,fileHandler);
+                if (this.isFirst && file.isFile()){
+                    FolderFormat entityFormat = new FolderFormat(getFileType(file),sha.getHash(file.getPath()),this.author,this.creationTime,file.getName());//file.getName()
+                    System.out.println( sha.getSh1ForRoot(file.getParentFile().getPath()));
+                    fileHandler.writeToFileBuyName( sha.getSh1ForRoot(file.getParentFile().getPath()),entityFormat);//getName()
+                    isAFileCreateAZip(file,fileHandler);
+                }else {
+                    FolderFormat entityFormat = new FolderFormat(getFileType(file),sha.getHash(file.getPath()),this.author,this.creationTime,file.getName());//file.getName()
+                    fileHandler.writeToFileBuyName( sha.getHash(file.getParentFile().getPath()),entityFormat);//getName()
+                    isAFileCreateAZip(file,fileHandler);
+                }
+
             }
         }
     }

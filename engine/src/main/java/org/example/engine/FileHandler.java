@@ -225,16 +225,19 @@ public class FileHandler {
         }
         return true;
     }
-
+///todo check !!!!!!!!!!!!
     public static void createNewTreeFile(FolderFormat entityFormat,String sh1NameOfTree){//the sh1 is the name of the file
 
         String myContent =  entityFormat.getNameOFFile()+","+entityFormat.getSh1()+","
                 +entityFormat.getNameOfEntity()+","+entityFormat.getNameOfCreator()+","+entityFormat.getCreationTime();
 
-        try (FileWriter writer = new FileWriter(path + sh1NameOfTree)) {//check //todo change it to the path that get from the user
-            writer.write(myContent);
-        } catch (IOException e) {
-            System.err.println("Failed to open the file for writing.");
+        if (!fileAppendLine(path + sh1NameOfTree,myContent,entityFormat.getSh1(),sh1NameOfTree)){
+
+            try (FileWriter writer = new FileWriter(path + sh1NameOfTree)) {//check //todo change it to the path that get from the user
+                writer.write(myContent);
+            } catch (IOException e) {
+                System.err.println("Failed to open the file for writing.");
+            }
         }
     }
     public static void writeToFileBuyName(String nameOfParent,FolderFormat entityFormat){

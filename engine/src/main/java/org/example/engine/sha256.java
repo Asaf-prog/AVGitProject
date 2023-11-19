@@ -111,20 +111,14 @@ public final class sha256 {
             String sha1Hash = null;
             if (filePath.isBlob()){
                 sha1Hash = getHash(filePath.getFile());
-                System.out.println(sha1Hash);
             }
             if (!filePath.isBlob()){
                  sha1Hash = getHash(filePath.getPath());
-                System.out.println(sha1Hash);
             }
             concatenatedHashes.append(sha1Hash);
         }
 
         String SH1ForRoot = getHash(concatenatedHashes.toString());
-        System.out.println("///////////////////////////////////");
-        System.out.println(concatenatedHashes.toString());
-        System.out.println("///////////////////////////////////");
-        System.out.println(SH1ForRoot);
         return SH1ForRoot;
     }
 

@@ -14,7 +14,7 @@ public class Main {
        String comment = "comment on the first commit";
 
        String bdika = sha.getHash("C:\\Users\\asafr\\Desktop\\tetsttt");
-       System.out.println(bdika);
+      // System.out.println(bdika);
        FileHandler fileHandler = FileHandler.getInstance();
 
         //System.out.println("*****************************");
@@ -38,8 +38,6 @@ public class Main {
         String commitPath = "C:\\Users\\asafr\\Desktop\\testforgit";
         String repoName = "repoNameGetFromUser";
         gitCommit commit = new gitCommit(hashParent,null,"asaf","commit without init",commitPath,repoName);
-
-
 
     }
 }
