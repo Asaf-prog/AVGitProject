@@ -1,4 +1,4 @@
-package com.maven.test.avgitproject.DTO;
+package com.maven.test.avgitproject.dto;
 
 public class CommitDTO {
     private String sha1;

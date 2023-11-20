@@ -1,7 +1,8 @@
 package com.maven.test.avgitproject;
 
 import com.google.gson.Gson;
-import com.maven.test.avgitproject.DTO.CommitDTO;
+import com.maven.test.avgitproject.dao.StudentDAO;
+import com.maven.test.avgitproject.entity.Student;
 import org.example.Foo;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -13,14 +14,17 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @SpringBootApplication
 @RestController
 @Configuration
 @RequestMapping("/AvGit")
 public class AvGitProjectApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(AvGitProjectApplication.class, args);
+        Foo f = new Foo(1,"asaf");
+        Gson gson = new Gson();
+    }
     @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
@@ -33,13 +37,6 @@ public class AvGitProjectApplication {
             }
         };
     }
-
-    public static void main(String[] args) {
-        SpringApplication.run(AvGitProjectApplication.class, args);
-        Foo f = new Foo(1,"asaf");
-        Gson gson = new Gson();
-    }
-
     @GetMapping("/hello")
     public String sayHello(@RequestParam(value = "myName", defaultValue = "World") String name) {
         return String.format("Hello friends %s!", name);
@@ -56,9 +53,25 @@ public class AvGitProjectApplication {
         return "Received POST data: key1=" + key1 + ", key2=" + key2;
     }
     @Bean
-    public CommandLineRunner commandLineRunner() {
+    public CommandLineRunner commandLineRunner(StudentDAO studentDAO) {
+
         return args -> {
-            System.out.println("Hello, world!");
+
+            createStudent(studentDAO);
         };
+    }
+
+
+    private void createStudent(StudentDAO studentDAO) {
+        System.out.println("create student... ");
+
+        Student tempStudent = new Student("asaf", "varon", "asafrefaelvaron1@gmail.com");
+
+
+        System.out.println("save student");
+
+        studentDAO.save(tempStudent);
+
+        System.out.println("save student generate id: " + tempStudent.getId());
     }
 }

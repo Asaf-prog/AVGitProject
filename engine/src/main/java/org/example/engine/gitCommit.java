@@ -122,8 +122,6 @@ public class gitCommit {
         return sh1OfCommitFile;
     }
     public void changeFileHowChangeInThisCommit(String path){
-        //path = "C:\\Users\\asafr\\Desktop\\testforgit\\.Object\\test1";//todo remove!
-
         FileHandler fileHandler = FileHandler.getInstance();
         ArrayList<File> files =  fileHandler.listFilesInFolder(path);
         ArrayList<String> sh1AllFileInFiles = calculateSh1ForFileAndFolder(files);
