@@ -1,11 +1,9 @@
-package com.maven.test.avgitproject;
+package com.maven.test.avgitproject.example;
 
-import com.maven.test.avgitproject.entity.Student;
-import com.maven.test.avgitproject.service.StudentService;
+import com.maven.test.avgitproject.example.entityExample.Student;
+import com.maven.test.avgitproject.example.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,4 +20,12 @@ public class StudentRestController {
     public List<Student> findAll(){
         return studentService.findAll();
     }
+    @PostMapping("/studentAdd")
+    public Student addStudent (@RequestBody Student theStudent) {
+        theStudent.setId(0);
+
+        Student dbStudent = studentService.save(theStudent);
+        return dbStudent;
+    }
+
 }

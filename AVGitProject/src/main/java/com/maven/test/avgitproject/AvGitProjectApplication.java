@@ -1,8 +1,10 @@
 package com.maven.test.avgitproject;
 
 import com.google.gson.Gson;
-import com.maven.test.avgitproject.dao.StudentDAO;
-import com.maven.test.avgitproject.entity.Student;
+
+import com.maven.test.avgitproject.controller.MyRequestData;
+import com.maven.test.avgitproject.example.entityExample.Student;
+import com.maven.test.avgitproject.example.service.StudentServiceImpl;
 import org.example.Foo;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -22,8 +24,6 @@ public class AvGitProjectApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(AvGitProjectApplication.class, args);
-        Foo f = new Foo(1,"asaf");
-        Gson gson = new Gson();
     }
     @Bean
     public WebMvcConfigurer corsConfigurer() {
@@ -53,16 +53,14 @@ public class AvGitProjectApplication {
         return "Received POST data: key1=" + key1 + ", key2=" + key2;
     }
     @Bean
-    public CommandLineRunner commandLineRunner(StudentDAO studentDAO) {
+    public CommandLineRunner commandLineRunner(StudentServiceImpl studentDAO) {
 
         return args -> {
-
             createStudent(studentDAO);
         };
     }
 
-
-    private void createStudent(StudentDAO studentDAO) {
+    private void createStudent(StudentServiceImpl studentService) {
         System.out.println("create student... ");
 
         Student tempStudent = new Student("asaf", "varon", "asafrefaelvaron1@gmail.com");
@@ -70,7 +68,7 @@ public class AvGitProjectApplication {
 
         System.out.println("save student");
 
-        studentDAO.save(tempStudent);
+        studentService.save(tempStudent);
 
         System.out.println("save student generate id: " + tempStudent.getId());
     }

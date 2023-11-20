@@ -1,4 +1,4 @@
-package com.maven.test.avgitproject;
+package com.maven.test.avgitproject.controller;
 
 import com.maven.test.avgitproject.dto.CommitDTO;
 import org.springframework.web.bind.annotation.GetMapping;

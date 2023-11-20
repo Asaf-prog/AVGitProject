@@ -1,4 +1,4 @@
-package com.maven.test.avgitproject.entity;
+package com.maven.test.avgitproject.example.entityExample;
 
 import jakarta.persistence.*;
 

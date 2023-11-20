@@ -1,4 +1,4 @@
-package com.maven.test.avgitproject;
+package com.maven.test.avgitproject.controller;
 
 public class ServerResponse {
     public String name;
