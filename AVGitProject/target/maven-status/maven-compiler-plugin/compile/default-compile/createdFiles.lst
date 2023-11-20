@@ -1,2 +1,7 @@
-com\maven\test\avgitproject\AvGitProjectApplication.class
+com\maven\test\avgitproject\GetRepo.class
+com\maven\test\avgitproject\GetCommits.class
 com\maven\test\avgitproject\MyRequestData.class
+com\maven\test\avgitproject\DTO\CommitDTO.class
+com\maven\test\avgitproject\ServerResponse.class
+com\maven\test\avgitproject\AvGitProjectApplication.class
+com\maven\test\avgitproject\AvGitProjectApplication$1.class
