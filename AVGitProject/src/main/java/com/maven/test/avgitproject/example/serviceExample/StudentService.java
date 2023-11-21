@@ -1,4 +1,4 @@
-package com.maven.test.avgitproject.example.service;
+package com.maven.test.avgitproject.example.serviceExample;
 
 import com.maven.test.avgitproject.example.entityExample.Student;
 

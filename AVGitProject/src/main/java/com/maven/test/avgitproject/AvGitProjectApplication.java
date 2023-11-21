@@ -1,20 +1,17 @@
 package com.maven.test.avgitproject;
 
-import com.google.gson.Gson;
-
-import com.maven.test.avgitproject.controller.MyRequestData;
-import com.maven.test.avgitproject.example.entityExample.Student;
-import com.maven.test.avgitproject.example.service.StudentServiceImpl;
-import org.example.Foo;
+import com.maven.test.avgitproject.entity.User;
+import com.maven.test.avgitproject.service.UserServiceImpl;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.util.UUID;
 
 @SpringBootApplication
 @RestController
@@ -30,46 +27,30 @@ public class AvGitProjectApplication {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:5174")
+                registry.addMapping("/AvGit/**")
+                        .allowedOrigins("http://localhost:5173") // Allow requests from this origin
                         .allowedMethods("GET", "POST", "PUT", "DELETE")
-                        .maxAge(3600); // Max age of the CORS pre-flight request;
+                        .allowedHeaders("*");
             }
         };
     }
-    @GetMapping("/hello")
-    public String sayHello(@RequestParam(value = "myName", defaultValue = "World") String name) {
-        return String.format("Hello friends %s!", name);
-    }
-    @PostMapping(value = "/post", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public String handlePostRequest(@RequestBody String json) {
-        Gson gson = new Gson();
-        MyRequestData requestData = gson.fromJson(json, MyRequestData.class);
-
-        // You can now access the requestData object, which contains the deserialized JSON request body
-        String key1 = requestData.getKey1();
-        String key2 = requestData.getKey2();
-
-        return "Received POST data: key1=" + key1 + ", key2=" + key2;
-    }
     @Bean
-    public CommandLineRunner commandLineRunner(StudentServiceImpl studentDAO) {
-
+    public CommandLineRunner commandLineRunner (UserServiceImpl userService) {
         return args -> {
-            createStudent(studentDAO);
+            createUser( userService);
         };
     }
 
-    private void createStudent(StudentServiceImpl studentService) {
-        System.out.println("create student... ");
+    private void createUser(UserServiceImpl userService) {
+        System.out.println("create user...");
 
-        Student tempStudent = new Student("asaf", "varon", "asafrefaelvaron1@gmail.com");
+        UUID uuid = UUID.randomUUID();
+        User tempUser = new User("avi","varon", "asafrefaelvaron1@gmail.com","12435",uuid.toString());
 
+        System.out.println("save User");
+        userService.save(tempUser);
 
-        System.out.println("save student");
-
-        studentService.save(tempStudent);
-
-        System.out.println("save student generate id: " + tempStudent.getId());
+        System.out.println("save user generate id: " + tempUser.getId());
     }
+
 }

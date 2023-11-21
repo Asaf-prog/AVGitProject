@@ -1,7 +1,7 @@
 package com.maven.test.avgitproject.example;
 
 import com.maven.test.avgitproject.example.entityExample.Student;
-import com.maven.test.avgitproject.example.service.StudentService;
+import com.maven.test.avgitproject.example.serviceExample.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

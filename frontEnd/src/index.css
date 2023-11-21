@@ -96,7 +96,7 @@ header p {
 .scrollable-container {
   max-height: 500px; /* Set the desired maximum height for the container */
   overflow-y: auto;
-  border: 4px solid #a32283; /* Add a border for clarity */
+  border: 4px solid #22a333; /* Add a border for clarity */
   
   
 }

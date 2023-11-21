@@ -12,7 +12,7 @@ export default function Commit({repoName}){
             //queryParams.append('param2', 'value2');
       
             //const url = `http://localhost:8080/commit?${queryParams.toString()}`;
-            const url = "http://localhost:8080/commit";
+            const url = "http://localhost:8080/AvGit/commit";
       
             const response = await fetch(url);
       
@@ -21,7 +21,7 @@ export default function Commit({repoName}){
             }
       
             const responseData = await response.json();
-            console.log('Response from http://localhost:8080/commit:', responseData);
+            console.log('Response from http://localhost:8080/AvGit/commit', responseData);
             setData(responseData);
           } catch (error) {
             console.error('Error fetching data:', error);
