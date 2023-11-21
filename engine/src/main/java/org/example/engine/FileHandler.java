@@ -2,6 +2,9 @@ package org.example.engine;
 
 import java.io.*;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipEntry;
@@ -355,5 +358,25 @@ public class FileHandler {
 
         // Return an empty string if the file format doesn't match expectations
         return "";
+    }
+    public static String readFileContent(String filePath, String fileName) {
+        Path path = Paths.get(filePath, fileName);
+
+        try {
+            // Read all lines from the file into a list of strings
+            List<String> lines = Files.readAllLines(path);
+
+            // Concatenate the lines into a single string
+            StringBuilder content = new StringBuilder();
+            for (String line : lines) {
+                content.append(line).append(System.lineSeparator());
+            }
+
+            return content.toString();
+        } catch (IOException e) {
+            // Handle the exception (e.g., log it or throw a custom exception)
+            e.printStackTrace();
+            return null;
+        }
     }
 }
