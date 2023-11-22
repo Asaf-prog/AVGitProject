@@ -6,6 +6,7 @@ import org.example.engine.git;
 public class ExecutionTask implements Runnable{
    private GitInitDTO gitInitDTO;
 
+
     public ExecutionTask(GitInitDTO gitInitDTO) {
         this.gitInitDTO = gitInitDTO;
     }
@@ -14,6 +15,8 @@ public class ExecutionTask implements Runnable{
         try {
             git gitObject = new git();
             gitObject.gitInit(gitInitDTO.getPath(),gitInitDTO.getRepoName(),gitInitDTO.getComment());
+
+
         } catch (Exception exception) {
             throw new RuntimeException(exception);
         }

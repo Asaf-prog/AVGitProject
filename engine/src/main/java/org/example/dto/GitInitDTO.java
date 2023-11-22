@@ -10,6 +10,7 @@ public class GitInitDTO {
         this.repoName = repoName;
         this.comment = comment;
     }
+    public GitInitDTO() {}
 
     public String getPath() {
         return path;
@@ -33,5 +34,14 @@ public class GitInitDTO {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    @Override
+    public String toString() {
+        return "GitInitDTO{" +
+                "path='" + path + '\'' +
+                ", repoName='" + repoName + '\'' +
+                ", comment='" + comment + '\'' +
+                '}';
     }
 }

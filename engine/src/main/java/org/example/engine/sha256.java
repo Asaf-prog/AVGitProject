@@ -104,10 +104,10 @@ public final class sha256 {
         return listFilesAndCalculateSHA1(path);
     }
     private static String listFilesAndCalculateSHA1(String folderPath){
-        List<gitFile> fileList = listFilesInFolder(folderPath);
+        List<GitFile> fileList = listFilesInFolder(folderPath);
         StringBuilder concatenatedHashes = new StringBuilder();
 
-        for (gitFile filePath : fileList) {
+        for (GitFile filePath : fileList) {
             String sha1Hash = null;
             if (filePath.isBlob()){
                 sha1Hash = getHash(filePath.getFile());
@@ -122,8 +122,8 @@ public final class sha256 {
         return SH1ForRoot;
     }
 
-    private static List<gitFile> listFilesInFolder(String folderPath) {
-        List<gitFile> fileList = new ArrayList<>();
+    private static List<GitFile> listFilesInFolder(String folderPath) {
+        List<GitFile> fileList = new ArrayList<>();
         File folder = new File(folderPath);
 
         if (folder.exists() && folder.isDirectory()) {
@@ -133,7 +133,7 @@ public final class sha256 {
         return fileList;
     }
 
-    private static void listFilesRecursively(File folder, String currentPath, List<gitFile> fileList) {
+    private static void listFilesRecursively(File folder, String currentPath, List<GitFile> fileList) {
         File[] files = folder.listFiles();
         if (files != null) {
             for (File file : files) {

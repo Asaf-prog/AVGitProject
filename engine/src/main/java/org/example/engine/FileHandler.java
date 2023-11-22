@@ -239,7 +239,7 @@ public class FileHandler {
             try (FileWriter writer = new FileWriter(path + sh1NameOfTree)) {//check //todo change it to the path that get from the user
                 writer.write(myContent);
             } catch (IOException e) {
-                System.err.println("Failed to open the file for writing.");
+                System.out.println("BASA.");
             }
         }
     }
@@ -378,5 +378,23 @@ public class FileHandler {
             e.printStackTrace();
             return null;
         }
+    }
+    public static String extractLastCommitFromCommitFile(String filePath){
+        String contentHeadFile = null;
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.contains("Last SHA-1 Content Head File")) {
+                    // Extract the content after '=' and trim spaces
+                    contentHeadFile = line.split("=")[1].trim();
+                    break; // Stop searching once found
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Error reading the file: " + e.getMessage());
+        }
+
+        return contentHeadFile;
     }
 }

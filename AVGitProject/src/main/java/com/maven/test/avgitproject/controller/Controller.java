@@ -6,6 +6,8 @@ import com.maven.test.avgitproject.entity.User;
 import com.maven.test.avgitproject.service.UserService;
 import com.maven.test.avgitproject.utils.SessionUtils;
 import jakarta.servlet.http.HttpServletRequest;
+import org.example.dto.GitInitDTO;
+import org.example.engine.git;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -91,6 +93,14 @@ public class Controller {
             return ResponseEntity.status(200).body(userDTO);
         }else
             return ResponseEntity.status(500).body("Error creating exist account");
+    }
+    @PostMapping("/gitInit")
+    public ResponseEntity<?> gitInit(@RequestBody GitInitDTO dto){
+       //todo => change it to task
+        git gitObject = new git();
+        gitObject.gitInit(dto.getPath(), dto.getRepoName(), dto.getComment());
+
+        return ResponseEntity.status(200).build();
     }
     private boolean isValidName(String name) {
         // Check if the name contains only alphabetic characters

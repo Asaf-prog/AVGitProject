@@ -3,6 +3,7 @@ package org.example.execution;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public class ExecutionManager {
     Integer numberOfThreads;
@@ -18,6 +19,11 @@ public class ExecutionManager {
             instance = new ExecutionManager();
         }
         return instance;
+    }
+
+    public Future<?> submitTask(ExecutionTask task) {
+        // Assuming executorService.submit returns a Future
+        return threadExecutor.submit(task);
     }
 
 
