@@ -92,4 +92,13 @@ public class gitTree implements GitFile {
     public ArrayList<GitFile> getFiles() {
         return files;
     }
+    @Override
+    public String getNameOfTheFile() {
+        return nameOfFile;
+    }
+    @Override
+
+    public void setNameOfFile(String nameOfFile) {
+        this.nameOfFile = nameOfFile;
+    }
 }

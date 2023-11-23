@@ -36,6 +36,44 @@ public class Commit {
         this.time = time;
     }
 
+    public void printCurrentCommitData(){
+        System.out.println("****************************************");
+        System.out.println("Commit details: ");
+        System.out.println("Root: " + root);
+        System.out.println("Last SHA-1: " + lastSh1);
+        System.out.println("Comment: " + comment);
+        System.out.println("Author: " + author);
+        System.out.println("Time: " + time);
+
+        printFileHowChangeInThisCommit();
+    }
+
+    public void printFileHowChangeInThisCommit(){
+        GitTreeNode gitTreeNodeTemp = gitTreeNode;
+        boolean flag = true;
+        while (flag){
+            printNodeData(gitTreeNodeTemp);
+            if (!gitTreeNodeTemp.getChildren().isEmpty()){
+                gitTreeNodeTemp = gitTreeNodeTemp.getChildren().get(0);
+            }else {
+                flag = false;
+            }
+        }
+
+    }
+
+    private void printNodeData(GitTreeNode gitTreeNodeTemp) {
+        for (GitFile gitFile: gitTreeNodeTemp.getGitFile().getFiles()){
+            System.out.println("****************************************");
+            System.out.println(" Name Of The File: " + gitFile.getNameOfTheFile());
+            System.out.println(" SHA-1: " + gitFile.getShaOne());
+            System.out.println(" Is Blob: " + gitFile.isBlob());
+            System.out.println("Author: " + gitFile.getAuthor());
+            System.out.println("Time: " + gitFile.getDate());
+
+        }
+    }
+
     public String getRoot() {
         return root;
     }

@@ -15,4 +15,6 @@ public interface GitFile {
     File getFile();
     void addNewFile(GitFile file);
     ArrayList<GitFile>  getFiles();
+    String getNameOfTheFile();
+    void setNameOfFile(String nameOfFile);
 }

@@ -6,8 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.LinkedList;
-import java.util.Queue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,7 +15,7 @@ public class DisplayData {
 
     private String path;
     private boolean flag = true;
-    private Queue <Commit> commits;
+    private Deque<Commit> commits;
 
     public DisplayData(String path) {
         this.path = path;
@@ -30,13 +30,14 @@ public class DisplayData {
         this.path = path;
     }
 
+    //init in this place
     public void showAllCommitByPath(){
         String lastCommit = getLastCommit();
         presentFromRootTree(lastCommit);
     }
 
     private void presentFromRootTree(String commit) {
-            if (commit == null){
+            if (commit.equals("null")){
                 return;
             } else {
                 presentFromRootTree(getParentCommit(commit));
@@ -46,33 +47,34 @@ public class DisplayData {
 
     private String getParentCommit(String commit) {
         FileHandler fileHandler = FileHandler.getInstance();
-        return fileHandler.extractLastCommitFromCommitFile(commit);
+        return fileHandler.extractLastCommitFromCommitFile(path + "/.Agit/.Object/" + commit);
 
     }
 
     private void presentCurrentCommitData(String commitNameOfFile) {
         //extract the root from the commit file
-        String commitPath = path + "/.Agit/.Object" + commitNameOfFile;
+        String commitPath = path + "/.Agit/.Object/" + commitNameOfFile;
         Commit commit = readCommitFromFile(commitPath);
         commit.setName(commitNameOfFile);
 
-        GitTreeNode gitTreeNode = createTreeOfGitFile(path + "/.Agit/.Object" + commit.getRoot());
+        GitTreeNode gitTreeNode = createTreeOfGitFile(path + "/.Agit/.Object/" + commit.getRoot());
         GitTreeNode gitTreeNodeFix = createNewFixTreeNode(gitTreeNode);
         commit.setGitTreeNode(gitTreeNodeFix);
 
+        commit.printCurrentCommitData();
     }
 
     private GitTreeNode createNewFixTreeNode(GitTreeNode gitTreeNode) {
-        Queue <GitTreeNode> gitTreeNodeQueue = new LinkedList<>();
+        Deque <GitTreeNode> gitTreeNodeQueue = new LinkedList<>();
         GitTreeNode resGitTreeNode = new GitTreeNode(gitTreeNode.getGitFile());
         createNewFixTreeNodeRec(gitTreeNodeQueue,gitTreeNode);
        //another function
-        gitTreeNodeQueue.poll();
+        gitTreeNodeQueue.pop();
         moveQueueToTree(resGitTreeNode,gitTreeNodeQueue);
         return resGitTreeNode;
     }
 
-    private void moveQueueToTree(GitTreeNode resGitTreeNode, Queue<GitTreeNode> gitTreeNodeQueue) {
+    private void moveQueueToTree(GitTreeNode resGitTreeNode, Deque<GitTreeNode> gitTreeNodeQueue) {
 
         ArrayList<GitTreeNode> gitTreeNodes = new ArrayList<>();
         reverseQueueAndMoveToList(gitTreeNodes,gitTreeNodeQueue);
@@ -83,26 +85,28 @@ public class DisplayData {
         if (gitTreeNodes.isEmpty()){
             return;
         }else {
-            resGitTreeNode.getChildren().get(0).addChild(gitTreeNodes.remove(0));
+            //resGitTreeNode.getChildren().get(0).addChild(gitTreeNodes.remove(0));
+            resGitTreeNode.getChildren().add(gitTreeNodes.remove(0));
             moveListToTreeNode(resGitTreeNode.getChildren().get(0),gitTreeNodes);
         }
     }
 
-    private void reverseQueueAndMoveToList(ArrayList<GitTreeNode> gitTreeNodes, Queue<GitTreeNode> gitTreeNodeQueue) {
+    private void reverseQueueAndMoveToList(ArrayList<GitTreeNode> gitTreeNodes, Deque<GitTreeNode> gitTreeNodeQueue) {
         if (gitTreeNodeQueue.isEmpty()){
             return;
         }else {
-            gitTreeNodes.add(gitTreeNodeQueue.poll());
+            gitTreeNodes.add(gitTreeNodeQueue.pop());
             reverseQueueAndMoveToList(gitTreeNodes,gitTreeNodeQueue);
         }
     }
 
-    private void createNewFixTreeNodeRec( Queue <GitTreeNode> gitTreeNodeQueue, GitTreeNode gitTreeNode) {
-        if (gitTreeNode.getChildren().get(0) == null){
-
+    private void createNewFixTreeNodeRec( Deque <GitTreeNode> gitTreeNodeQueue, GitTreeNode gitTreeNode) {
+        if (gitTreeNode.getChildren().size() == 0){
+            gitTreeNodeQueue.push(gitTreeNode);
+            return;
         } else {
             createNewFixTreeNodeRec(gitTreeNodeQueue, gitTreeNode.getChildren().get(0));
-            gitTreeNodeQueue.add(gitTreeNode);
+            gitTreeNodeQueue.push(gitTreeNode);
         }
     }
 
@@ -111,7 +115,7 @@ public class DisplayData {
         GitTreeNode gitTreeNode = new GitTreeNode(gitRoot);
         for (GitFile gitFile : gitTreeNode.getGitFile().getFiles()){
             if (!gitFile.isBlob()){ // is tree
-                gitTreeNode.addChild(createTreeOfGitFile(path + "/.Agit/.Object" + gitFile.getShaOne()));
+                gitTreeNode.addChild(createTreeOfGitFile(path + "/.Agit/.Object/" + gitFile.getShaOne()));
             }
         }
         return gitTreeNode;
@@ -211,11 +215,11 @@ public class DisplayData {
         this.flag = flag;
     }
 
-    public Queue<Commit> getCommits() {
+    public Deque<Commit> getCommits() {
         return commits;
     }
 
-    public void setCommits(Queue<Commit> commits) {
+    public void setCommits(Deque<Commit> commits) {
         this.commits = commits;
     }
 }

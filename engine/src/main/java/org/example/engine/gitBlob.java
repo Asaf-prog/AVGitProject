@@ -89,9 +89,11 @@ public class gitBlob implements GitFile {
         return null;
     }
 
-    public String getNameOfFile() {
+    @Override
+    public String getNameOfTheFile() {
         return nameOfFile;
     }
+    @Override
 
     public void setNameOfFile(String nameOfFile) {
         this.nameOfFile = nameOfFile;

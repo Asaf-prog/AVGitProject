@@ -5,7 +5,7 @@ import java.util.List;
 
 public class GitTreeNode {
         private GitFile gitFile;
-        private List<GitTreeNode> children;
+        private List<GitTreeNode> children = null;
 
         public GitTreeNode(GitFile gitFile) {
             this.gitFile = gitFile;

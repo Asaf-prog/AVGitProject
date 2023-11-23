@@ -387,7 +387,8 @@ public class FileHandler {
             while ((line = reader.readLine()) != null) {
                 if (line.contains("Last SHA-1 Content Head File")) {
                     // Extract the content after '=' and trim spaces
-                    contentHeadFile = line.split("=")[1].trim();
+                    contentHeadFile = line.split("=")[2].trim();
+                    contentHeadFile = contentHeadFile.split(",")[0].trim();
                     break; // Stop searching once found
                 }
             }

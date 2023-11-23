@@ -27,7 +27,7 @@ public class Main {
 
         //get path from the user
         fileHandler.setPath("C:\\Users\\asafr\\Desktop\\testforgit");
-       gitObject.gitInit("C:\\Users\\asafr\\Desktop\\testforgit","The name ",comment);
+      // gitObject.gitInit("C:\\Users\\asafr\\Desktop\\testforgit","The name ",comment);
 
 //        GitInitDTO gitInitDTO = new GitInitDTO("C:\\Users\\asafr\\Desktop\\testforgit","The name ",comment);
 //        ExecutionManager executionManager = ExecutionManager.getInstance();
@@ -44,10 +44,13 @@ public class Main {
 //            e.printStackTrace();
 //        }
 
+        DisplayData displayData = new DisplayData("C:\\Users\\asafr\\Desktop\\testforgit");
+        displayData.showAllCommitByPath();
+
         String hashParent = fileHandler.extractStringOfLastCommitBetweenCommas("./gitRepos");
         String commitPath = "C:\\Users\\asafr\\Desktop\\testforgit";
         String repoName = "repoNameGetFromUser";
-        gitCommit commit = new gitCommit(hashParent,null,"asaf","commit without init",commitPath,repoName);
+       // gitCommit commit = new gitCommit(hashParent,null,"asaf","commit without init",commitPath,repoName);
 
     }
 }
