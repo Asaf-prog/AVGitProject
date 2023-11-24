@@ -14,12 +14,13 @@ public class FileHandler {
     private static FileHandler instance = null;
     private static String path = "./.AGit/.Object/";
     private FileHandler() { }
+
     public static FileHandler getInstance() {
         if (instance == null)
             instance = new FileHandler();
         return instance;
     }
-    // Method to write content to a file
+
     public static void writeToFile(String filePath, String... contentArray) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             for (String line : contentArray) {
@@ -53,11 +54,13 @@ public class FileHandler {
             return new String[0]; // Return an empty array in case of an error
         }
     }
+
     public static boolean createFolder(String path) {
         File folder = new File(path);
         // Create the directory
         return folder.mkdir();
     }
+
     public static  ArrayList<File>  collectFileInFolder(String directoryPath) {
         // Check if the directory exists and is a directory
         ArrayList<File> filesInDirectory = new ArrayList<>();
@@ -67,9 +70,7 @@ public class FileHandler {
             File[] files = directory.listFiles();
             if (files != null) {
                 for (File file : files) {
-                   // if (file.isFile()) { // Check if it's a file (not a directory)
                         filesInDirectory.add(file);
-                   // }
                 }
             } else {
                 System.out.println("No files found in the directory.");
@@ -99,17 +100,18 @@ public class FileHandler {
                 if (file.isFile() && !isInAGitFolder(file)) {
                     fileList.add(file);
                 } else if (file.isDirectory()) {
-                    // If it's a directory, recursively list its files
                     listFilesRecursively(file, fileList);
                 }
             }
         }
     }
+
     private static boolean isInAGitFolder(File file) {
         // Check if the file's path contains the ".AGit" folder
         String agitFolder = File.separator + ".AGit" + File.separator;
         return file.getAbsolutePath().contains(agitFolder);
     }
+
     public static void writeToDBFile(ArrayList<String> newSh1){//write new sh1 to db file
        try{
            String filePath = "C:\\Users\\asafr\\OneDrive\\מסמכים\\GitHub\\AVGitProject\\engine\\src\\main\\java\\org\\example\\engine\\test.txt";
@@ -130,6 +132,7 @@ public class FileHandler {
         e.printStackTrace();
        }
     }
+
     public static boolean doesStringExistInFile( String targetString) {
         String filePath="C:\\Users\\asafr\\OneDrive\\מסמכים\\GitHub\\AVGitProject\\engine\\src\\main\\java\\org\\example\\engine\\test.txt";
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
@@ -145,6 +148,7 @@ public class FileHandler {
         }
         return false;
     }
+
     public static String fileParentDirectory(File file){
         if (file.exists()){
             String parent = file.getParent();
@@ -153,6 +157,7 @@ public class FileHandler {
         else
             return null;
     }
+
     public static void testToZipFile(){
         String textFilePath = "./.AGit/TestSample.txt"; // Replace with the desired file path
         String textContent = "This is a sample text content that will be written to the file.";
@@ -168,9 +173,9 @@ public class FileHandler {
             System.out.println("created zip file!!!!!!!!");
         }
     }
+
     public static boolean createAZipFileInCurrentPath(File file){
         sha256 sha = sha256.getInstance();
-       // String sourceFilePath = path + sha.getHash(file.getName());
          String sourceFilePath = file.getPath();
         String zipFilePath = sourceFilePath+".zip";
 
@@ -195,6 +200,7 @@ public class FileHandler {
         }
         return true;
     }
+
     public static boolean zipFileCreatorInTargetPath(File file) {
         sha256 sha = sha256.getInstance();
         String sourceFilePath = file.getPath();
@@ -228,7 +234,7 @@ public class FileHandler {
         }
         return true;
     }
-///todo check !!!!!!!!!!!!
+
     public static void createNewTreeFile(FolderFormat entityFormat,String sh1NameOfTree){//the sh1 is the name of the file
 
         String myContent =  entityFormat.getNameOFFile()+","+entityFormat.getSh1()+","
@@ -243,6 +249,7 @@ public class FileHandler {
             }
         }
     }
+
     public static void writeToFileBuyName(String nameOfParent,FolderFormat entityFormat){
         String currentPath =path  + nameOfParent;
 
@@ -255,6 +262,7 @@ public class FileHandler {
                     }
                 }
     }
+
     public static boolean fileAppendLine(String path, String lineToAppend,String sh1,String nameOfFile){
         File file = new File(path);
         if (file.exists() && !(doesLineExistInFile(path ,lineToAppend)) && nameOfFile != sh1){
@@ -273,6 +281,7 @@ public class FileHandler {
             return false;
         }
     }
+
     public static boolean doesLineExistInFile(String filePath, String lineToFind) {
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
@@ -288,7 +297,6 @@ public class FileHandler {
         return false; // Line does not exist in the file or an error occurred
     }
 
-    // This function give us the ability  to know how is the last Header
     public static String getSh1HeadFile(String filePath) {
 
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
@@ -313,6 +321,27 @@ public class FileHandler {
         // Return null if there's an issue reading the file
         return null;
     }
+
+    public static String getDataBetweenCommas(String filePath) {
+        StringBuilder data = new StringBuilder();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                // Split the line by commas
+                String[] parts = line.split(",");
+                return parts[1];
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (data.isEmpty())
+            return null;
+        return data.toString();
+    }
+
     public static void replaceContentBetweenCommas(String filePath, String newContent){
         StringBuilder fileContent = new StringBuilder();
 
@@ -339,6 +368,7 @@ public class FileHandler {
             throw new RuntimeException(e);
         }
     }
+
     public static String extractStringOfLastCommitBetweenCommas(String filePath){
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line = reader.readLine();
@@ -346,7 +376,6 @@ public class FileHandler {
                 // Assuming the format is "The name ,0f78bb...," (string, comma, string)
                 String[] parts = line.split(",");
                 if (parts.length >= 2) {
-                    // Trim to remove leading/trailing whitespaces
                     return parts[1].trim();
                 }
             }
@@ -359,6 +388,7 @@ public class FileHandler {
         // Return an empty string if the file format doesn't match expectations
         return "";
     }
+
     public static String readFileContent(String filePath, String fileName) {
         Path path = Paths.get(filePath, fileName);
 
@@ -379,6 +409,7 @@ public class FileHandler {
             return null;
         }
     }
+
     public static String extractLastCommitFromCommitFile(String filePath){
         String contentHeadFile = null;
 
@@ -398,4 +429,5 @@ public class FileHandler {
 
         return contentHeadFile;
     }
+
 }

@@ -2,18 +2,14 @@ package org.example.engine;
 
 import org.example.Exception.UnknownEntityTypeException;
 import org.example.Exception.ZipFileCreationException;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-//commit is a file,we need to write in the file the sh1 of all the changes in this commit (tree or blob)
-// to any branch we create a HEAD file that always changes to the last commit
 public class gitCommit {
-    private String treeRootHash; //sh-1 for the main tree
+    private String treeRootHash; // Sh1 for the main tree
     private String parentCommitHash;
     private String secondParentCommitHash;
     private String comment;
@@ -25,7 +21,7 @@ public class gitCommit {
     private String lastCommit;
     private boolean isFirst;
     private String repoName;
-    private List<File> files;//files how change in this commit
+    private List<File> files;// Files how changed in this commit
     public gitCommit(String hashParent, String hashRootDirectory, String author, String comment,String path, String repoName) {
         TimeHandler timeHandler = TimeHandler.getInstance();
         this.treeRootHash = hashRootDirectory;
@@ -36,14 +32,12 @@ public class gitCommit {
         this.author = author;
         this.repoName = repoName;
         gitFileSh1 = new ArrayList<>();
-       // this.nameOfRootDirectory = ".Object";
         this.nameOfRootDirectory = path;
         this.isFirst = true;
         commit(hashParent,hashRootDirectory,author,comment,path);
     }
     public void commit(String hashParent, String hashRootDirectory, String author, String comment,String path){
         // ... zip blob and the file how represent a folder by the new sh1
-        //create a table that hold all the sha1 that created in this program, this table will save in this project root
         FileHandler fileHandler = FileHandler.getInstance();
         TimeHandler timeHandler = TimeHandler.getInstance();
         this.treeRootHash = hashRootDirectory;
@@ -56,7 +50,6 @@ public class gitCommit {
 
         changeFileHowChangeInThisCommit(path);
         this.isFirst  = true;
-       // saveToFile(path);//todo
         String pathRepo = "C:\\Users\\asafr\\OneDrive\\מסמכים\\GitHub\\AVGitProject\\gitRepos";
         System.out.println(pathRepo);
         fileHandler.replaceContentBetweenCommas(pathRepo,this.lastCommit);
@@ -94,7 +87,7 @@ public class gitCommit {
 
         File file = new File(filePath);
         if(file.exists()){
-            lastSh1ContentHeadFile = fileHandler.getSh1HeadFile(filePath);
+           lastSh1ContentHeadFile = fileHandler.getDataBetweenCommas(filePath);
             if (!file.delete()){
              System.err.println("Failed to delete the file.");
          }
@@ -105,7 +98,6 @@ public class gitCommit {
          this.lastCommit = sh1OfCommitFile;
     }
     public String createCommitFile(String pathCommit,String root,String lastSh1ContentHeadFile,String comment,String author, String time,FileHandler fileHandler){
-        // Where to create the file curren root Where did I come from comment,author , time
 
         String dataFormatContent =  "Root=" + root +
                 ", Last SHA-1 Content Head File=" + lastSh1ContentHeadFile +
@@ -126,22 +118,20 @@ public class gitCommit {
         ArrayList<File> files =  fileHandler.listFilesInFolder(path);
         ArrayList<String> sh1AllFileInFiles = calculateSh1ForFileAndFolder(files);
         ArrayList<String> sh1OfFileThatNotExist = checkSh1ExistInDB(sh1AllFileInFiles);//if the sh1 notExist the file changes
-        if (sh1OfFileThatNotExist == null){//nothing change in this commit
+        if (sh1OfFileThatNotExist == null){// Nothing change in this commit
             return;
         }
         else {
-            //write to DB the new Sh1 (of the new files)
-            fileHandler.writeToDBFile(sh1OfFileThatNotExist);//todo write the new sh1 to db !!!
+            // Write to DB the new Sh1 (of the new files)
+            fileHandler.writeToDBFile(sh1OfFileThatNotExist);
             ArrayList<File> newFiles = getFileBySh1(sh1OfFileThatNotExist,files);
             this.files = newFiles;
             createTreeAndBlob();
         }
     }
     public void createTreeAndBlob(){
-        //Collections.reverse(files);
 
         for (File file:this.files){
-            System.out.println("**************************************************************");
             try {
                 searchRootDirectory(file);
             } catch (UnknownEntityTypeException e) {
@@ -151,22 +141,16 @@ public class gitCommit {
     }
     private void searchRootDirectory(File file) throws UnknownEntityTypeException {
         String parentDirectoryPath = file.getParentFile().getPath();
-        System.out.println(parentDirectoryPath);
-        System.out.println(file.getName());
         if (parentDirectoryPath.equals(this.nameOfRootDirectory)){
             return;
-        }
-        else {
+        } else {
             searchRootDirectory(file.getParentFile());
             FileHandler fileHandler = FileHandler.getInstance();
             sha256 sha = sha256.getInstance();
-            System.out.println(file.getName());
             if (this.isFirst && !(file.isFile())){
                 this.isFirst = false;
-                this.treeRootHash = sha.getSh1ForRoot(file.getParentFile().getPath());//file.getParentFile().getName()
-                System.out.println(this.treeRootHash);
-                this.mySh1 =  sha.getHash(file.getPath());//file.getName()
-                System.out.println(this.mySh1);
+                this.treeRootHash = sha.getSh1ForRoot(file.getParentFile().getPath());
+                this.mySh1 =  sha.getHash(file.getPath());
                 FolderFormat entityFormat = new FolderFormat(getFileType(file),this.mySh1,this.author,this.creationTime,file.getName());
                 fileHandler.createNewTreeFile(entityFormat,this.treeRootHash);
                 changeHeadFileContent(this.nameOfRootDirectory);
@@ -175,22 +159,20 @@ public class gitCommit {
             else { //our parent is existing
                 if (this.isFirst && file.isFile()){
                     FolderFormat entityFormat = new FolderFormat(getFileType(file),sha.getHash(file.getPath()),this.author,this.creationTime,file.getName());//file.getName()
-                    System.out.println( sha.getSh1ForRoot(file.getParentFile().getPath()));
-                    fileHandler.writeToFileBuyName( sha.getSh1ForRoot(file.getParentFile().getPath()),entityFormat);//getName()
+                    fileHandler.writeToFileBuyName( sha.getSh1ForRoot(file.getParentFile().getPath()),entityFormat);
                     isAFileCreateAZip(file,fileHandler);
                 }else {
                     FolderFormat entityFormat = new FolderFormat(getFileType(file),sha.getHash(file.getPath()),this.author,this.creationTime,file.getName());//file.getName()
-                    fileHandler.writeToFileBuyName( sha.getHash(file.getParentFile().getPath()),entityFormat);//getName()
+                    fileHandler.writeToFileBuyName( sha.getHash(file.getParentFile().getPath()),entityFormat);
                     isAFileCreateAZip(file,fileHandler);
                 }
-
             }
         }
     }
 
     private void isAFileCreateAZip(File file, FileHandler fileHandler) throws UnknownEntityTypeException {
         if (getFileType(file) == EntityType.FILE){
-            //need to create a zip file of the changes file
+            // Need to create a zip file of the changes file
             if (!fileHandler.zipFileCreatorInTargetPath(file)){
                 try {
                     throw new ZipFileCreationException("Failed to create the zip file for the changes file.");
@@ -210,6 +192,7 @@ public class gitCommit {
             throw new UnknownEntityTypeException("Unknown entity type for file: " + file.getAbsolutePath());
         }
     }
+
     public ArrayList<File> getFileBySh1(ArrayList<String> sh1OfFileThatNotExist, ArrayList<File> files){
         ArrayList<File> filteredFiles = new ArrayList<>();
         sha256 sha = sha256.getInstance();
@@ -224,6 +207,7 @@ public class gitCommit {
         else
             return filteredFiles;
     }
+
     public ArrayList<String> checkSh1ExistInDB(ArrayList<String> sh1AllFileInFiles){
         ArrayList<String> newSh1 = new ArrayList<>();
         for (String sh1: sh1AllFileInFiles){
@@ -235,12 +219,13 @@ public class gitCommit {
             return null;
         else
             return newSh1;
-        // if the sh1 is not exist we need to check the file that represent this sh1 and check if it folder or file and create the correct information
     }
-    public boolean existInDB(String sh1){// in this function we need to load all the data from the db and check if the sh1 are exist
+
+    public boolean existInDB(String sh1){
         FileHandler fileHandler = FileHandler.getInstance();
         return fileHandler.doesStringExistInFile(sh1);
     }
+
     public ArrayList<String> calculateSh1ForFileAndFolder(  ArrayList<File> files ){
         sha256 sha = sha256.getInstance();
         ArrayList<String> sh1AllFileInFiles = new ArrayList<>();
@@ -252,36 +237,46 @@ public class gitCommit {
         }
         return sh1AllFileInFiles;
     }
+
     public void addGitFileSh1(String sha1) {
         gitFileSh1.add(sha1);
     }
+
     public String getHashParent() {
         return parentCommitHash;
     }
+
     public void setHashParent(String hashParent) {
         this.parentCommitHash = hashParent;
     }
     public String getHashRootDirectory() {
         return treeRootHash;
     }
+
     public void setHashRootDirectory(String hashRootDirectory) {
         this.treeRootHash = hashRootDirectory;
     }
+
     public String getAuthor() {
         return author;
     }
+
     public void setAuthor(String author) {
         this.author = author;
     }
+
     public String getComment() {
         return comment;
     }
+
     public void setComment(String comment) {
         this.comment = comment;
     }
+
     public String getMySh1() {
         return mySh1;
     }
+
     public void setMySh1(String mySh1) {
         this.mySh1 = mySh1;
     }

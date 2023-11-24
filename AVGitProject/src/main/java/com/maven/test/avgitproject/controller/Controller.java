@@ -13,7 +13,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
-
 import java.net.URI;
 import java.util.List;
 
@@ -96,7 +95,6 @@ public class Controller {
     }
     @PostMapping("/gitInit")
     public ResponseEntity<?> gitInit(@RequestBody GitInitDTO dto){
-       //todo => change it to task
         git gitObject = new git();
         gitObject.gitInit(dto.getPath(), dto.getRepoName(), dto.getComment());
 
