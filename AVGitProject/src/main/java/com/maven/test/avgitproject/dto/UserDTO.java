@@ -3,20 +3,20 @@ package com.maven.test.avgitproject.dto;
 public class UserDTO {
     private String firstName;
     private String lastName;
-
+    private String userName;
     private String email;
-
     private String sh1;
-
     private String password;
 
-    public UserDTO(String firstName, String lastName, String email, String sh1, String password) {
+    public UserDTO(String firstName, String lastName, String userName, String email, String sh1, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.userName = userName;
         this.email = email;
         this.sh1 = sh1;
         this.password = password;
     }
+
 
     public String getFirstName() {
         return firstName;
@@ -58,11 +58,20 @@ public class UserDTO {
         this.password = password;
     }
 
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
     @Override
     public String toString() {
         return "UserDTO{" +
                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
+                ", userName='" + userName + '\'' +
                 ", email='" + email + '\'' +
                 ", sh1='" + sh1 + '\'' +
                 ", password='" + password + '\'' +

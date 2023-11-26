@@ -7,9 +7,9 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class sha256 {
-    private static sha256 instance = null;
-    private sha256() {}
+public final class Sha256 {
+    private static Sha256 instance = null;
+    private Sha256() {}
     private static final int[] K = {
             0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
             0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3, 0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174,
@@ -20,9 +20,9 @@ public final class sha256 {
             0x19a4c116, 0x1e376c08, 0x2748774c, 0x34b0bcb5, 0x391c0cb3, 0x4ed8aa4a, 0x5b9cca4f, 0x682e6ff3,
             0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208, 0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2
     };
-    public static sha256 getInstance() {
+    public static Sha256 getInstance() {
         if (instance == null)
-            instance = new sha256();
+            instance = new Sha256();
         return instance;
     }
 
@@ -138,11 +138,11 @@ public final class sha256 {
         if (files != null) {
             for (File file : files) {
                 if (file.isFile()) {
-                    fileList.add(new gitBlob(currentPath + file.getName(),file));
+                    fileList.add(new GitBlob(currentPath + file.getName(),file));
                 } else if (file.isDirectory()) {
                     listFilesRecursively(file, currentPath + file.getName() + "/", fileList);
                     // Include folder names in the concatenation
-                    fileList.add(new gitTree(currentPath + file.getName()));
+                    fileList.add(new GitTree(currentPath + file.getName()));
                 }
             }
         }

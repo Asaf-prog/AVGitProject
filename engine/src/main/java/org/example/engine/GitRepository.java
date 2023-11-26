@@ -4,25 +4,26 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.time.LocalDate;
 
-public class gitRepository {
+public class GitRepository {
 
-    private Map<String,gitCommit> commitMap;
+    private Map<String, GitCommit> commitMap;
     private ArrayList <String> branch;
     private String HEAD;
     private String name;
     private String author;
-    public gitRepository(String author,String name,String path,String comment) {
+
+    public GitRepository(String author, String name, String path, String comment) {
         this.HEAD = null;
         this.name = name;
         this.author = author;
-        gitCommit initCommit = new gitCommit(null,null,author,comment,path,name);
+        GitCommit initCommit = new GitCommit(null,null,author,comment,path,name);
 
     }
-    public Map<String, gitCommit> getCommitMap() {
+    public Map<String, GitCommit> getCommitMap() {
         return commitMap;
     }
 
-    public void setCommitMap(Map<String, gitCommit> commitMap) {
+    public void setCommitMap(Map<String, GitCommit> commitMap) {
         this.commitMap = commitMap;
     }
 

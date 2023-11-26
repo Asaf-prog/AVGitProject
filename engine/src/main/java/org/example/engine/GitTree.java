@@ -3,40 +3,46 @@ package org.example.engine;
 import java.io.File;
 import java.util.ArrayList;
 
-public class gitBlob implements GitFile {
+public class GitTree implements GitFile {
+    private ArrayList<GitFile> files;
     private String shaOne;
     private String date;
     private String author;
     private boolean isBlob;
     private String path;
-    private File file;
     private String nameOfFile;
-    public gitBlob(){
-        isBlob = true;
+    public GitTree(){
+        isBlob = false;
+        files = new ArrayList<>();
     }
-    public gitBlob(String author,String shaOne,String date){
-        isBlob = true;
+    public GitTree(ArrayList<GitFile> files, String shaOne, String date, String author) {
+        this.files = files;
+        this.shaOne = shaOne;
+        this.date = date;
         this.author = author;
-        this.date =date;
-        this.shaOne =shaOne;
+        isBlob = false;
     }
-    public gitBlob(String path, File file){
-        isBlob = true;
-        this.path = path;
-        this.file =file;
+    public GitTree(String shaOne, String date, String author) {
+        this.shaOne = shaOne;
+        this.date = date;
+        this.author = author;
+        isBlob = false;
+    }
+    public GitTree(String path) {
+     this.path = path;
     }
 
-    public gitBlob(String name, String hash, String author, String time) {
-        isBlob = true;
-        this.author = author;
-        this.date = time;
+    public GitTree(String name, String hash, String author, String time) {
         this.shaOne = hash;
+        this.date = time;
+        this.author = author;
+        isBlob = false;
         this.nameOfFile = name;
     }
 
     @Override
     public String getShaOne(){
-        return shaOne;
+     return shaOne;
     }
 
     @Override
@@ -68,27 +74,24 @@ public class gitBlob implements GitFile {
     public boolean isBlob() {
         return isBlob;
     }
-
     @Override
     public String getPath() {
         return this.path;
     }
-
     @Override
     public File getFile() {
-        return this.file;
+        return null;
     }
 
     @Override
     public void addNewFile(GitFile file) {
-        return;
+        files.add(file);
     }
 
     @Override
     public ArrayList<GitFile> getFiles() {
-        return null;
+        return files;
     }
-
     @Override
     public String getNameOfTheFile() {
         return nameOfFile;

@@ -175,7 +175,7 @@ public class FileHandler {
     }
 
     public static boolean createAZipFileInCurrentPath(File file){
-        sha256 sha = sha256.getInstance();
+        Sha256 sha = Sha256.getInstance();
          String sourceFilePath = file.getPath();
         String zipFilePath = sourceFilePath+".zip";
 
@@ -202,7 +202,7 @@ public class FileHandler {
     }
 
     public static boolean zipFileCreatorInTargetPath(File file) {
-        sha256 sha = sha256.getInstance();
+        Sha256 sha = Sha256.getInstance();
         String sourceFilePath = file.getPath();
         String targetDirectory = path;
         File fileToZip = new File(sourceFilePath);

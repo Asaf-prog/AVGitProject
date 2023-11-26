@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class gitCommit {
+public class GitCommit {
     private String treeRootHash; // Sh1 for the main tree
     private String parentCommitHash;
     private String secondParentCommitHash;
@@ -22,7 +22,7 @@ public class gitCommit {
     private boolean isFirst;
     private String repoName;
     private List<File> files;// Files how changed in this commit
-    public gitCommit(String hashParent, String hashRootDirectory, String author, String comment,String path, String repoName) {
+    public GitCommit(String hashParent, String hashRootDirectory, String author, String comment, String path, String repoName) {
         TimeHandler timeHandler = TimeHandler.getInstance();
         this.treeRootHash = hashRootDirectory;
         this.parentCommitHash = hashParent;
@@ -64,7 +64,7 @@ public class gitCommit {
         return null;
     }
     private void saveToFile(String repositoryPath) {
-        sha256 sha = sha256.getInstance();
+        Sha256 sha = Sha256.getInstance();
         String myContent = parentCommitHash+","+secondParentCommitHash+","
                 +treeRootHash+","+comment+","+this.creationTime+","+author;
 
@@ -105,7 +105,7 @@ public class gitCommit {
                 ", Author=" + author +
                 ", Time=" + time;
 
-        sha256 sha = sha256.getInstance();
+        Sha256 sha = Sha256.getInstance();
         String sh1OfCommitFile = sha.getHash(dataFormatContent);
         pathCommit = pathCommit + File.separator + sh1OfCommitFile;
 
@@ -146,7 +146,7 @@ public class gitCommit {
         } else {
             searchRootDirectory(file.getParentFile());
             FileHandler fileHandler = FileHandler.getInstance();
-            sha256 sha = sha256.getInstance();
+            Sha256 sha = Sha256.getInstance();
             if (this.isFirst && !(file.isFile())){
                 this.isFirst = false;
                 this.treeRootHash = sha.getSh1ForRoot(file.getParentFile().getPath());
@@ -195,7 +195,7 @@ public class gitCommit {
 
     public ArrayList<File> getFileBySh1(ArrayList<String> sh1OfFileThatNotExist, ArrayList<File> files){
         ArrayList<File> filteredFiles = new ArrayList<>();
-        sha256 sha = sha256.getInstance();
+        Sha256 sha = Sha256.getInstance();
         for (File file: files){
             String sh1 = sha.getHash(file);
             if (sh1OfFileThatNotExist.contains(sh1)){
@@ -227,7 +227,7 @@ public class gitCommit {
     }
 
     public ArrayList<String> calculateSh1ForFileAndFolder(  ArrayList<File> files ){
-        sha256 sha = sha256.getInstance();
+        Sha256 sha = Sha256.getInstance();
         ArrayList<String> sh1AllFileInFiles = new ArrayList<>();
         for (File file:files){
             sh1AllFileInFiles.add(sha.getHash(file));

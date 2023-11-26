@@ -6,13 +6,13 @@ export default function Header(){
     useEffect(() => {
       async function fetchData() {
         try {
-          const response = await fetch('http://localhost:8080/data');
+          const response = await fetch('http://localhost:8080/AvGit/repo');
           if (!response.ok) {
             throw new Error('Network response was not ok');
           }
   
           const responseData = await response.clone().json(); // Clone the response and parse JSON
-          console.log('Response from http://localhost:8080/data:', responseData);
+          console.log('Response from http://localhost:8080/AvGit/', responseData);
           setData(responseData);
         } catch (error) {
           console.error('Error fetching data:', error);

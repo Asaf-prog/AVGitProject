@@ -1,7 +1,7 @@
 package org.example.execution;
 
 import org.example.dto.GitInitDTO;
-import org.example.engine.git;
+import org.example.engine.Git;
 
 public class ExecutionTask implements Runnable{
    private GitInitDTO gitInitDTO;
@@ -12,7 +12,7 @@ public class ExecutionTask implements Runnable{
     @Override
     public void run() {
         try {
-            git gitObject = new git();
+            Git gitObject = new Git();
             gitObject.gitInit(gitInitDTO.getPath(),gitInitDTO.getRepoName(),gitInitDTO.getComment());
 
         } catch (Exception exception) {

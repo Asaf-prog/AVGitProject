@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class createTableInDataBase {
+public class CreateTableInDataBase {
     static final String DRIVER = "com.mysql.cj.jdbc.Driver";//com.mysql.jdbc.Driver.."com.mysql.cj.jdbc.Driver"
     static final String URL = "jdbc:mysql://localhost/mygit";
     static final String USER = "root";

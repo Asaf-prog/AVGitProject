@@ -2,12 +2,16 @@ package com.maven.test.avgitproject.controller;
 
 import com.maven.test.avgitproject.constants.Constants;
 import com.maven.test.avgitproject.dto.UserDTO;
+import com.maven.test.avgitproject.dto.UserLoginDTO;
 import com.maven.test.avgitproject.entity.User;
 import com.maven.test.avgitproject.service.UserService;
 import com.maven.test.avgitproject.utils.SessionUtils;
 import jakarta.servlet.http.HttpServletRequest;
+import org.example.dto.GitCommitDTO;
 import org.example.dto.GitInitDTO;
-import org.example.engine.git;
+import org.example.engine.Git;
+import org.example.engine.GitCommit;
+import org.example.engine.Sha256;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -18,11 +22,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/AvGit")
-public class Controller {
+public class UserController {
     private UserService userService;
 
     @Autowired
-    public Controller(UserService userService) {
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
@@ -44,12 +48,14 @@ public class Controller {
         return dbUser;
     }
 
+
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody UserDTO dto, HttpServletRequest request) {
+    public ResponseEntity<?> login(@RequestBody UserLoginDTO dto, HttpServletRequest request) {
+      //we search by password
         User userEntity = userService.findByPassword(dto.getPassword());
-        UserDTO userDTO = null;
+        UserLoginDTO userDTO = null;
         if (userEntity != null){//use exist
-             userDTO = new UserDTO(dto.getFirstName(), dto.getLastName(), dto.getEmail(), dto.getSh1(), dto.getPassword());
+             userDTO = new UserLoginDTO( dto.getUserName(), dto.getPassword());
             String userIdFromSession = SessionUtils.getUserId(request);
             if (userIdFromSession == null) {
                 request.getSession(true).setAttribute(Constants.USER_ID, userEntity.getId());
@@ -82,21 +88,42 @@ public class Controller {
             return ResponseEntity.status(406).body("Invalid last name");
 
         if(userService.findByPassword(dto.getPassword()) == null) {
-            User userEntity = new User(dto.getFirstName(), dto.getLastName(), dto.getEmail(), dto.getSh1(), dto.getPassword());
+            // Need to create a new Sh1 for the user
+            User userEntity = new User(dto.getFirstName(), dto.getLastName(), dto.getUserName(), dto.getEmail(), dto.getSh1(), dto.getPassword());
+            userEntity.setSh1(createSh1ForNewUser(userEntity));
+            // Need to create a Folder to new User with the name of the sh1
             userService.save(userEntity);
             request.getSession(true).setAttribute(Constants.USER_ID, userEntity.getId());
 
-            UserDTO userDTO = new UserDTO(userEntity.getFirstName(), userEntity.getLastName(), userEntity.getEmail(),
+            UserDTO userDTO = new UserDTO(userEntity.getFirstName(), userEntity.getLastName(), userEntity.getUserName(),userEntity.getEmail(),
                     userEntity.getSh1(), userEntity.getPassword());
 
             return ResponseEntity.status(200).body(userDTO);
         }else
             return ResponseEntity.status(500).body("Error creating exist account");
     }
+
+    private String createSh1ForNewUser(User userEntity) {
+        //The Sh1 Of The user  composed of all the data members without the sh1 member
+        String content = userEntity.getFirstName() + userEntity.getLastName() + userEntity.getUserName() + userEntity.getEmail()+
+                userEntity.getPassword();
+        Sha256 sha = Sha256.getInstance();
+        String sh1 = sha.getHash(content);
+        return sh1;
+    }
+
     @PostMapping("/gitInit")
     public ResponseEntity<?> gitInit(@RequestBody GitInitDTO dto){
-        git gitObject = new git();
+        Git gitObject = new Git();
         gitObject.gitInit(dto.getPath(), dto.getRepoName(), dto.getComment());
+
+        return ResponseEntity.status(200).build();
+    }
+    @PostMapping("gitCommit")
+    public ResponseEntity<?> gitCommit (@RequestBody GitCommitDTO dto) {
+        GitCommit commit =
+                new GitCommit(dto.getHashParent(), dto.getHasRootDirectory(),
+                        dto.getAuthor(), dto.getComment(), dto.getPath(), dto.getRepoName());
 
         return ResponseEntity.status(200).build();
     }

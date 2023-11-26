@@ -122,7 +122,7 @@ public class DisplayData {
     }
 
     private GitFile createTreeOrBlobFromRootPath(String filePath) {
-       GitFile gitRoot = new gitTree();
+       GitFile gitRoot = new GitTree();
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = br.readLine()) != null) {
@@ -148,9 +148,9 @@ public class DisplayData {
             String time = parts[4];
 
             if ("FILE".equals(type)) {
-                return new gitBlob(name, hash, author, time);
+                return new GitBlob(name, hash, author, time);
             } else if ("FOLDER".equals(type)) {
-                return new gitTree(name, hash, author, time);
+                return new GitTree(name, hash, author, time);
             }
         }
         return null; // Invalid input line, or unsupported type

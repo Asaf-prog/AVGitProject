@@ -14,6 +14,7 @@ import java.util.List;
 public class GetCommits {
     @GetMapping("/commit")
     public List<CommitDTO> getCommit(@RequestParam(value = "myName", defaultValue = "default") String name) {
+
         List<CommitDTO> commitList = new ArrayList<>();
 
         // Populate the list with Commit objects
@@ -23,3 +24,4 @@ public class GetCommits {
         return commitList;
     }
 }
+

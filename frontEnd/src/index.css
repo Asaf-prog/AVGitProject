@@ -8,7 +8,7 @@ html {
   font-family: 'Bricolage Grotesque', sans-serif;
   line-height: 1.5;
 
-  color: #32746f;
+  color: #161a19;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -22,37 +22,29 @@ html {
 body {
   margin: 0;
   padding: 2rem;
-  background: linear-gradient(180deg, #1f1c2c 0%, #1f1c2c 100%);
 }
 
 header {
   text-align: center;
 }
 
-header img {
-  width: 5rem;
-  height: 5rem;
-  object-fit: contain;
-  filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.4));
-}
-
 header h1 {
-  margin: 0;
+  margin: 1;
   font-size: 3rem;
   text-transform: uppercase;
   letter-spacing: 1rem;
 }
 header h2 {
     margin: 0;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     text-transform: uppercase;
     letter-spacing: 0.4rem;
 
     position: fixed;
     top: 0;
     width: 100%;
-    color: #fff;
-    padding: 2% 0;
+    color: #181616;
+    padding: 4% 0;
     text-align: center;
     text-align: left;
     margin-left: 185px;
@@ -61,12 +53,12 @@ header h2 {
 header p {
   margin: 0 auto;
   font-size: 1.15rem;
-  max-width: 38ch;
-  color: #9eb5b4;
+  max-width: 60ch;
+  
 }
 .login-button {
     width: 10%;
-    background-color: #32746f;
+    background-color: #606969;
     color: white;
     border: none;
     transition: background-color 0.3s, box-shadow 0.3s; /* Add a smooth transition effect */
@@ -82,7 +74,6 @@ header p {
     width: 20%;
     padding: 10px;
     margin: 5px 0;
-    border: 1px solid #ccc;
     border-radius: 4px;
   }
 .places-category {
@@ -93,13 +84,56 @@ header p {
   border-radius: 8px;
 }
 
-.scrollable-container {
-  max-height: 500px; /* Set the desired maximum height for the container */
-  overflow-y: auto;
-  border: 4px solid #22a333; /* Add a border for clarity */
-  
-  
+/* CSS for the register-container */
+.register-container {
+  background-color: #ffffff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 300px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
 }
+
+.register-container h2 {
+  color: #333333;
+}
+
+/* Add additional styles as needed for specific elements inside the register-container */
+.register-form {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+}
+
+.register-form label {
+  margin-bottom: 5px;
+}
+
+.register-form input {
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+}
+
+.register-form button {
+  background-color: #4caf50;
+  color: #ffffff;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.register-form button:hover {
+  background-color: #45a049;
+}
+
+
 
 #core-concepts {
     width: 50%;
@@ -138,22 +172,6 @@ header p {
   list-style: none;
 }
 
-.place-item {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  border-radius: 8px;
-  background: #1f1c2c;
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-  animation: slide-up-fade-in 0.3s ease-out forwards;
-}
-
-.place-item button {
-  background: transparent;
-  border: none;
-  padding: 0;
-  transition: all 0.2s ease-in-out;
-}
 
 .place-item:nth-child(odd) button:hover,
 .place-item:nth-child(odd) button:focus {
@@ -176,19 +194,6 @@ header p {
   border-radius: 0.5rem;
 }
 
-.place-item h3 {
-  font-family: 'Raleway', sans-serif;
-  font-weight: normal;
-  font-size: 0.9rem;
-  position: absolute;
-  bottom: 0;
-  right: 1rem;
-  margin: 1rem auto;
-  background-color: #feee86;
-  border-radius: 4px;
-  padding: 0.15rem 0.35rem;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
-}
 
 #delete-confirmation {
   padding: 1rem;
@@ -228,50 +233,15 @@ header p {
   color: #fff;
 }
 
-.button:hover,
-.button:focus {
-  background-color: #3e0505;
-}
-
-.button-text {
-  background: transparent;
-  border: none;
-  padding: 0;
-  font-family: 'Raleway', sans-serif;
-  font-size: 1rem;
-  color: #5d0909;
-}
-
-.modal::backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 1;
-  width: 100%;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.6);
-}
-
-.modal {
-  min-width: 30rem;;
-  padding: 0;
-  z-index: 2;
-  background: #d5c7bc;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
-  animation: slide-down-fade-in 0.3s ease-out forwards;
-}
-
-.center {
-  text-align: center;
-}
-
 #user-input {
-    padding: 1rem;
-    max-width: 30rem;
-    margin: 2rem auto;
-    border-radius: 4px;
-    background: linear-gradient(180deg, #307e6c, #2b996d);
+
+  width: 200px;
+  height: 150px;
+  background-color: #f0f0f0;
+  border: 2px solid #333;
+  padding: 10px;
+  margin: 20px;
+
   }
   .input-group {
     display: flex;
@@ -285,30 +255,4 @@ header p {
   padding: 1rem;
   background-color: #f4c7c7;
   color: #3e0505;
-}
-
-.modal .error {
-  margin: auto;
-}
-
-@keyframes slide-down-fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(-3rem);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes slide-up-fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(3rem);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }

@@ -44,7 +44,7 @@ public class AvGitProjectApplication {
         System.out.println("create user...");
 
         UUID uuid = UUID.randomUUID();
-        User tempUser = new User("avi","varon", "asafrefaelvaron1@gmail.com","12435",uuid.toString());
+        User tempUser = new User("avi","varon", "User Name","asafrefaelvaron1@gmail.com","12435",uuid.toString());
 
         System.out.println("save User");
         userService.save(tempUser);

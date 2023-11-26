@@ -9,19 +9,19 @@ import static org.example.engine.FileHandler.writeToFile;
 //file(blob) fulfill a zip file of the object, the name of the file is the SH1
 //for branch we will create a new file that handle this branch
 
-public class git {
+public class Git {
     private String currentUser = "asaf";
-    private Map<String, gitRepository> repositoriesMap;//rep name to object
+    private Map<String, GitRepository> repositoriesMap;//rep name to object
     private String rootSha1;
     public void gitInit(String path,String repoName,String comment){
 
         if (!AGitExistInFile(path)) {
-            sha256 sha = sha256.getInstance();
+            Sha256 sha = Sha256.getInstance();
             this.rootSha1 = sha.getHash(path + repoName);//todo need to save in file as a fair the name of the rep and the sha1
             createFolder(path + "/.AGit/");
             createFolder(path + "/.AGit/.Object");
             writeToFile("./gitRepos", repoName,"null");// Demo db => every session have a repo list
-            gitRepository newRep = new gitRepository(currentUser, repoName, path,comment);
+            GitRepository newRep = new GitRepository(currentUser, repoName, path,comment);
             String hash = "hash";
         }else {
             System.out.println("The trace after this folder exist");
@@ -48,17 +48,17 @@ public class git {
             return file.getName().endsWith(".AGit");
         }
     }
-    public Map<String, gitRepository> getRepositoriesMap() {
+    public Map<String, GitRepository> getRepositoriesMap() {
         return repositoriesMap;
     }
 
-    public void setRepositoriesMap(Map<String, gitRepository> repositoriesMap) {
+    public void setRepositoriesMap(Map<String, GitRepository> repositoriesMap) {
         this.repositoriesMap = repositoriesMap;
     }
-    public void addRepository(String key, gitRepository repository) {
+    public void addRepository(String key, GitRepository repository) {
         repositoriesMap.put(key, repository);
     }
-    public gitRepository getRepository(String key) {
+    public GitRepository getRepository(String key) {
         return repositoriesMap.get(key);
     }
 

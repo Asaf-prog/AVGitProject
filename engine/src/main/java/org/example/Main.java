@@ -2,13 +2,13 @@ package org.example;
 
 import org.example.display.DisplayData;
 import org.example.engine.FileHandler;
-import org.example.engine.git;
-import org.example.engine.gitCommit;
+import org.example.engine.Git;
+import org.example.engine.GitCommit;
 
 public class Main {
     public static void main(String[] args) {
 
-        git gitObject = new git();
+        Git gitObject = new Git();
        // Need to get from the user the first comment
        String comment = "comment on the first commit";
 
@@ -25,7 +25,7 @@ public class Main {
         String hashParent = fileHandler.extractStringOfLastCommitBetweenCommas("./gitRepos");
         String commitPath = "C:\\Users\\asafr\\Desktop\\testforgit";
         String repoName = "repoNameGetFromUser";
-        gitCommit commit = new gitCommit(hashParent,null,"asaf","commit without init",commitPath,repoName);
+        GitCommit commit = new GitCommit(hashParent,null,"asaf","commit without init",commitPath,repoName);
 
     }
 }

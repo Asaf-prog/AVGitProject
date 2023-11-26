@@ -2,7 +2,7 @@ package org.example.engine.DB;
 
 import java.sql.*;
 
-public class insertDataIntoTable {
+public class InsertDataIntoTable {
     static final String DRIVER = "com.mysql.cj.jdbc.Driver";
     static final String URL = "jdbc:mysql://localhost/mygit";
     static final String USER = "root";

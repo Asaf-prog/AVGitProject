@@ -4,7 +4,6 @@ export default function Repo({name,index}){
     const [showNewComponent, setShowNewComponent] = useState(false);
     
     const handleRepoClick = () => {
-        // Toggle the showNewComponent state to true when the Repo is clicked
         console.log('print');
         console.log(name);
         setShowNewComponent(true);
@@ -21,7 +20,6 @@ export default function Repo({name,index}){
             <div>
                 {(showNewComponent && name !== null) ?<Commit name={name}/>: null} 
             </div>
-
 
         </li>
     );
