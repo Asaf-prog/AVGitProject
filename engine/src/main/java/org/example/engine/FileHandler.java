@@ -13,6 +13,7 @@ import java.util.zip.ZipOutputStream;
 public class FileHandler {
     private static FileHandler instance = null;
     private static String path = "./.AGit/.Object/";
+    private static String pathOfDB =  "C:\\Users\\asafr\\Desktop\\repositories";
     private FileHandler() { }
 
     public static FileHandler getInstance() {
@@ -291,7 +292,6 @@ public class FileHandler {
                 }
             }
         } catch (IOException e) {
-            // Handle any IO exceptions, such as file not found
             e.printStackTrace();
         }
         return false; // Line does not exist in the file or an error occurred
@@ -301,16 +301,12 @@ public class FileHandler {
 
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line = br.readLine();
-           // System.out.println("the line is: " + line);
             if (line != null) {// Remove the coma
-                // Find the index of the first comma
                 int commaIndex = line.indexOf(',');
 
-                // Extract the content until the first comma
                 if (commaIndex != -1) {
                     return line.substring(0, commaIndex);
                 } else {
-                    // If there is no comma, return the entire line
                     return line;
                 }
             }
@@ -428,6 +424,54 @@ public class FileHandler {
         }
 
         return contentHeadFile;
+    }
+
+    public static void createNewFolderThatRepresentRepositoryForNewUser(String sh1NameFile){
+
+        String folderPath = pathOfDB + File.separator + sh1NameFile;
+
+        File folder = new File(folderPath);
+
+        if (!folder.exists()) {
+            boolean folderCreated = folder.mkdir();
+
+            if (folderCreated) {
+                System.out.println("Folder created successfully at: " + folder.getAbsolutePath());
+                createTextFile(folder, "myRepositoriesPaths");
+            } else {
+                System.err.println("Failed to create folder at: " + folder.getAbsolutePath());
+            }
+        } else {
+            System.out.println("Folder already exists at: " + folder.getAbsolutePath());
+        }
+    }
+
+    private static void createTextFile(File folder, String fileName) {
+        try {
+            File file = new File(folder, fileName + ".txt");
+            FileWriter writer = new FileWriter(file);
+
+            // Close the FileWriter
+            writer.close();
+
+        } catch (IOException e) {
+            System.err.println("Failed to create text file. Error: " + e.getMessage());
+        }
+    }
+
+    public static List<String> getListOfRepoNameBySh1(String sh1){
+        List<String> lines = null;
+        try {
+             lines = readLinesFromFile(pathOfDB, sh1);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return lines ;
+    }
+
+    public static List<String> readLinesFromFile(String directoryPath, String fileName) throws IOException {
+        Path filePath = Path.of(directoryPath, fileName);
+        return Files.readAllLines(filePath);
     }
 
 }

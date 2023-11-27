@@ -1,11 +1,10 @@
 import Commit from "./Commit.jsx";
 import  { useState } from 'react';
+
 export default function Repo({name,index}){
     const [showNewComponent, setShowNewComponent] = useState(false);
     
     const handleRepoClick = () => {
-        console.log('print');
-        console.log(name);
         setShowNewComponent(true);
       };
 

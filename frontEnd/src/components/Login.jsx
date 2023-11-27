@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { json } from 'react-router-dom';
 import Register from './Register.jsx';
 
-export default function Login({onChange,name}) {
+export default function Login({onChange,name,setIsRegister}) {
   
   const [userInput, setUserInput] = useState({
     userName: '',
@@ -11,7 +11,7 @@ export default function Login({onChange,name}) {
 
   const [showRegister, setShowRegister] = useState(false);
 
-  const handleRegisterClick =  async (registerInput) => {
+  const handleRegisterClick =  async () => {
     
     setShowRegister(true);
 };
@@ -40,8 +40,7 @@ export default function Login({onChange,name}) {
   };
 
   try{
-    console.log(userDTO.userName);
-
+   
     const response = await fetch(url, {
       method: 'POST',
       headers: {
@@ -57,12 +56,9 @@ export default function Login({onChange,name}) {
     const responseData = await response.json();
     console.log('Response from http://localhost:8080/AvGit/login', responseData);
 
-    console.log(responseData.userName);
-    console.log(responseData.password);
-
-
+   
     
-    if (userInput.userName === responseData.userName && userInput.password === responseData.user.password) {
+    if (userInput.userName === responseData.userName && userInput.password === responseData.password) {
       onChange();
       name.user = userInput.userName;
       //send request
@@ -112,7 +108,7 @@ export default function Login({onChange,name}) {
         {showRegister && (
         <div className="register-container">
           <h2>Register</h2>
-          {<Register />}
+          {<Register  setIsRegister={setIsRegister} name={name} onChange={onChange}/>}
         </div>
         )}
         {!showRegister && (

@@ -12,7 +12,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import java.util.UUID;
 
-@SpringBootApplication
+@SpringBootApplication( scanBasePackages = "com.maven.test.avgitproject" )
 @RestController
 @Configuration
 @RequestMapping("/AvGit")
@@ -21,6 +21,7 @@ public class AvGitProjectApplication {
     public static void main(String[] args) {
         SpringApplication.run(AvGitProjectApplication.class, args);
     }
+
     @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
@@ -33,6 +34,7 @@ public class AvGitProjectApplication {
             }
         };
     }
+
     @Bean
     public CommandLineRunner commandLineRunner (UserServiceImpl userService) {
         return args -> {

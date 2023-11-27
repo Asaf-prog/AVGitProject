@@ -38,16 +38,16 @@ header h2 {
     margin: 0;
     font-size: 0.9rem;
     text-transform: uppercase;
-    letter-spacing: 0.4rem;
+    letter-spacing: 0.6rem;
 
     position: fixed;
     top: 0;
     width: 100%;
     color: #181616;
-    padding: 4% 0;
+    padding: 3% 0;
     text-align: center;
     text-align: left;
-    margin-left: 185px;
+    margin-left: 140px;
 
   }
 header p {
@@ -134,18 +134,17 @@ header p {
 }
 
 
-
 #core-concepts {
-    width: 50%;
+    width: 60%;
     padding: 2rem;
-    border-radius: 6px;
-    background-color: #140524;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    border-radius: 10px;
+    background-color: #afa9b4;
+    box-shadow: 0 2px 8px rgba(206, 202, 202, 0.4);
   
     position: absolute;
     top: 40%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, 0%);
   }
 
 .places-category h2 {

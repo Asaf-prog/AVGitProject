@@ -1,6 +1,5 @@
 package com.maven.test.avgitproject.utils;
 
-
 import com.maven.test.avgitproject.constants.Constants;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;

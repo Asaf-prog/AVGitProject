@@ -12,7 +12,7 @@ export default function Header(){
           }
   
           const responseData = await response.clone().json(); // Clone the response and parse JSON
-          console.log('Response from http://localhost:8080/AvGit/', responseData);
+          console.log('Response from http://localhost:8080/AvGit/repo', responseData);
           setData(responseData);
         } catch (error) {
           console.error('Error fetching data:', error);
@@ -26,9 +26,13 @@ export default function Header(){
             <section id="core-concepts" className='scrollable-container'>
             <h2>My-Repo</h2>
             <ul id="nameList">
-            {data.length === 0 ? <p>Data is empty</p> : data.map((conceptItem) => (
-            <Repo key={conceptItem.index} name={conceptItem.name} index={conceptItem.index} />
-            ))}
+            {data.length === 0 ?( 
+            <p>Data is empty</p>) : (
+              data.map((conceptItem,index) => (
+            <Repo key={index} name={conceptItem.name} index={conceptItem.index} />
+            )))
+            }
+            
             
             </ul>
             </section> 

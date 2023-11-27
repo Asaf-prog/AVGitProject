@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-export default function Register() {
+export default function Register({setIsRegister, name, onChange}) {
   const [registerInput, setRegisterInput] = useState({
     firstName: '',
     lastName: '',
@@ -37,7 +37,6 @@ export default function Register() {
   };
 
   try{
-    console.log(userDTO.firstName);
 
     const response = await fetch(url, {
       method: 'PUT',
@@ -47,20 +46,25 @@ export default function Register() {
       body:JSON.stringify(userDTO)
     });
 
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
+    if (!response.ok ) {
+//      throw new Error('Network response was not ok');
+        alert("User Exist");
     }
 
     const responseData = await response.json();
     console.log('Response from http://localhost:8080/AvGit/register', responseData);
 
-    console.log(responseData.userName);
-    console.log(responseData.password);
+    if(response.ok){
+        console.log("Succses to Register! ");
+        name.user = userDTO.firstName + " " + userDTO.lastName ;
+        console.log(name);
+        setIsRegister();
+        onChange();
+    }
 
   }catch(error){
     console.log('An error occurred: ', error.message);
   }
-
 
 };
 

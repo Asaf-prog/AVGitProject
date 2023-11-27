@@ -18,10 +18,23 @@ public class GetCommits {
         List<CommitDTO> commitList = new ArrayList<>();
 
         // Populate the list with Commit objects
-        commitList.add(new CommitDTO("sha1_1", "Commit 1", "2023-01-01", "John Doe"));
-        commitList.add(new CommitDTO("sha1_2", "Commit 2", "2023-01-02", "Jane Smith"));
-        commitList.add(new CommitDTO("sha1_3", "Commit 3", "2023-01-03", "Michael Johnson"));
+        commitList.add(new CommitDTO("sha1_1", "repo 1", "2023-01-01", "John Doe"));
+        commitList.add(new CommitDTO("sha1_2", "repo 2", "2023-01-02", "Jane Smith"));
+        commitList.add(new CommitDTO("sha1_3", "repo 3", "2023-01-03", "Michael Johnson"));
         return commitList;
     }
+
+    @GetMapping("/repo")
+    public List<CommitDTO> getRepo(@RequestParam(value = "myName", defaultValue = "default") String name) {
+
+        List<CommitDTO> commitList = new ArrayList<>();
+
+        // Populate the list with Commit objects
+        commitList.add(new CommitDTO("54", "Commit 1", "2023-01-01", "John Doe"));
+        commitList.add(new CommitDTO("55", "Commit 2", "2023-01-02", "Jane Smith"));
+        commitList.add(new CommitDTO("56", "Commit 3", "2023-01-03", "Michael Johnson"));
+        return commitList;
+    }
+
 }
 
