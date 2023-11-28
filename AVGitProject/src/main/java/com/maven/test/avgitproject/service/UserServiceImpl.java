@@ -2,6 +2,7 @@ package com.maven.test.avgitproject.service;
 
 import com.maven.test.avgitproject.daoUser.UserRepository;
 import com.maven.test.avgitproject.dto.UserLoginDTO;
+import com.maven.test.avgitproject.entity.Sh1Detail;
 import com.maven.test.avgitproject.entity.User;
 import org.example.dto.GitCommitDTO;
 import org.example.dto.GitInitDTO;
@@ -25,8 +26,8 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User save(User tempStudent) {
-        return userRepository.save(tempStudent);
+    public User save(User tempUser) {
+        return userRepository.save(tempUser);
     }
 
     @Override
@@ -54,8 +55,18 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public void gitInit(GitInitDTO dto) {
+        User user = userRepository.findByPassword(dto.getUserPassword());
+        Sh1Detail sh1Detail = new Sh1Detail(createSh1ForNewUser(user), dto.getRepoName(), dto.getPath());
+
         Git gitObject = new Git();
+        FileHandler fileHandler = FileHandler.getInstance();
+        fileHandler.setPath(dto.getPath());
         gitObject.gitInit(dto.getPath(), dto.getRepoName(), dto.getComment());
+
+        user.add(sh1Detail);
+        // Save the updated User to the database
+        userRepository.save(user);
+
     }
 
     @Override
@@ -84,6 +95,13 @@ public class UserServiceImpl implements UserService{
     public List<String> getListOfRepoBySh1(String sh1) {
         FileHandler fileHandler = FileHandler.getInstance();
         return fileHandler.getListOfRepoNameBySh1(sh1);
+    }
+
+    @Override
+    public List<Sh1Detail> findSh1DetailByUserId(int theId) {
+
+        List<Sh1Detail> sh1Details = userRepository.findSh1ListById(theId);
+        return sh1Details;
     }
 
 }

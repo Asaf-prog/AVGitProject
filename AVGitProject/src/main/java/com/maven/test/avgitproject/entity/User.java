@@ -2,10 +2,13 @@ package com.maven.test.avgitproject.entity;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "user")
-
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -17,7 +20,7 @@ public class User {
     @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "User_name")
+    @Column(name = "user_name")
     private String userName;
 
 
@@ -29,6 +32,13 @@ public class User {
 
     @Column(name = "password")
     private String password;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_detail_id")
+    private UserDetail userDetail;
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "user",
+    cascade = {CascadeType.ALL})
+    private List<Sh1Detail> sh1Details;
 
     public User(){}
 
@@ -98,6 +108,23 @@ public class User {
         this.userName = userName;
     }
 
+
+    public UserDetail getUserDetail() {
+        return userDetail;
+    }
+
+    public void setUserDetail(UserDetail userDetail) {
+        this.userDetail = userDetail;
+    }
+
+    public List<Sh1Detail> getSh1Details() {
+        return sh1Details;
+    }
+
+    public void setSh1Details(List<Sh1Detail> sh1Details) {
+        this.sh1Details = sh1Details;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -108,6 +135,15 @@ public class User {
                 ", email='" + email + '\'' +
                 ", sh1='" + sh1 + '\'' +
                 ", password='" + password + '\'' +
+                ", userDetail=" + userDetail +
+                ", sh1Details=" + sh1Details +
                 '}';
+    }
+    public void add(Sh1Detail tempSh1Detail) {
+        if (this.sh1Details == null){
+            this.sh1Details = new ArrayList<>();
+        }
+        this.sh1Details.add(tempSh1Detail);
+        tempSh1Detail.setUser(this);
     }
 }

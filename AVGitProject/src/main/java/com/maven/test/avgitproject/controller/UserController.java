@@ -91,7 +91,6 @@ public class UserController {
             User userEntity = new User(dto.getFirstName(), dto.getLastName(), dto.getUserName(), dto.getEmail(), dto.getSh1(), dto.getPassword());
             userEntity.setSh1(createSh1ForNewUser(userEntity));
 
-            createNewFolderThatRepresentRepositoryForNewUser(userEntity);
             userService.save(userEntity);
             request.getSession(true).setAttribute(Constants.USER_ID, userEntity.getId());
             UserDTO userDTO = new UserDTO(userEntity.getFirstName(), userEntity.getLastName(), userEntity.getUserName(),userEntity.getEmail(),
@@ -109,11 +108,6 @@ public class UserController {
         List<String> nameOfRepo = userService.getListOfRepoBySh1(user.getSh1());
 
         return ResponseEntity.status(200).body(nameOfRepo);
-    }
-
-    private void createNewFolderThatRepresentRepositoryForNewUser(User userEntity) {
-        FileHandler fileHandler = FileHandler.getInstance();
-        fileHandler.createNewFolderThatRepresentRepositoryForNewUser(userEntity.getSh1());
     }
 
     private String createSh1ForNewUser(User userEntity) {

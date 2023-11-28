@@ -4,11 +4,13 @@ public class GitInitDTO {
     private String path;
     private String repoName;
     private String comment;
+    private String userPassword;
 
-    public GitInitDTO(String path, String repoName, String comment) {
+    public GitInitDTO(String path, String repoName, String comment,String userPassword) {
         this.path = path;
         this.repoName = repoName;
         this.comment = comment;
+        this.userPassword = userPassword;
     }
     public GitInitDTO() {}
 
@@ -36,12 +38,21 @@ public class GitInitDTO {
         this.comment = comment;
     }
 
+    public String getUserPassword() {
+        return userPassword;
+    }
+
+    public void setUserPassword(String userPassword) {
+        this.userPassword = userPassword;
+    }
+
     @Override
     public String toString() {
         return "GitInitDTO{" +
                 "path='" + path + '\'' +
                 ", repoName='" + repoName + '\'' +
                 ", comment='" + comment + '\'' +
+                ", userPassword='" + userPassword + '\'' +
                 '}';
     }
 }

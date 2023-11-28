@@ -37,7 +37,6 @@ public class GitCommit {
         commit(hashParent,hashRootDirectory,author,comment,path);
     }
     public void commit(String hashParent, String hashRootDirectory, String author, String comment,String path){
-        // ... zip blob and the file how represent a folder by the new sh1
         FileHandler fileHandler = FileHandler.getInstance();
         TimeHandler timeHandler = TimeHandler.getInstance();
         this.treeRootHash = hashRootDirectory;
@@ -51,7 +50,6 @@ public class GitCommit {
         changeFileHowChangeInThisCommit(path);
         this.isFirst  = true;
         String pathRepo = "C:\\Users\\asafr\\OneDrive\\מסמכים\\GitHub\\AVGitProject\\gitRepos";
-        System.out.println(pathRepo);
         fileHandler.replaceContentBetweenCommas(pathRepo,this.lastCommit);
     }
     public String getGitFileSh1(String sha1Name) {
@@ -95,7 +93,7 @@ public class GitCommit {
         String pathCommit = folderPath + "/.Object/";
         String sh1OfCommitFile = createCommitFile(pathCommit,this.treeRootHash,lastSh1ContentHeadFile,this.comment,this.author,this.creationTime,fileHandler);
          fileHandler.writeToFile(filePath,this.treeRootHash,sh1OfCommitFile);
-         this.lastCommit = sh1OfCommitFile;
+         this.lastCommit = sh1OfCommitFile;//this sh1 represent the name of the file of the  commit, he found it the head file (important)
     }
     public String createCommitFile(String pathCommit,String root,String lastSh1ContentHeadFile,String comment,String author, String time,FileHandler fileHandler){
 
