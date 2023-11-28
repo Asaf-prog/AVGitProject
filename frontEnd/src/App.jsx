@@ -1,5 +1,6 @@
 import Login from "./components/Login.jsx";
-import Header from './components/Header.jsx';
+import Header from './componentsTemp/Header.jsx';
+import Body from "./components/Body.jsx";
 import { useState } from 'react';
 function App(){
     const [showLoginComponent, setShowLoginComponent] = useState(true);
@@ -31,7 +32,7 @@ function App(){
         {showLoginComponent ? <Login onChange={handleChangeLogin} name ={userName} 
           setIsRegister={setIsRegister}/> : null}
         {!showLoginComponent ? `Welcome, ${userName.user}` : null}
-        {showHeaderComponent ? <Header/>: null}
+        {showHeaderComponent ? <Body/>: null}
     </div>
 );
 }

@@ -13,6 +13,7 @@ public class ExecutionManager {
         numberOfThreads=5;//default
         threadExecutor = Executors.newFixedThreadPool(numberOfThreads);
     }
+
     public static ExecutionManager getInstance() {
         if (instance == null){
             instance = new ExecutionManager();
@@ -29,6 +30,7 @@ public class ExecutionManager {
     public void executeTask(ExecutionTask executionTask){
         threadExecutor.execute(executionTask);
     }
+
     public void setNumberOfThreads(Integer numberOfThreads1){
         this.numberOfThreads = numberOfThreads1;
         threadExecutor=Executors.newFixedThreadPool(numberOfThreads);

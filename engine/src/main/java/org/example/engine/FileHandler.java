@@ -14,6 +14,7 @@ import java.util.zip.ZipOutputStream;
 public class FileHandler {
     private static FileHandler instance = null;
     private static String path = "./.AGit/.Object/";
+    private static String pathOfDbTextFile = "./.AGit/";
     private static String pathOfDB =  "C:\\Users\\asafr\\Desktop\\repositories";
     private FileHandler() { }
 
@@ -33,6 +34,7 @@ public class FileHandler {
             System.err.println("Error writing to file: " + e.getMessage());
         }
     }
+
     public static void writeToFileForCommit(String filePath, String... contentArray) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             for (String line : contentArray) {
@@ -45,6 +47,7 @@ public class FileHandler {
 
     public static void setPath(String p){
         path = p+ "/.AGit/.Object/";
+        pathOfDbTextFile = p + "/.AGit/db.txt";
     }
 
     // Method to read content from a file into an array of strings
@@ -115,8 +118,9 @@ public class FileHandler {
     }
 
     public static void writeToDBFile(ArrayList<String> newSh1){//write new sh1 to db file
-       try{
-           String filePath = "C:\\Users\\asafr\\OneDrive\\מסמכים\\GitHub\\AVGitProject\\engine\\src\\main\\java\\org\\example\\engine\\test.txt";
+
+        try{
+            String filePath = pathOfDbTextFile;
         // Open the file in append mode
        for (String sh1: newSh1){
            BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true));
@@ -127,7 +131,6 @@ public class FileHandler {
 
            // Close the writer
            writer.close();
-          // System.out.println("Data appended to file successfully.");
        }
     } catch (IOException e) {
         System.err.println("Error: Unable to append data to the file.");
@@ -136,7 +139,8 @@ public class FileHandler {
     }
 
     public static boolean doesStringExistInFile( String targetString) {
-        String filePath="C:\\Users\\asafr\\OneDrive\\מסמכים\\GitHub\\AVGitProject\\engine\\src\\main\\java\\org\\example\\engine\\test.txt";
+
+        String filePath = pathOfDbTextFile;
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -437,7 +441,6 @@ public class FileHandler {
             boolean folderCreated = folder.mkdir();
 
             if (folderCreated) {
-                System.out.println("Folder created successfully at: " + folder.getAbsolutePath());
                 createTextFile(folder, "myRepositoriesPaths");
             } else {
                 System.err.println("Failed to create folder at: " + folder.getAbsolutePath());
@@ -518,6 +521,19 @@ public class FileHandler {
         }
 
         return "Invalid input format or content not found between commas.";
+    }
+
+    public static void createDbFile(String filePath) {
+        try {
+            // Convert the file path string to a Path object
+            Path path = Paths.get(filePath);
+
+            // Create the file if it doesn't exist
+            Files.createFile(path);
+
+        } catch (IOException e) {
+            System.err.println("Error creating the text file: " + e.getMessage());
+        }
     }
 
 }

@@ -9,6 +9,7 @@ public class ExecutionTask implements Runnable{
     public ExecutionTask(GitInitDTO gitInitDTO) {
         this.gitInitDTO = gitInitDTO;
     }
+
     @Override
     public void run() {
         try {

@@ -22,6 +22,7 @@ public class GitCommit {
     private boolean isFirst;
     private String repoName;
     private List<File> files;// Files how changed in this commit
+
     public GitCommit(String hashParent, String hashRootDirectory, String author, String comment, String path, String repoName) {
         TimeHandler timeHandler = TimeHandler.getInstance();
         this.treeRootHash = hashRootDirectory;
@@ -36,6 +37,7 @@ public class GitCommit {
         this.isFirst = true;
         commit(hashParent,hashRootDirectory,author,comment,path);
     }
+
     public void commit(String hashParent, String hashRootDirectory, String author, String comment,String path){
         FileHandler fileHandler = FileHandler.getInstance();
         TimeHandler timeHandler = TimeHandler.getInstance();
@@ -52,6 +54,7 @@ public class GitCommit {
         String pathRepo = "C:\\Users\\asafr\\OneDrive\\מסמכים\\GitHub\\AVGitProject\\gitRepos";
         fileHandler.replaceContentBetweenCommas(pathRepo,this.lastCommit);
     }
+
     public String getGitFileSh1(String sha1Name) {
         for (String sha1 : gitFileSh1) {
             if (sha1.equals(sha1Name)) {
@@ -61,6 +64,7 @@ public class GitCommit {
         System.err.println("SHA-1 not found for the given name: " + sha1Name);
         return null;
     }
+
     private void saveToFile(String repositoryPath) {
         Sha256 sha = Sha256.getInstance();
         String myContent = parentCommitHash+","+secondParentCommitHash+","
@@ -111,6 +115,7 @@ public class GitCommit {
 
         return sh1OfCommitFile;
     }
+
     public void changeFileHowChangeInThisCommit(String path){
         FileHandler fileHandler = FileHandler.getInstance();
         ArrayList<File> files =  fileHandler.listFilesInFolder(path);
@@ -127,6 +132,7 @@ public class GitCommit {
             createTreeAndBlob();
         }
     }
+
     public void createTreeAndBlob(){
 
         for (File file:this.files){
@@ -137,6 +143,7 @@ public class GitCommit {
             }
         }
     }
+
     private void searchRootDirectory(File file) throws UnknownEntityTypeException {
         String parentDirectoryPath = file.getParentFile().getPath();
         if (parentDirectoryPath.equals(this.nameOfRootDirectory)){
@@ -247,6 +254,7 @@ public class GitCommit {
     public void setHashParent(String hashParent) {
         this.parentCommitHash = hashParent;
     }
+
     public String getHashRootDirectory() {
         return treeRootHash;
     }
@@ -278,4 +286,5 @@ public class GitCommit {
     public void setMySh1(String mySh1) {
         this.mySh1 = mySh1;
     }
+
 }

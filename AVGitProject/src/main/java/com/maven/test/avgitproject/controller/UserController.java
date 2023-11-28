@@ -31,6 +31,7 @@ public class UserController {
     public List<User> findAll(){
         return userService.findAll();
     }
+
     @PostMapping("/userAdd")
     public User addStudent (@RequestBody User theUser) {
         theUser.setId(0);
@@ -63,7 +64,7 @@ public class UserController {
                 }
             }
             return ResponseEntity.status(200).body(userDTO);
-        }else {//Need to register after authentication
+        }else {// Need to register after authentication
             userDTO = dto;
 
             URI registerUri = UriComponentsBuilder.fromUriString(request.getRequestURL().toString())

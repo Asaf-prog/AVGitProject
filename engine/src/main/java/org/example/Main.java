@@ -30,4 +30,5 @@ public class Main {
         GitCommit commit = new GitCommit(hashParent,null,"asaf","commit without init",commitPath,repoName);
 
     }
+
 }

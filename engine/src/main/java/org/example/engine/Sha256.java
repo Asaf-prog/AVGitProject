@@ -10,6 +10,7 @@ import java.util.List;
 public final class Sha256 {
     private static Sha256 instance = null;
     private Sha256() {}
+
     private static final int[] K = {
             0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
             0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3, 0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174,
@@ -21,6 +22,7 @@ public final class Sha256 {
             0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208, 0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2
     };
     public static Sha256 getInstance() {
+
         if (instance == null)
             instance = new Sha256();
         return instance;
@@ -99,10 +101,12 @@ public final class Sha256 {
         }
         return hexBuilder.toString();
     }
+
     //  New function that handle the Sh1
     public static String getSh1ForRoot(String path){
         return listFilesAndCalculateSHA1(path);
     }
+
     private static String listFilesAndCalculateSHA1(String folderPath){
         List<GitFile> fileList = listFilesInFolder(folderPath);
         StringBuilder concatenatedHashes = new StringBuilder();
