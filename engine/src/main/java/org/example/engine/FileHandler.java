@@ -2,6 +2,7 @@ package org.example.engine;
 
 import java.io.*;
 
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -472,6 +473,51 @@ public class FileHandler {
     public static List<String> readLinesFromFile(String directoryPath, String fileName) throws IOException {
         Path filePath = Path.of(directoryPath, fileName);
         return Files.readAllLines(filePath);
+    }
+
+    public static String getSh1OfLastCommit(String folderPath){
+
+        String content = getContentOfHeadFile(folderPath);
+        String sh1Commit = extractContentBetweenCommas(content);
+        return sh1Commit;
+    }
+
+    private static String getContentOfHeadFile(String folderPath) {
+
+        try {
+            Path gitFolderPath = Paths.get(folderPath, ".AGit");
+
+            // Check if the .AGit folder exists
+            if (Files.exists(gitFolderPath) && Files.isDirectory(gitFolderPath)) {
+                Path headFilePath = gitFolderPath.resolve("Head");
+
+                // Check if the Head file exists
+                if (Files.exists(headFilePath) && Files.isRegularFile(headFilePath)) {
+                    // Read the content of the Head file
+                    return new String(Files.readAllBytes(headFilePath), StandardCharsets.UTF_8);
+                } else {
+                    return "Head file not found in the .AGit folder.";
+                }
+            } else {
+                return ".AGit folder not found.";
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "An error occurred while reading the Head file.";
+        }
+    }
+
+    private static String extractContentBetweenCommas(String input) {
+        if (input != null && !input.isEmpty()) {
+            int firstCommaIndex = input.indexOf(',');
+            int secondCommaIndex = input.indexOf(',', firstCommaIndex + 1);
+
+            if (firstCommaIndex != -1 && secondCommaIndex != -1) {
+                return input.substring(firstCommaIndex + 1, secondCommaIndex).trim();
+            }
+        }
+
+        return "Invalid input format or content not found between commas.";
     }
 
 }

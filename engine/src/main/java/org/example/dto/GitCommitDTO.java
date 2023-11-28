@@ -8,14 +8,16 @@ public class GitCommitDTO {
     private String comment;
     private String path;
     private String repoName;
+    private String password;
 
-    public GitCommitDTO(String hashParent, String hasRootDirectory, String author, String comment, String path, String repoName) {
+    public GitCommitDTO(String hashParent, String hasRootDirectory, String author, String comment, String path, String repoName,String password) {
         this.hashParent = hashParent;
         this.hasRootDirectory = hasRootDirectory;
         this.author = author;
         this.comment = comment;
         this.path = path;
         this.repoName = repoName;
+        this.password = password;
     }
     public GitCommitDTO(){}
     public String getHashParent() {
@@ -64,5 +66,13 @@ public class GitCommitDTO {
 
     public void setRepoName(String repoName) {
         this.repoName = repoName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

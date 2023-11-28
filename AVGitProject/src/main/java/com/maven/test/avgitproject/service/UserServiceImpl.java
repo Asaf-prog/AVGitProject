@@ -1,5 +1,6 @@
 package com.maven.test.avgitproject.service;
 
+import com.maven.test.avgitproject.daoUser.Sh1Repository;
 import com.maven.test.avgitproject.daoUser.UserRepository;
 import com.maven.test.avgitproject.dto.UserLoginDTO;
 import com.maven.test.avgitproject.entity.Sh1Detail;
@@ -19,6 +20,7 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService{
 
     private UserRepository userRepository;
+    private Sh1Repository sh1Repository;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository) {
@@ -71,9 +73,30 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public void gitCommit(GitCommitDTO dto) {
+        // Here I get the path of the repository
+        String path = getCurrentHashParent(dto);
+        FileHandler fileHandler = FileHandler.getInstance();
+        fileHandler.setPath(path);
+        String hashParent = fileHandler.getSh1OfLastCommit(path);
+        dto.setHashParent(hashParent);
         GitCommit commit =
                 new GitCommit(dto.getHashParent(), dto.getHasRootDirectory(),
                         dto.getAuthor(), dto.getComment(), dto.getPath(), dto.getRepoName());
+    }
+
+    private String getCurrentHashParent(GitCommitDTO dto) {
+        User user = userRepository.findByPassword(dto.getPassword());
+        List<Sh1Detail> sh1Details = userRepository.findSh1ListById(user.getId());
+
+      Optional<Sh1Detail> firstPath =  sh1Details.stream()
+                .filter(sh1Detail -> sh1Detail.getPath().equals(dto.getPath()))
+                .findFirst();
+      String path = null;
+      if (firstPath.isPresent()){
+          Sh1Detail sh1Detail = firstPath.get();
+          path = sh1Detail.getPath();
+      }
+     return path;
     }
 
     @Override

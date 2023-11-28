@@ -13,6 +13,8 @@ public class Main {
        String comment = "comment on the first commit";
 
        FileHandler fileHandler = FileHandler.getInstance();
+       String reader = fileHandler.getSh1OfLastCommit("C:\\Users\\asafr\\Desktop\\testforgit");
+        System.out.println("reader: " + reader);
 
         //get path from the user
         fileHandler.setPath("C:\\Users\\asafr\\Desktop\\testforgit");

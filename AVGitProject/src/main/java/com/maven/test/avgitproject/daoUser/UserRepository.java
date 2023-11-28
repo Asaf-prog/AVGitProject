@@ -1,6 +1,5 @@
 package com.maven.test.avgitproject.daoUser;
 
-
 import com.maven.test.avgitproject.entity.Sh1Detail;
 import com.maven.test.avgitproject.entity.User;
 import org.springframework.context.annotation.Lazy;
@@ -15,5 +14,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     @Query("SELECT u.sh1Details FROM User u WHERE u.id = :userId")
     List<Sh1Detail> findSh1ListById(@Param("userId") int userId);
+
+
     User findByPassword(String password);
 }

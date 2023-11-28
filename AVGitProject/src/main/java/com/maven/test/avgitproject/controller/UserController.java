@@ -9,7 +9,6 @@ import com.maven.test.avgitproject.utils.SessionUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.example.dto.GitCommitDTO;
 import org.example.dto.GitInitDTO;
-import org.example.engine.FileHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -122,6 +121,7 @@ public class UserController {
 
     @PostMapping("gitCommit")
     public ResponseEntity<?> gitCommit (@RequestBody GitCommitDTO dto) {
+
         userService.gitCommit(dto);
         return ResponseEntity.status(200).build();
     }
