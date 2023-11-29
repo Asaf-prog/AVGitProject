@@ -1,5 +1,4 @@
 import Login from "./components/Login.jsx";
-import Header from './componentsTemp/Header.jsx';
 import Body from "./components/Body.jsx";
 import { useState } from 'react';
 function App(){
@@ -9,7 +8,7 @@ function App(){
     const[userName, setUserName] = useState({
             user:'hello',
     });
-    
+
     function handleChangeLogin(){
         setShowLoginComponent(false);
         setShowHeaderComponent(true);
@@ -21,18 +20,13 @@ function App(){
         setShowHeaderComponent(true);
     }
 
-    function handleUserName(){
-        setUserName({
-            user: newName,
-          });
-    }
-
     return(
     <div>
-        {showLoginComponent ? <Login onChange={handleChangeLogin} name ={userName} 
+        {showLoginComponent ? <Login onChange={handleChangeLogin} 
+        name ={userName}
           setIsRegister={setIsRegister}/> : null}
         {!showLoginComponent ? `Welcome, ${userName.user}` : null}
-        {showHeaderComponent ? <Body/>: null}
+        {showHeaderComponent ? <Body />: null}
     </div>
 );
 }

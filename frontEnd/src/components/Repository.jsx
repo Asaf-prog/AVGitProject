@@ -2,35 +2,28 @@
 import React, { useState } from 'react';
 import CommitComponent from './CommitComponent.jsx';
 
-export default function Repository({ name, index, details }) {
+export default function Repository({ name }) {
     const [showDetails, setShowDetails] = useState(false);
-    const [showModal, setShowModal] = useState(false);
+    const [showNewComponent, setShowNewComponent] = useState(false);
 
 
-    const openModal = () => {
-        setShowModal(true);
-      };
-    
-      const closeModal = () => {
-        setShowModal(false);
-      };
-   
-    const handleButtonClick = () => {
-        // Toggle the showDetails state when the button is clicked
+    const handleRepoClick = () => {
+        setShowNewComponent(true);
         setShowDetails(!showDetails);
-        openModal;
+        console.log(`Clicked on repository ${name} `);
       };
    
+
     return (
-        <div className="repo-container">
-      <h3>{name}</h3>
-      <button className="repo-button" onClick={handleButtonClick}>
-        {showDetails ? 'Hide Last Commit' : 'View Last Commit'}
-      </button>
+        
+        <div className="repo-container" >
+      <button className='repo-button '  onClick={handleRepoClick}>{name}</button>
       {showDetails && (
-        <div className="repo-details">
-         
-          <CommitComponent showModal={showModal} closeModal={closeModal}/>
+        <div>
+          {showNewComponent ?
+          <CommitComponent 
+          name={name}
+          /> : null}
         </div>
       )}
     </div>

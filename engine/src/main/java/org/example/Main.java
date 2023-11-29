@@ -20,7 +20,10 @@ public class Main {
         fileHandler.setPath("C:\\Users\\asafr\\Desktop\\testforgit");
         gitObject.gitInit("C:\\Users\\asafr\\Desktop\\testforgit","The name ",comment);
 
+        String content = fileHandler.readContentFromZip(fileHandler.getPath(),
+                "b95f2efbbd0ddf66a4574c91dd5ae0c125cc4387968555161908831130fa517c","content4");
 
+        System.out.println("the content of the file is: " + content);
         DisplayData displayData = new DisplayData("C:\\Users\\asafr\\Desktop\\testforgit");
         displayData.showAllCommitByPath();
 

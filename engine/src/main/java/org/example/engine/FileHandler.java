@@ -9,6 +9,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
 public class FileHandler {
@@ -48,6 +49,10 @@ public class FileHandler {
     public static void setPath(String p){
         path = p+ "/.AGit/.Object/";
         pathOfDbTextFile = p + "/.AGit/db.txt";
+    }
+
+    public static String getPath(){
+       return  path ;
     }
 
     // Method to read content from a file into an array of strings
@@ -533,6 +538,22 @@ public class FileHandler {
 
         } catch (IOException e) {
             System.err.println("Error creating the text file: " + e.getMessage());
+        }
+
+    }
+
+    public static String readContentFromZip(String zipFilePath, String fileName,String name) {
+        zipFilePath = zipFilePath+fileName + ".zip";
+        try (ZipFile zipFile = new ZipFile(zipFilePath)) {
+            ZipEntry entry = zipFile.getEntry(name);
+
+            if (entry != null) {
+                return new String(zipFile.getInputStream(entry).readAllBytes());
+            } else {
+                throw new FileNotFoundException("File not found in the zip: " + fileName);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Error reading content from the zip file: " + e.getMessage(), e);
         }
     }
 

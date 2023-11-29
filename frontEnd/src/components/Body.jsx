@@ -32,16 +32,14 @@ export default function Body (){
     
     return(
         <div className="repo-container">
-           <button onClick={toggleDetails} className="repo-button">
-                {showDetails ? 'My Repositories' : 'My Repositories'}
-            </button>
-            {   data.length === 0 ?( 
+            <h3>My Repositories </h3>
+                {   data.length === 0 ?( 
                 <p>Data is empty</p>) : (
-                data.map((conceptItem,index) => (
+                
+                    data.map((conceptItem,index) => (
                 <Repository 
                     key={index} 
                     name={conceptItem.name} 
-                    index={conceptItem.index} 
                 />
                 )))
             }

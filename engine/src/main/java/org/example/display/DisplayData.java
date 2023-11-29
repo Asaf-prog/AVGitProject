@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,10 +17,12 @@ public class DisplayData {
     private String path;
     private boolean flag = true;
     private Deque<Commit> commits;
+    private List<Commit> commitsMapping;
 
     public DisplayData(String path) {
         this.path = path;
         commits = new LinkedList<>();
+        commitsMapping = new ArrayList<>();
     }
 
     public String getPath() {
@@ -60,7 +63,7 @@ public class DisplayData {
         GitTreeNode gitTreeNode = createTreeOfGitFile(path + "/.Agit/.Object/" + commit.getRoot());
         GitTreeNode gitTreeNodeFix = createNewFixTreeNode(gitTreeNode);
         commit.setGitTreeNode(gitTreeNodeFix);
-
+        commitsMapping.add(commit);
         commit.printCurrentCommitData();
     }
 
@@ -221,5 +224,13 @@ public class DisplayData {
 
     public void setCommits(Deque<Commit> commits) {
         this.commits = commits;
+    }
+
+    public List<Commit> getCommitsMapping() {
+        return commitsMapping;
+    }
+
+    public void setCommitsMapping(List<Commit> commitsMapping) {
+        this.commitsMapping = commitsMapping;
     }
 }

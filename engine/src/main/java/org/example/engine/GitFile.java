@@ -17,4 +17,6 @@ public interface GitFile {
     ArrayList<GitFile>  getFiles();
     String getNameOfTheFile();
     void setNameOfFile(String nameOfFile);
+    void showContentFile();
+    void setFile(File file);
 }

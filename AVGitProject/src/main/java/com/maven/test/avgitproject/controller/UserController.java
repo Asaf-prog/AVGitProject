@@ -1,14 +1,18 @@
 package com.maven.test.avgitproject.controller;
 
 import com.maven.test.avgitproject.constants.Constants;
-import com.maven.test.avgitproject.dto.UserDTO;
-import com.maven.test.avgitproject.dto.UserLoginDTO;
+import com.maven.test.avgitproject.dto.*;
+import com.maven.test.avgitproject.entity.Sh1Detail;
 import com.maven.test.avgitproject.entity.User;
 import com.maven.test.avgitproject.service.UserService;
 import com.maven.test.avgitproject.utils.SessionUtils;
 import jakarta.servlet.http.HttpServletRequest;
+import org.example.Exception.NoCommitException;
+import org.example.Exception.PathNotFoundException;
 import org.example.dto.GitCommitDTO;
 import org.example.dto.GitInitDTO;
+import org.example.engine.Commit;
+import org.example.engine.FileHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -102,12 +106,61 @@ public class UserController {
     }
 
     @GetMapping("/reposUser")
-    public ResponseEntity<?> getAllTheRepositoriesOfUser(@RequestBody UserLoginDTO dto){
-
+    public List<Sha1DetailDTO> getAllTheRepositoriesOfUser(@RequestBody UserLoginDTO dto){
+        Convertor convertor = Convertor.getInstance();
         User user = userService.getSh1FromUser(dto);
-        List<String> nameOfRepo = userService.getListOfRepoBySh1(user.getSh1());
 
-        return ResponseEntity.status(200).body(nameOfRepo);
+        List<Sh1Detail> sh1Details = userService.findSh1DetailByUserId(user.getId());
+        user.setSh1Details(sh1Details);
+        List<Sha1DetailDTO> sha1DetailDTOS = convertor.convertSh1Details(user.getSh1Details());
+        return sha1DetailDTOS;
+    }
+
+    @GetMapping("/getAllCommitRepo")
+    public ResponseEntity<?> getAllCommitOfRepositoryByPath(@RequestBody CommitDTO commitDTO){
+       try{
+           // First we get the path and check if the path exist in db
+           String path = userService.getPathFromUserAndRepo(commitDTO);
+           if (path.equals(commitDTO.getPath())){
+               FileHandler fileHandler = FileHandler.getInstance();
+               fileHandler.setPath(path);
+               // Need to return a list of Commit from the start to end
+              return ResponseEntity.status(200).body(userService.getListOfCommit(commitDTO.getPath()));
+           }else {
+               throw new PathNotFoundException("Path not found in the database: " + path);
+           }
+       } catch (PathNotFoundException e) {
+           throw new RuntimeException(e);
+       }catch (Exception e){
+           System.err.println("An unexpected error occurred: " + e.getMessage());
+           return null;
+       }
+    }
+
+    @GetMapping("/getLastCommitRepo")
+    public ResponseEntity<?> getLastCommitOfRepositoryByPath(@RequestBody CommitDTO commitDTO){
+        try{
+            // First we get the path and check if the path exist in db
+            String path = userService.getPathFromUserAndRepo(commitDTO);
+            if (path.equals(commitDTO.getPath())){
+                FileHandler fileHandler = FileHandler.getInstance();
+                fileHandler.setPath(path);
+
+                Commit lastCommit = userService.getLastCommit(commitDTO.getPath());
+                if (lastCommit != null){
+                    return ResponseEntity.status(200).body(lastCommit);
+                }else {
+                    throw new NoCommitException("No commit found.");
+                }
+            }else {
+                throw new PathNotFoundException("Path not found in the database: " + path);
+            }
+        } catch (PathNotFoundException e) {
+            throw new RuntimeException(e);
+        }catch (Exception e){
+            System.err.println("An unexpected error occurred: " + e.getMessage());
+            return null;
+        }
     }
 
     private String createSh1ForNewUser(User userEntity) {

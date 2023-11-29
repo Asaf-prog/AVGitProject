@@ -10,6 +10,7 @@ public class GitBlob implements GitFile {
     private boolean isBlob;
     private String path;
     private File file;
+    private String contentOfFile;
     private String nameOfFile;
     public GitBlob(){
         isBlob = true;
@@ -97,5 +98,17 @@ public class GitBlob implements GitFile {
 
     public void setNameOfFile(String nameOfFile) {
         this.nameOfFile = nameOfFile;
+    }
+
+    @Override
+    public void showContentFile() {
+        FileHandler fileHandler = FileHandler.getInstance();
+        String content = fileHandler.readContentFromZip(fileHandler.getPath(),this.shaOne,this.nameOfFile);
+        this.contentOfFile = content;
+        System.out.println("content: "+this.contentOfFile);
+    }
+    @Override
+    public void setFile(File file) {
+        this.file = file;
     }
 }

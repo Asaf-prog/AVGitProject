@@ -101,4 +101,14 @@ public class GitTree implements GitFile {
     public void setNameOfFile(String nameOfFile) {
         this.nameOfFile = nameOfFile;
     }
+
+    @Override
+    public void showContentFile() {
+        return;
+    }
+
+    @Override
+    public void setFile(File file) {
+        return;
+    }
 }

@@ -44,10 +44,10 @@ public class AvGitProjectApplication {
     public CommandLineRunner commandLineRunner (UserServiceImpl userService) {
         return args -> {
           //  createUser( userService);
-            createUserWithSh1Detail(userService);
+            //createUserWithSh1Detail(userService);
             //findUserWithSh1(userService);//without lazy annotation
            // findSh1DetailsForUserById(userService);
-
+            System.out.println("hello world!");
         };
     }
 

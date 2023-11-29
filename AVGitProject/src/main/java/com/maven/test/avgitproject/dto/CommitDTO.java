@@ -1,41 +1,39 @@
 package com.maven.test.avgitproject.dto;
 
 public class CommitDTO {
-    private String sha1;
-    private String name;
-    private String date;
-    private String author;
+    private String nameOfRepo;
+    private String path;
+    private String userPassword;
 
-    public CommitDTO(String sha1, String name, String date, String author) {
-        this.sha1 = sha1;
-        this.name = name;
-        this.date = date;
-        this.author = author;
+    public CommitDTO(){}
+
+    public CommitDTO(String nameOfRepo, String path, String userPassword) {
+        this.nameOfRepo = nameOfRepo;
+        this.path = path;
+        this.userPassword = userPassword;
     }
 
-    public String getSha1() {
-        return sha1;
+    public String getNameOfRepo() {
+        return nameOfRepo;
     }
 
-    public String getName() {
-        return name;
+    public void setNameOfRepo(String nameOfRepo) {
+        this.nameOfRepo = nameOfRepo;
     }
 
-    public String getDate() {
-        return date;
+    public String getPath() {
+        return path;
     }
 
-    public String getAuthor() {
-        return author;
+    public void setPath(String path) {
+        this.path = path;
     }
 
-    @Override
-    public String toString() {
-        return "Commit{" +
-                "sha1='" + sha1 + '\'' +
-                ", name='" + name + '\'' +
-                ", date='" + date + '\'' +
-                ", author='" + author + '\'' +
-                '}';
+    public String getUserPassword() {
+        return userPassword;
+    }
+
+    public void setUserPassword(String userPassword) {
+        this.userPassword = userPassword;
     }
 }

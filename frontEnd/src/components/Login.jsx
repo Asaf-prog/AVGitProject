@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { json } from 'react-router-dom';
 import Register from './Register.jsx';
 
 export default function Login({onChange,name,setIsRegister}) {

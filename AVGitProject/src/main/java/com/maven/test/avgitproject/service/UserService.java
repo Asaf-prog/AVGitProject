@@ -1,10 +1,12 @@
 package com.maven.test.avgitproject.service;
 
+import com.maven.test.avgitproject.dto.CommitDTO;
 import com.maven.test.avgitproject.dto.UserLoginDTO;
 import com.maven.test.avgitproject.entity.Sh1Detail;
 import com.maven.test.avgitproject.entity.User;
 import org.example.dto.GitCommitDTO;
 import org.example.dto.GitInitDTO;
+import org.example.engine.Commit;
 
 import java.util.List;
 
@@ -17,6 +19,8 @@ public interface UserService {
     void gitCommit(GitCommitDTO dto);
     String createSh1ForNewUser(User userEntity);
     User getSh1FromUser(UserLoginDTO user);
-    List<String> getListOfRepoBySh1(String sh1);
     List<Sh1Detail> findSh1DetailByUserId(int theId);
+    String getPathFromUserAndRepo(CommitDTO commitDTO);
+    List<Commit> getListOfCommit(String path);
+    Commit getLastCommit(String path);
 }

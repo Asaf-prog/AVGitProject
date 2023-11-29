@@ -68,6 +68,9 @@ public class Commit {
             System.out.println(" Name Of The File: " + gitFile.getNameOfTheFile());
             System.out.println(" SHA-1: " + gitFile.getShaOne());
             System.out.println(" Is Blob: " + gitFile.isBlob());
+            if (gitFile.isBlob()){
+                gitFile.showContentFile();
+            }
             System.out.println("Author: " + gitFile.getAuthor());
             System.out.println("Time: " + gitFile.getDate());
 

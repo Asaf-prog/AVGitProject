@@ -2,15 +2,14 @@ package com.maven.test.avgitproject.service;
 
 import com.maven.test.avgitproject.daoUser.Sh1Repository;
 import com.maven.test.avgitproject.daoUser.UserRepository;
+import com.maven.test.avgitproject.dto.CommitDTO;
 import com.maven.test.avgitproject.dto.UserLoginDTO;
 import com.maven.test.avgitproject.entity.Sh1Detail;
 import com.maven.test.avgitproject.entity.User;
+import org.example.display.DisplayData;
 import org.example.dto.GitCommitDTO;
 import org.example.dto.GitInitDTO;
-import org.example.engine.FileHandler;
-import org.example.engine.Git;
-import org.example.engine.GitCommit;
-import org.example.engine.Sha256;
+import org.example.engine.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -114,16 +113,58 @@ public class UserServiceImpl implements UserService{
         return userRepository.findByPassword(user.getPassword());
     }
 
-    @Override
-    public List<String> getListOfRepoBySh1(String sh1) {
-        FileHandler fileHandler = FileHandler.getInstance();
-        return fileHandler.getListOfRepoNameBySh1(sh1);
-    }
+
 
     @Override
     public List<Sh1Detail> findSh1DetailByUserId(int theId) {
 
         List<Sh1Detail> sh1Details = userRepository.findSh1ListById(theId);
+        return sh1Details;
+    }
+
+    @Override
+    public String getPathFromUserAndRepo(CommitDTO commitDTO) {
+        User user = userRepository.findByPassword(commitDTO.getUserPassword());
+        List<Sh1Detail> sh1Details = getSh1DetailByNameOfRepo(user);
+        return getSh1DetailsWithCorrectNameOfRepo(sh1Details,commitDTO);
+
+    }
+
+    @Override
+    public List<Commit> getListOfCommit(String path) {
+        DisplayData displayData = new DisplayData(path);
+        displayData.showAllCommitByPath();
+
+        return displayData.getCommitsMapping();
+    }
+
+    @Override
+    public Commit getLastCommit(String path) {
+        DisplayData displayData = new DisplayData(path);
+        displayData.showAllCommitByPath();
+        List<Commit> commits = displayData.getCommitsMapping();
+        Commit lastCommit = null;
+        if (!commits.isEmpty()){
+            lastCommit =  commits.get(commits.size() - 1);
+        }
+        return lastCommit;
+    }
+
+    private String getSh1DetailsWithCorrectNameOfRepo(List<Sh1Detail> sh1Details, CommitDTO commitDTO) {
+        String path = null;
+        Optional<Sh1Detail> sh1Detail = sh1Details.stream()
+                .filter(sh1Detail1 -> sh1Detail1.getName().trim().equals(commitDTO.getNameOfRepo().trim()) )
+                .findFirst();
+        if (sh1Detail.isPresent()){
+            Sh1Detail tempSh1 = sh1Detail.get();
+            path = tempSh1.getPath();
+        }
+        return path;
+    }
+
+
+    private List<Sh1Detail> getSh1DetailByNameOfRepo(User user) {
+        List<Sh1Detail> sh1Details = userRepository.findSh1ListById(user.getId());
         return sh1Details;
     }
 
