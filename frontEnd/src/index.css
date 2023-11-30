@@ -237,7 +237,7 @@ header p {
   border: 2px solid #0f0f0f;
   border-radius: 18px;
   box-shadow: 0 6px 8px rgba(2, 0, 0, 0.1);
-  background-color: #c4b1b1;
+  background-color: #9d9d9d;
   justify-content: space-between;
   
 }
@@ -271,20 +271,84 @@ header p {
   animation: pop-in 0.5s cubic-bezier(0.68, -0.55, 0.65, 0.52) forwards;
 }
 
-.beautiful-button {
+beautiful-button {
   margin-left: 10px;
-  padding: 20px 20px;
-  font-size: 15px;
+  padding: 15px 25px;
+  font-size: 16px;
   font-weight: bold;
   color: #fff;
   background-color: #3498db;
   border: none;
-  border-radius: 5px;
+  border-radius: 18px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  justify-content: space-around;
 }
 
 .beautiful-button:hover {
   background-color: #2980b9;
+}
+#sidebar {
+  width: 250px;
+  height: 100%;
+  background-color: #333;
+  position: fixed;
+  left: 0;
+  top: 0;
+  padding-top: 20px;
+}
+
+#sidebar a {
+  padding: 15px;
+  text-decoration: none;
+  font-size: 18px;
+  color: white;
+  display: block;
+  transition: 0.3s;
+}
+
+#sidebar a:hover {
+  background-color: #555;
+}
+
+#content {
+  margin-left: 250px;
+  padding: 16px;
+}
+
+#sidebar button {
+  padding: 15px;
+  font-size: 18px;
+  color: white;
+  background-color: #101110; /* Green color, you can customize this */
+  border: none;
+  display: block;
+  width: 100%;
+  margin-top: 20px; /* Adjust the margin as needed */
+  cursor: pointer;
+}
+
+#sidebar button:hover {
+  background-color: #728072; /* Darker green on hover */
+}
+
+.move-left {
+  margin-right: auto;
+  margin-left: 0;
+}
+
+.more-button {
+  padding: 3px 9px;
+  font-size: 14px;
+  margin-top: 10px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #3498db;
+  border: none;
+  border-radius: 13px;
+  cursor: pointer;
+  transition: background-color 0.8s ease;
+}
+
+.more-button:hover {
+  background-color: #212527;
 }

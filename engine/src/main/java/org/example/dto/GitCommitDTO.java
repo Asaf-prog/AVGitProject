@@ -75,4 +75,17 @@ public class GitCommitDTO {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    @Override
+    public String toString() {
+        return "GitCommitDTO{" +
+                "hashParent='" + hashParent + '\'' +
+                ", hasRootDirectory='" + hasRootDirectory + '\'' +
+                ", author='" + author + '\'' +
+                ", comment='" + comment + '\'' +
+                ", path='" + path + '\'' +
+                ", repoName='" + repoName + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
 }

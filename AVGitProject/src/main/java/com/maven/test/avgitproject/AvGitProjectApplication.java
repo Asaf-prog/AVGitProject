@@ -33,7 +33,7 @@ public class AvGitProjectApplication {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/AvGit/**")
-                        .allowedOrigins("http://localhost:5173") // Allow requests from this origin
+                        .allowedOrigins("http://localhost:5174") // Allow requests from this origin
                         .allowedMethods("GET", "POST", "PUT", "DELETE")
                         .allowedHeaders("*");
             }

@@ -19,4 +19,5 @@ public interface GitFile {
     void setNameOfFile(String nameOfFile);
     void showContentFile();
     void setFile(File file);
+    String getContentOfTheFile();
 }

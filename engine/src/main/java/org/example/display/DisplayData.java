@@ -1,5 +1,6 @@
 package org.example.display;
 
+import org.example.dto.CommitMappingDTO;
 import org.example.engine.*;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -18,11 +19,13 @@ public class DisplayData {
     private boolean flag = true;
     private Deque<Commit> commits;
     private List<Commit> commitsMapping;
+    private List<CommitMappingDTO> commitMappingDTO;
 
     public DisplayData(String path) {
         this.path = path;
         commits = new LinkedList<>();
         commitsMapping = new ArrayList<>();
+        commitMappingDTO = new ArrayList<>();
     }
 
     public String getPath() {
@@ -64,7 +67,7 @@ public class DisplayData {
         GitTreeNode gitTreeNodeFix = createNewFixTreeNode(gitTreeNode);
         commit.setGitTreeNode(gitTreeNodeFix);
         commitsMapping.add(commit);
-        commit.printCurrentCommitData();
+        commit.printCurrentCommitData(commitMappingDTO);
     }
 
     private GitTreeNode createNewFixTreeNode(GitTreeNode gitTreeNode) {
@@ -177,7 +180,8 @@ public class DisplayData {
     }
 
     private static void parseLine(String line, Commit commit) {
-        Pattern pattern = Pattern.compile("(\\w+)=(.*?), ");
+        Pattern pattern = Pattern.compile("(\\w+)=(.*?)(?:, |$)");
+
         Matcher matcher = pattern.matcher(line);
 
         while (matcher.find()) {
@@ -189,7 +193,10 @@ public class DisplayData {
                     commit.setRoot(value);
                     break;
                 case "Last SHA-1 Content Head File":
-                    commit.setLastSh1(value.equals("null") ? null : value);
+                    commit.setLastSh1(value.equals("null") ? "This is the Root Commit" : value);
+                    break;
+                case "File":
+                    commit.setLastSh1(value.equals("null") ? "This is the Root Commit" : value);
                     break;
                 case "Comment":
                     commit.setComment(value);
@@ -198,11 +205,12 @@ public class DisplayData {
                     commit.setAuthor(value);
                     break;
                 case "Time":
-                    commit.setTime(value);
+                    commit.setTime(value.trim());
                     break;
-                // Add more cases for other properties if needed
             }
         }
+
+
     }
     private String getLastCommit() {
         FileHandler fileHandler = FileHandler.getInstance();
@@ -232,5 +240,13 @@ public class DisplayData {
 
     public void setCommitsMapping(List<Commit> commitsMapping) {
         this.commitsMapping = commitsMapping;
+    }
+
+    public List<CommitMappingDTO> getCommitMappingDTO() {
+        return commitMappingDTO;
+    }
+
+    public void setCommitMappingDTO(List<CommitMappingDTO> commitMappingDTO) {
+        this.commitMappingDTO = commitMappingDTO;
     }
 }

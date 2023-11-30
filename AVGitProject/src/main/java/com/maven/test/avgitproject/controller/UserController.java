@@ -9,6 +9,7 @@ import com.maven.test.avgitproject.utils.SessionUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.example.Exception.NoCommitException;
 import org.example.Exception.PathNotFoundException;
+import org.example.dto.CommitMappingDTO;
 import org.example.dto.GitCommitDTO;
 import org.example.dto.GitInitDTO;
 import org.example.engine.Commit;
@@ -50,7 +51,7 @@ public class UserController {
         return dbUser;
     }
 
-    @CrossOrigin(origins = "http://localhost:5173")
+    @CrossOrigin(origins = "http://localhost:5174")
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody UserLoginDTO dto, HttpServletRequest request) {
       // Search by password
@@ -105,7 +106,7 @@ public class UserController {
             return ResponseEntity.status(500).body("The User Exist");
     }
 
-    @GetMapping("/reposUser")
+    @PostMapping("/reposUser")
     public List<Sha1DetailDTO> getAllTheRepositoriesOfUser(@RequestBody UserLoginDTO dto){
         Convertor convertor = Convertor.getInstance();
         User user = userService.getSh1FromUser(dto);
@@ -116,7 +117,7 @@ public class UserController {
         return sha1DetailDTOS;
     }
 
-    @GetMapping("/getAllCommitRepo")
+    @PostMapping("/getAllCommitRepo")
     public ResponseEntity<?> getAllCommitOfRepositoryByPath(@RequestBody CommitDTO commitDTO){
        try{
            // First we get the path and check if the path exist in db
@@ -125,7 +126,9 @@ public class UserController {
                FileHandler fileHandler = FileHandler.getInstance();
                fileHandler.setPath(path);
                // Need to return a list of Commit from the start to end
-              return ResponseEntity.status(200).body(userService.getListOfCommit(commitDTO.getPath()));
+               List<CommitMappingDTO> commitList = userService.getListOfCommit(commitDTO.getPath());
+
+               return ResponseEntity.status(200).body(commitList);
            }else {
                throw new PathNotFoundException("Path not found in the database: " + path);
            }

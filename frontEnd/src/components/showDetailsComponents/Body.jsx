@@ -2,21 +2,34 @@ import React, { useState, useEffect } from 'react';
 
 import Repository from './Repository.jsx';
 
-export default function Body (){
+export default function Body ({userName,userPassword}){
     const [showDetails, setShowDetails] = useState(false);
 
     const [data, setData] = useState([]);
 
+    const userDTO = {
+      userName: userName, 
+      password: userPassword.password
+    }
     useEffect(() => {
       async function fetchData() {
         try {
-          const response = await fetch('http://localhost:8080/AvGit/repo');
+
+          const url = "http://localhost:8080/AvGit/reposUser";
+          const response = await fetch(url,{
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body:JSON.stringify(userDTO)
+
+          });
           if (!response.ok) {
             throw new Error('Network response was not ok');
           }
   
           const responseData = await response.clone().json(); // Clone the response and parse JSON
-          console.log('Response from http://localhost:8080/AvGit/repo', responseData);
+          console.log('Response from http://localhost:8080/AvGit/reposUser', responseData);
           setData(responseData);
         } catch (error) {
           console.error('Error fetching data:', error);
@@ -39,7 +52,9 @@ export default function Body (){
                     data.map((conceptItem,index) => (
                 <Repository 
                     key={index} 
-                    name={conceptItem.name} 
+                    name={conceptItem.name}
+                    userPassword={userPassword}
+                    path = {conceptItem.path} 
                 />
                 )))
             }

@@ -7,6 +7,7 @@ import com.maven.test.avgitproject.dto.UserLoginDTO;
 import com.maven.test.avgitproject.entity.Sh1Detail;
 import com.maven.test.avgitproject.entity.User;
 import org.example.display.DisplayData;
+import org.example.dto.CommitMappingDTO;
 import org.example.dto.GitCommitDTO;
 import org.example.dto.GitInitDTO;
 import org.example.engine.*;
@@ -131,11 +132,12 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public List<Commit> getListOfCommit(String path) {
+    public List<CommitMappingDTO> getListOfCommit(String path) {
         DisplayData displayData = new DisplayData(path);
         displayData.showAllCommitByPath();
 
-        return displayData.getCommitsMapping();
+        //return displayData.getCommitsMapping();
+        return displayData.getCommitMappingDTO();
     }
 
     @Override

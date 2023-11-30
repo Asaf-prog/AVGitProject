@@ -111,4 +111,9 @@ public class GitBlob implements GitFile {
     public void setFile(File file) {
         this.file = file;
     }
+
+    @Override
+    public String getContentOfTheFile() {
+        return this.contentOfFile;
+    }
 }

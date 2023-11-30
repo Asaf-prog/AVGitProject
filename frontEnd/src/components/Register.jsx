@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-export default function Register({setIsRegister, name, onChange}) {
+export default function Register({setIsRegister, name, onChange,userPassword}) {
   const [registerInput, setRegisterInput] = useState({
     firstName: '',
     lastName: '',
@@ -57,6 +57,7 @@ export default function Register({setIsRegister, name, onChange}) {
     if(response.ok){
         console.log("Succses to Register! ");
         name.user = userDTO.firstName + " " + userDTO.lastName ;
+        userPassword.password = userDTO.password;
         console.log(name);
         setIsRegister();
         onChange();

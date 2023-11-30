@@ -111,4 +111,9 @@ public class GitTree implements GitFile {
     public void setFile(File file) {
         return;
     }
+
+    @Override
+    public String getContentOfTheFile() {
+        return "it's Folder";
+    }
 }
