@@ -38,7 +38,7 @@ export default function Login({onChange,name,setIsRegister,userPassword}) {
       password: userInput.password
   };
 
-  try {
+  try{
    
     const response = await fetch(url, {
       method: 'POST',
@@ -57,11 +57,12 @@ export default function Login({onChange,name,setIsRegister,userPassword}) {
 
    
     
-    if (userInput.userName === responseData.userName && userInput.password === responseData.password) {
+    if (userInput.userName === responseData.userName && 
+      userInput.password === responseData.password) {
       onChange();
       name.user = userInput.userName;
       userPassword.password = userInput.password;
-      //send request
+      
     } else {
       // Handle login failure
       alert('Login failed. Please check your credentials.');
@@ -102,13 +103,17 @@ export default function Login({onChange,name,setIsRegister,userPassword}) {
         
       {! showRegister && (
         <button onClick={handleLogin} className="login-button">
-          Login
+          <h3>Login</h3>
         </button>
       )}
         {showRegister && (
         <div className="register-container">
-          <h2>Register</h2>
-          {<Register  setIsRegister={setIsRegister} name={name} onChange={onChange} userPassword={userPassword}/>}
+          <h3>Register</h3>
+          {<Register  
+          setIsRegister={setIsRegister}
+          name={name} 
+          onChange={onChange} 
+          userPassword={userPassword}/>}
         </div>
         )}
         {!showRegister && (

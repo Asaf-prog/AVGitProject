@@ -2,12 +2,15 @@ import Login from "./components/Login.jsx";
 import Body from "./components/showDetailsComponents/Body.jsx";
 import ProjectSidebar from "./components/ProjectsSidebar.jsx";
 import CreateNewCommit from "./components/createNewRepo/CreateNewCommit.jsx";
+import CreateNewCommitWithoutRepo from "./components/createNewCommit/CreateNewCommitWithoutRepo.jsx";
 import { useState } from 'react';
 
 function App(){
+    
     const [showLoginComponent, setShowLoginComponent] = useState(true);
     const [showHeaderComponent, setShowHeaderComponent] = useState(false);
     const [showBodyComponent, setShowBodyComponent] = useState(false);
+    const [showCreateNewRepository, setCreateNewRepository] = useState(false);
     const [showCreateNewCommit, setCreateNewCommit] = useState(false);
     
     const[userName, setUserName] = useState({
@@ -29,16 +32,22 @@ function App(){
     }
     function handleBodyComponent() {
         setShowBodyComponent(true);
+        setCreateNewRepository(false);
         setCreateNewCommit(false);
     }
 
-    function handleCreateNewCommit() {
-        setCreateNewCommit(true);
-        setCreateNewCommit(true);
+    function handleCreateNewRepository() {
+        setCreateNewRepository(true);
+        setCreateNewCommit(false);
         setShowBodyComponent(false);
     }
 
 
+    function handleCreateNewCommit() {
+        setCreateNewCommit(true);
+        setCreateNewRepository(false);
+        setShowBodyComponent(false);
+    }
    
     return(
     <main >
@@ -48,7 +57,9 @@ function App(){
           setIsRegister={setIsRegister}/> : null}
           {!showLoginComponent ?<h3>Welcome {userName.user}</h3>  : null}
          
-         {showHeaderComponent ? <ProjectSidebar handleBodyComponent={handleBodyComponent}
+         {showHeaderComponent ? <ProjectSidebar 
+         handleBodyComponent={handleBodyComponent}
+         handleCreateNewRepository={handleCreateNewRepository}
          handleCreateNewCommit={handleCreateNewCommit}
            />: null} 
          
@@ -56,7 +67,12 @@ function App(){
          userName={userName.user}
          userPassword={userPassword} />: null} 
          
-         {showCreateNewCommit ? <CreateNewCommit  />: null} 
+         {showCreateNewRepository ? <CreateNewCommit 
+         userPassword={userPassword}  />: null} 
+         
+         {showCreateNewCommit ? <CreateNewCommitWithoutRepo 
+         userPassword={userPassword} 
+         userName={userName.user} />: null} 
 
     </main>
 );

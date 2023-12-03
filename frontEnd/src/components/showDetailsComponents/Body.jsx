@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import Repository from './Repository.jsx';
 
 export default function Body ({userName,userPassword}){
-    const [showDetails, setShowDetails] = useState(false);
 
     const [data, setData] = useState([]);
 
@@ -37,10 +36,6 @@ export default function Body ({userName,userPassword}){
       }  
       fetchData();
     }, []);
-
-    const toggleDetails = () => {
-        setShowDetails(!showDetails);
-      };
 
     
     return(

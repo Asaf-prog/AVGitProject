@@ -73,12 +73,12 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public void gitCommit(GitCommitDTO dto) {
-        // Here I get the path of the repository
         String path = getCurrentHashParent(dto);
         FileHandler fileHandler = FileHandler.getInstance();
         fileHandler.setPath(path);
         String hashParent = fileHandler.getSh1OfLastCommit(path);
         dto.setHashParent(hashParent);
+
         GitCommit commit =
                 new GitCommit(dto.getHashParent(), dto.getHasRootDirectory(),
                         dto.getAuthor(), dto.getComment(), dto.getPath(), dto.getRepoName());

@@ -49,9 +49,9 @@ export default function CommitComponent({name,userPassword,path}) {
     
     return (
         <div >
+          <button onClick={handleClick} className='more-button'>commit List </button>
             {data.length === 0 ? null : data.map((item,index) => (
-                <div>
-                       <button onClick={handleClick} className='more-button'>commit List </button>
+                <div  key={index}>
                         {click ?
                         (<CommitContent 
                         key={index}
@@ -65,12 +65,3 @@ export default function CommitComponent({name,userPassword,path}) {
       </div>
     );
 }
-
-// <h3 key={index}>{item.name} {item.author}</h3>
-
-{/* <ul id="nameList">
-            {data.length === 0 ? null : data.map((conceptItem) => (
-            <CommitData  key={conceptItem.sha1} commitContent={conceptItem.name} commitSh1 ={conceptItem.sha1} commitData ={conceptItem.date} commitAuthor = {conceptItem.author} />
-            ))}
-            
-            </ul> */}

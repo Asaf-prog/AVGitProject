@@ -1,4 +1,3 @@
-import GitFile from "./GitFile.jsx";
 export default function ShowGitFile({treeNode}) {
     
     
@@ -7,11 +6,10 @@ export default function ShowGitFile({treeNode}) {
     console.log(treeNode.length);
     
     return(
-        <div>
+        <div  className="your-box-class">
             {treeNode.length === 0 ? null : treeNode.map((conceptItem,index) => (
-                
-                <div >
-                     key={index+1}
+            
+                <div key={index+1}>
                    
         <p>
           <strong>File Name:</strong> {conceptItem.nameOfTheFile || 'N/A'}

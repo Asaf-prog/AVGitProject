@@ -25,15 +25,3 @@ export default function Repository({ name,userPassword,path }) {
     </div>
   );
 }
-
- // const openNewWindow = () => {
-  //   // Open a new window with the CommitComponent
-  //   const newWindow = window.open('', '_blank', 'width=600,height=400,resizable=yes,scrollbars=yes');
-  //   newWindow.document.write('<html><head><title>New Page</title></head><body>');
-  //   newWindow.document.write('<div id="root"></div>');
-  //   newWindow.document.write('</body></html>');
-  //   newWindow.document.getElementById('root').innerHTML = '<h1>Loading...</h1>';
-
-  //   // Render the CommitComponent inside the new window
-  //   ReactDOM.render(<CommitComponent />, newWindow.document.getElementById('root'));
-  // };

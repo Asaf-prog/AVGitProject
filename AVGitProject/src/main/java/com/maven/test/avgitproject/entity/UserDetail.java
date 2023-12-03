@@ -14,7 +14,6 @@ public class UserDetail {
     @Column(name = "hobby")
     private String hobby;
 
-
     public UserDetail(){}
     public UserDetail(String youtubeChannel, String hobby) {
         this.youtubeChannel = youtubeChannel;
