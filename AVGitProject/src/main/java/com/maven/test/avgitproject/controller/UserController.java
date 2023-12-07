@@ -51,7 +51,7 @@ public class UserController {
         return dbUser;
     }
 
-    @CrossOrigin(origins = "http://localhost:5174")
+    @CrossOrigin(origins = "http://localhost:5173")
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody UserLoginDTO dto, HttpServletRequest request) {
       // Search by password
@@ -93,13 +93,24 @@ public class UserController {
 
         if(userService.findByPassword(dto.getPassword()) == null) {
 
-            User userEntity = new User(dto.getFirstName(), dto.getLastName(), dto.getUserName(), dto.getEmail(), dto.getSh1(), dto.getPassword());
+            User userEntity = new User(dto.getFirstName(),
+                    dto.getLastName(),
+                    dto.getUserName(),
+                    dto.getEmail(),
+                    dto.getSh1(),
+                    dto.getPassword());
+
             userEntity.setSh1(createSh1ForNewUser(userEntity));
 
             userService.save(userEntity);
             request.getSession(true).setAttribute(Constants.USER_ID, userEntity.getId());
-            UserDTO userDTO = new UserDTO(userEntity.getFirstName(), userEntity.getLastName(), userEntity.getUserName(),userEntity.getEmail(),
-                    userEntity.getSh1(), userEntity.getPassword());
+
+            UserDTO userDTO = new UserDTO(userEntity.getFirstName(),
+                    userEntity.getLastName(),
+                    userEntity.getUserName(),
+                    userEntity.getEmail(),
+                    userEntity.getSh1(),
+                    userEntity.getPassword());
 
             return ResponseEntity.status(200).body(userDTO);
         }else
@@ -172,15 +183,25 @@ public class UserController {
 
     @PostMapping("/gitInit")
     public ResponseEntity<?> gitInit(@RequestBody GitInitDTO dto){
-        userService.gitInit(dto);
-        return ResponseEntity.status(200).build();
+        if(userService.checkGitInit(dto)){
+            userService.gitInit(dto);
+            return ResponseEntity.status(200).body(dto);
+        }else {
+            return ResponseEntity.status(500).body("The Data Of The User Is Empty");
+        }
+
     }
 
     @PostMapping("gitCommit")
     public ResponseEntity<?> gitCommit (@RequestBody GitCommitDTO dto) {
 
-        userService.gitCommit(dto);
-        return ResponseEntity.status(200).build();
+        if (userService.checkGitCommit(dto)){
+            userService.gitCommit(dto);
+            return ResponseEntity.status(200).body(dto);
+        }else {
+            return  ResponseEntity.status(500).body("The Data How Send To Git Init Are Not Complete");
+        }
+
     }
 
     private boolean isValidName(String name) {

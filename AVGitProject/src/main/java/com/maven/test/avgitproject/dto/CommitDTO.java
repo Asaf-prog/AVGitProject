@@ -36,4 +36,13 @@ public class CommitDTO {
     public void setUserPassword(String userPassword) {
         this.userPassword = userPassword;
     }
+
+    @Override
+    public String toString() {
+        return "CommitDTO{" +
+                "nameOfRepo='" + nameOfRepo + '\'' +
+                ", path='" + path + '\'' +
+                ", userPassword='" + userPassword + '\'' +
+                '}';
+    }
 }

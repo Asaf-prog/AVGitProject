@@ -235,7 +235,7 @@ header p {
 .repo-container {
   max-width: 1000px;
   margin: 50px auto;
-  padding: 20px;
+  padding: 30px;
   border: 2px solid #0f0f0f;
   border-radius: 18px;
   box-shadow: 0 6px 8px rgba(2, 0, 0, 0.1);
@@ -340,8 +340,8 @@ beautiful-button {
 
 .more-button {
   padding: 3px 9px;
-  font-size: 14px;
-  margin-top: 10px;
+  font-size: 12px;
+  margin-top: 12px;
   font-weight: bold;
   color: #fff;
   background-color: #3498db;
@@ -358,15 +358,16 @@ beautiful-button {
 
 .your-box-class {
   border: 1px solid #b47979;
-  padding: 10px;
-  margin: 10px;
+  padding: 5px;
+  margin: 5px;
   background-color: #d8cccc;
 }
 
 .your-box-class div {
-  margin-bottom: 16px;
+  margin-bottom: 2px;
 }
 
 .your-box-class p {
-  margin: 15px 0;
+  margin: 1px 0;
 }
+

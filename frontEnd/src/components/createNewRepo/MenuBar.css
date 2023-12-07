@@ -1,6 +1,7 @@
 /* MenuBar.css */
 
 .menu-bar-container {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -58,4 +59,16 @@ button {
 
 button:hover {
   background-color: #969b96;
+}
+
+.success-message {
+  background-color: #4CAF50;
+  color: white;
+  padding: 1px;
+  border-radius: 3px;
+  position: absolute;
+  bottom: 50px;
+  right: 510px;
+  left: 550;
+  z-index: 1;
 }

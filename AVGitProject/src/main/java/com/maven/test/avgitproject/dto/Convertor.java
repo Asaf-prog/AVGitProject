@@ -14,11 +14,17 @@ public class Convertor {
             instance = new Convertor();
         return instance;
     }
+
     public static List<Sha1DetailDTO> convertSh1Details(List<Sh1Detail> sh1Details){
         List<Sha1DetailDTO> sha1DetailDTOS = new ArrayList<>();
         for (Sh1Detail sh1Detail: sh1Details){
-            sha1DetailDTOS.add(new Sha1DetailDTO(sh1Detail.getSh1(), sh1Detail.getName(), sh1Detail.getPath()));
+            sha1DetailDTOS.add(
+                    new Sha1DetailDTO(sh1Detail.getSh1(),
+                    sh1Detail.getName(),
+                    sh1Detail.getPath())
+            );
         }
         return sha1DetailDTOS;
     }
+
 }

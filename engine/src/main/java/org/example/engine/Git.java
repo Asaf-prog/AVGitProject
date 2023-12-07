@@ -13,9 +13,11 @@ public class Git {
     private String rootSha1;
 
     public Git() {}
+
     public Git(String userName) {
         this.currentUser = userName;
     }
+
     public Git(String currentUser, Map<String, GitRepository> repositoriesMap, String rootSha1) {
         this.currentUser = currentUser;
         this.repositoriesMap = repositoriesMap;
@@ -25,18 +27,22 @@ public class Git {
     public void gitInit(String path,String repoName,String comment){
 
         if (!AGitExistInFile(path)) {
-            FileHandler fileHandler = FileHandler.getInstance();
             Sha256 sha = Sha256.getInstance();
-            this.rootSha1 = sha.getHash(path + repoName);//todo need to save in file as a fair the name of the rep and the sha1
-            fileHandler.createFolder(path + "/.AGit/");
-            fileHandler.createDbFile(path + "/.AGit/db.txt");
-            fileHandler.createFolder(path + "/.AGit/.Object");
-            fileHandler.writeToFile("./gitRepos", repoName,"null");// Demo db => every session have a repo list
+            this.rootSha1 = sha.getHash(path + repoName);
+            createFilesWithInstanceOfFileHandler(path, repoName);
             GitRepository newRep = new GitRepository(currentUser, repoName, path,comment);
-            String hash = "hash";
         }else {
             System.out.println("The trace after this folder exist");
         }
+    }
+
+    private void createFilesWithInstanceOfFileHandler(String path, String repoName) {
+        FileHandler fileHandler = FileHandler.getInstance();
+        fileHandler.createFolder(path + "/.AGit/");
+        fileHandler.createDbFile(path + "/.AGit/db.txt");
+        fileHandler.createFolder(path + "/.AGit/.Object");
+        fileHandler.writeToFile("./gitRepos", repoName,"null");// Demo db => every session have a repo list
+
     }
 
     private boolean AGitExistInFile(String path){
@@ -78,5 +84,19 @@ public class Git {
     public GitRepository getRepository(String key) {
         return repositoriesMap.get(key);
     }
+
+    public String getRootSha1() {
+        return rootSha1;
+    }
+
+    public void setRootSha1(String rootSha1) {
+        this.rootSha1 = rootSha1;
+    }
+
+    //create a new branch, need to supply the repo name, the path,
+    //and the commit that you want to create from the new branch
+    //than we need to add it to the bd branch
+    //if we want to see the last commit we always show the main branch
+    //after we merge the two branch we need to delete the branch from the db
 
 }

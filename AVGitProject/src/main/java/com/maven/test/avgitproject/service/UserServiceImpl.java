@@ -23,8 +23,9 @@ public class UserServiceImpl implements UserService{
     private Sh1Repository sh1Repository;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository,Sh1Repository sh1Repository) {
         this.userRepository = userRepository;
+        this.sh1Repository = sh1Repository;
     }
 
     @Override
@@ -150,6 +151,33 @@ public class UserServiceImpl implements UserService{
             lastCommit =  commits.get(commits.size() - 1);
         }
         return lastCommit;
+    }
+
+    @Override
+    public boolean checkGitInit(GitInitDTO dto) {
+
+        User user = userRepository.findByPassword(dto.getUserPassword());
+        if (user == null){
+            return false;
+        }
+        return dto.getPath() != null &&
+                dto.getComment()!= null &&
+                dto.getRepoName()!= null &&
+                dto.getUserPassword()!= null;
+    }
+
+    @Override
+    public boolean checkGitCommit(GitCommitDTO dto) {
+        User user = userRepository.findByPassword(dto.getPassword());
+        if (user == null){
+            return false;
+        }else {
+            return dto.getPath() != null &&
+                    dto.getAuthor() != null &&
+                    dto.getComment() != null &&
+                    dto.getPassword() != null &&
+                    dto.getRepoName() != null;
+        }
     }
 
     private String getSh1DetailsWithCorrectNameOfRepo(List<Sh1Detail> sh1Details, CommitDTO commitDTO) {

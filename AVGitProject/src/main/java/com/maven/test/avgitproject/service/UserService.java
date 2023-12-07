@@ -24,4 +24,6 @@ public interface UserService {
     String getPathFromUserAndRepo(CommitDTO commitDTO);
     List<CommitMappingDTO> getListOfCommit(String path);
     Commit getLastCommit(String path);
+    boolean checkGitInit(GitInitDTO dto);
+    boolean checkGitCommit(GitCommitDTO dto);
 }

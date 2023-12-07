@@ -50,7 +50,26 @@ public class GitRepository {
         return name;
     }
 
-    /// clone
-    /// checkout
-    /// add
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    @Override
+    public String toString() {
+        return "GitRepository{" +
+                "commitMap=" + commitMap +
+                ", branch=" + branch +
+                ", HEAD='" + HEAD + '\'' +
+                ", name='" + name + '\'' +
+                ", author='" + author + '\'' +
+                '}';
+    }
 }

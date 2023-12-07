@@ -10,7 +10,10 @@ export default function ShowGitFile({treeNode}) {
             {treeNode.length === 0 ? null : treeNode.map((conceptItem,index) => (
             
                 <div key={index+1}>
-                   
+
+            <p>
+          <strong>-----------------------------------</strong>
+        </p>       
         <p>
           <strong>File Name:</strong> {conceptItem.nameOfTheFile || 'N/A'}
         </p>

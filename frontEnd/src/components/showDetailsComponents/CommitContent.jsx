@@ -7,7 +7,6 @@ export default function commitContent({item,userPassword}){
     
      function handleShowMore() {
         setShowDetails(!showDetails);
-        console.log("here");
         console.log(item.gitTreeNodeDTO.gitFileDTOList);
     }
 
