@@ -256,7 +256,7 @@ public class FileHandler {
             try (FileWriter writer = new FileWriter(path + sh1NameOfTree)) {//check //todo change it to the path that get from the user
                 writer.write(myContent);
             } catch (IOException e) {
-                System.out.println("BASA.");
+                System.out.println(" ");
             }
         }
     }

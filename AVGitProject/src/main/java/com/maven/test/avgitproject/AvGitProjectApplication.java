@@ -41,15 +41,23 @@ public class AvGitProjectApplication {
     }
 
     @Bean
-    public CommandLineRunner commandLineRunner (UserServiceImpl userService) {
+    public CommandLineRunner commandLineRunner () {
         return args -> {
-          //  createUser( userService);
-            //createUserWithSh1Detail(userService);
-            //findUserWithSh1(userService);//without lazy annotation
-           // findSh1DetailsForUserById(userService);
             System.out.println("hello world!");
         };
     }
+
+
+//    @Bean
+//    public CommandLineRunner (UserServiceImpl userService) {//commandLineRunner
+//        return args -> {
+//            //  createUser( userService);
+//            //createUserWithSh1Detail(userService);
+//            //findUserWithSh1(userService);//without lazy annotation
+//            // findSh1DetailsForUserById(userService);
+//            System.out.println("hello world!");
+//        };
+//    }
 
     private void findSh1DetailsForUserById(UserServiceImpl userService) {
         int theId = 1;
