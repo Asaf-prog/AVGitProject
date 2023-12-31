@@ -1,5 +1,8 @@
 package org.example.engine;
 
+import org.example.engine.fileHandler.FileHandler;
+import org.example.engine.sh1.Sha256;
+
 import java.io.File;
 import java.util.Map;
 

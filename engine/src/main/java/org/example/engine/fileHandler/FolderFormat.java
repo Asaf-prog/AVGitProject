@@ -1,4 +1,6 @@
-package org.example.engine;
+package org.example.engine.fileHandler;
+
+import org.example.engine.EntityType;
 
 public class FolderFormat {
     private EntityType nameOfEntity;//can be folder or file(type)

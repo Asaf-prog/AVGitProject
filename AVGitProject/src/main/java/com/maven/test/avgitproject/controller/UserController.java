@@ -13,7 +13,7 @@ import org.example.dto.CommitMappingDTO;
 import org.example.dto.GitCommitDTO;
 import org.example.dto.GitInitDTO;
 import org.example.engine.Commit;
-import org.example.engine.FileHandler;
+import org.example.engine.fileHandler.FileHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;

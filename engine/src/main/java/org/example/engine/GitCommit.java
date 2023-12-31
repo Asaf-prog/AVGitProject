@@ -2,6 +2,11 @@ package org.example.engine;
 
 import org.example.Exception.UnknownEntityTypeException;
 import org.example.Exception.ZipFileCreationException;
+import org.example.engine.fileHandler.FileHandler;
+import org.example.engine.fileHandler.FolderFormat;
+import org.example.engine.sh1.Sha256;
+import org.example.engine.timeHandler.TimeHandler;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -97,7 +102,9 @@ public class GitCommit {
         String pathCommit = folderPath + "/.Object/";
         String sh1OfCommitFile = createCommitFile(pathCommit,this.treeRootHash,lastSh1ContentHeadFile,this.comment,this.author,this.creationTime,fileHandler);
          fileHandler.writeToFile(filePath,this.treeRootHash,sh1OfCommitFile);
-         this.lastCommit = sh1OfCommitFile;//this sh1 represent the name of the file of the  commit, he found it the head file (important)
+
+        //this sh1 represent the name of the file of the  commit, he found it the head file (important)
+         this.lastCommit = sh1OfCommitFile;
     }
     public String createCommitFile(String pathCommit,String root,String lastSh1ContentHeadFile,String comment,String author, String time,FileHandler fileHandler){
 

@@ -1,4 +1,4 @@
-package org.example.engine;
+package org.example.engine.timeHandler;
 
 public class TimeHandler {
     private static TimeHandler instance = null;

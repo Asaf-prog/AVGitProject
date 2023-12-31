@@ -1,4 +1,6 @@
-package org.example.engine;
+package org.example.engine.fileHandler;
+
+import org.example.engine.sh1.Sha256;
 
 import java.io.*;
 

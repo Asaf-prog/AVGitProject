@@ -1,4 +1,8 @@
-package org.example.engine;
+package org.example.engine.sh1;
+
+import org.example.engine.GitBlob;
+import org.example.engine.GitFile;
+import org.example.engine.GitTree;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;

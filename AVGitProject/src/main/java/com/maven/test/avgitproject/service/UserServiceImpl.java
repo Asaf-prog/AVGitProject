@@ -11,6 +11,8 @@ import org.example.dto.CommitMappingDTO;
 import org.example.dto.GitCommitDTO;
 import org.example.dto.GitInitDTO;
 import org.example.engine.*;
+import org.example.engine.fileHandler.FileHandler;
+import org.example.engine.sh1.Sha256;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -114,8 +116,6 @@ public class UserServiceImpl implements UserService{
     public User getSh1FromUser(UserLoginDTO user) {
         return userRepository.findByPassword(user.getPassword());
     }
-
-
 
     @Override
     public List<Sh1Detail> findSh1DetailByUserId(int theId) {
